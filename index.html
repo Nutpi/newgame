@@ -1,546 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>富文本超链接提取转换工具</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    body {
-      background-color: #f7f9fc;
-      color: #333;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    .container {
-      width: 550px;
-      background-color: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-      padding: 30px;
-      transition: all 0.3s ease;
-    }
-
-    h1 {
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 25px;
-      color: #2c3e50;
-      font-weight: 600;
-      position: relative;
-      padding-bottom: 12px;
-    }
-
-    h1::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, #4285f4, #34a853);
-      border-radius: 3px;
-    }
-
-    .input-section, .output-section {
-      margin-bottom: 25px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: #555;
-      font-size: 15px;
-    }
-
-    #rich-text-input, #plain-text-output {
-      width: 100%;
-      height: 150px;
-      border: 1px solid #e0e5ec;
-      border-radius: 8px;
-      padding: 15px;
-      font-size: 14px;
-      line-height: 1.6;
-      overflow-y: auto;
-      background-color: #fff;
-      transition: all 0.3s ease;
-    }
-
-    #rich-text-input {
-      outline: none;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-    }
-
-    #rich-text-input:focus {
-      border-color: #4285f4;
-      box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
-    }
-
-    #rich-text-input:empty:before {
-      content: attr(placeholder);
-      color: #aab2bd;
-      font-style: italic;
-    }
-
-    #plain-text-output {
-      background-color: #f9fafb;
-      margin-bottom: 12px;
-      border: 1px solid #e8eef5;
-    }
-
-    .button-group {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    button {
-      padding: 10px 22px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    #convert-btn {
-      background-color: #4285f4;
-      color: white;
-    }
-
-    #convert-btn:hover {
-      background-color: #3367d6;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
-    }
-
-    #clear-btn {
-      background-color: #f1f3f5;
-      color: #4a5568;
-    }
-
-    #clear-btn:hover {
-      background-color: #e4e7eb;
-      transform: translateY(-1px);
-    }
-
-    #copy-btn {
-      background-color: #34a853;
-      color: white;
-      display: block;
-      margin-left: auto;
-      position: relative;
-    }
-
-    #copy-btn:hover {
-      background-color: #2d9144;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(52, 168, 83, 0.3);
-    }
-
-    #copy-btn:disabled {
-      background-color: #c5d0db;
-      color: #fff;
-      cursor: not-allowed;
-      box-shadow: none;
-      transform: none;
-    }
-
-    button:active {
-      transform: translateY(1px);
-    }
-
-    /* 适配暗色模式 */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #1a1c21;
-        color: #e8eaed;
-      }
-      
-      .container {
-        background-color: #2d2e33;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      }
-      
-      h1 {
-        color: #e8eaed;
-      }
-      
-      h1::after {
-        background: linear-gradient(90deg, #4285f4, #34a853);
-      }
-      
-      label {
-        color: #bdc1c6;
-      }
-      
-      #rich-text-input, #plain-text-output {
-        background-color: #202124;
-        border-color: #5f6368;
-        color: #e8eaed;
-      }
-      
-      #rich-text-input:focus {
-        border-color: #4285f4;
-        box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.3);
-      }
-      
-      #plain-text-output {
-        background-color: #292a2d;
-      }
-      
-      #clear-btn {
-        background-color: #5f6368;
-        color: #e8eaed;
-      }
-      
-      #clear-btn:hover {
-        background-color: #7a7c80;
-      }
-      
-      #copy-btn:disabled {
-        background-color: #4d4d4d;
-      }
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文本处理工具集</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="container">
-    <h1>富文本超链接提取转换工具</h1>
-    
-    <div class="input-section">
-      <label for="rich-text-input">输入区：</label>
-      <div id="rich-text-input" contenteditable="true" placeholder="在此粘贴包含链接的文本……"></div>
+    <header>
+      <h1>文本处理工具集</h1>
+      <nav class="tool-nav">
+        <button class="nav-btn active" data-tool="link-extractor">链接提取器</button>
+        <button class="nav-btn" data-tool="json-formatter">JSON 格式化</button>
+      </nav>
+    </header>
+
+    <!-- 链接提取工具 -->
+    <div id="link-extractor" class="tool-section active">
+      <h2>富文本超链接提取转换工具</h2>
+      
+      <div class="tool-layout">
+        <div class="input-section">
+          <label for="rich-text-input">输入区：</label>
+          <div id="rich-text-input" contenteditable="true" placeholder="在此粘贴包含链接的文本……"></div>
+          
+          <div class="button-group">
+            <button id="convert-btn">转换</button>
+            <button id="clear-btn">清空</button>
+          </div>
+        </div>
+        
+        <div class="output-section">
+          <label for="plain-text-output">输出区：</label>
+          <div id="plain-text-output" readonly></div>
+          <button id="copy-btn" disabled>复制</button>
+        </div>
+      </div>
     </div>
-    
-    <div class="button-group">
-      <button id="convert-btn">转换</button>
-      <button id="clear-btn">清空</button>
-    </div>
-    
-    <div class="output-section">
-      <label for="plain-text-output">输出区：</label>
-      <div id="plain-text-output" readonly></div>
-      <button id="copy-btn" disabled>复制</button>
+
+    <!-- JSON 格式化工具 -->
+    <div id="json-formatter" class="tool-section">
+      <h2>JSON 可视化工具</h2>
+      
+      <div class="tool-layout">
+        <div class="input-section">
+          <label for="json-input">JSON 输入：</label>
+          <textarea id="json-input" placeholder="在此粘贴或输入 JSON 数据..."></textarea>
+          
+          <div class="button-group">
+            <button id="format-btn">格式化</button>
+            <button id="minify-btn">压缩</button>
+            <button id="validate-btn">验证</button>
+            <button id="clear-json-btn">清空</button>
+          </div>
+        </div>
+        
+        <div class="output-section">
+          <label for="json-output">可视化输出：</label>
+          <div id="json-output"></div>
+          <button id="copy-json-btn" disabled>复制</button>
+          
+          <div class="json-info">
+            <div class="info-item">
+              <span class="label">状态：</span>
+              <span id="json-status">等待输入</span>
+            </div>
+            <div class="info-item">
+              <span class="label">大小：</span>
+              <span id="json-size">0 字符</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // 获取DOM元素
-      const richTextInput = document.getElementById('rich-text-input');
-      const plainTextOutput = document.getElementById('plain-text-output');
-      const convertBtn = document.getElementById('convert-btn');
-      const copyBtn = document.getElementById('copy-btn');
-      const clearBtn = document.getElementById('clear-btn');
-      
-      // 转换按钮点击事件
-      convertBtn.addEventListener('click', function() {
-        if (!richTextInput.innerHTML.trim()) {
-          plainTextOutput.innerHTML = '请先粘贴包含链接的文本';
-          return;
-        }
-        
-        // 执行转换
-        const convertedText = convertRichTextToPlainWithLinks(richTextInput);
-        plainTextOutput.innerHTML = convertedText; // 使用innerHTML而不是textContent以保留HTML格式
-        
-        // 启用复制按钮
-        copyBtn.disabled = false;
-      });
-      
-      // 复制按钮点击事件
-      copyBtn.addEventListener('click', function() {
-        // 创建一个临时的可编辑div
-        const tempDiv = document.createElement('div');
-        tempDiv.contentEditable = true;
-        tempDiv.innerHTML = plainTextOutput.innerHTML;
-        tempDiv.style.position = 'absolute';
-        tempDiv.style.left = '-9999px';
-        tempDiv.style.opacity = '0';
-        document.body.appendChild(tempDiv);
-        
-        // 选择临时div中的内容
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(tempDiv);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        
-        // 尝试使用现代API复制
-        let copySuccess = false;
-        try {
-          // 首先尝试使用document.execCommand('copy')
-          copySuccess = document.execCommand('copy');
-        } catch (err) {
-          console.error('复制失败:', err);
-          copySuccess = false;
-        }
-        
-        // 清理
-        document.body.removeChild(tempDiv);
-        
-        // 显示成功消息
-        if (copySuccess) {
-          const originalText = copyBtn.textContent;
-          copyBtn.textContent = '已复制！';
-          setTimeout(function() {
-            copyBtn.textContent = originalText;
-          }, 1500);
-        } else {
-          alert('复制失败，请手动选择文本并复制');
-        }
-      });
-      
-      // 清空按钮点击事件
-      clearBtn.addEventListener('click', function() {
-        richTextInput.innerHTML = '';
-        plainTextOutput.innerHTML = '';
-        copyBtn.disabled = true;
-      });
-      
-      // 富文本转换为带链接的纯文本函数
-      function convertRichTextToPlainWithLinks(element) {
-        // 创建一个临时的DOM元素来处理内容
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = element.innerHTML;
-        
-        // 获取所有链接
-        const links = tempDiv.querySelectorAll('a');
-        
-        // 如果没有链接，直接返回处理后的文本（保留加粗和换行）
-        if (links.length === 0) {
-          return processFormattedText(tempDiv);
-        }
-        
-        // 处理每个链接，将其替换为 文本（链接）格式
-        for (let i = links.length - 1; i >= 0; i--) {
-          const link = links[i];
-          const linkText = link.textContent;
-          const linkHref = link.getAttribute('href');
-          
-          // 创建替换文本
-          const replacementText = document.createTextNode(`${linkText}（${linkHref}）`);
-          
-          // 替换原链接元素
-          link.parentNode.replaceChild(replacementText, link);
-        }
-        
-        // 返回处理后的文本（保留加粗和换行）
-        return processFormattedText(tempDiv);
-      }
-      
-      // 处理格式化文本，保留加粗和换行
-      function processFormattedText(element) {
-        // 用于跟踪上一个节点是否是块级元素
-        let lastNodeWasBlock = false;
-        let lastNodeWasHeading = false;
-        
-        // 预处理：检测原始HTML中的换行
-        const originalHTML = element.innerHTML;
-        const hasMultipleNewlines = /\n\s*\n/.test(originalHTML);
-        
-        const processNode = (node) => {
-          // 如果是文本节点，直接返回文本内容
-          if (node.nodeType === Node.TEXT_NODE) {
-            return node.textContent;
-          }
-          
-          let nodeText = '';
-          
-          // 处理子节点
-          for (const child of node.childNodes) {
-            nodeText += processNode(child);
-          }
-          
-          // 处理加粗 - 使用HTML标签
-          if (['B', 'STRONG'].includes(node.nodeName)) {
-            nodeText = `<b>${nodeText}</b>`;
-          }
-          
-          // 处理标题元素 - 添加足够的换行
-          const headingElements = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
-          if (headingElements.includes(node.nodeName)) {
-            // 标题前后添加两个换行，确保视觉分隔
-            if (!nodeText.startsWith('<br>')) {
-              nodeText = '<br><br>' + nodeText;
-            }
-            if (!nodeText.endsWith('<br>')) {
-              nodeText = nodeText + '<br><br>';
-            }
-            lastNodeWasBlock = true;
-            lastNodeWasHeading = true;
-            return nodeText;
-          }
-          
-          // 处理段落和其他块级元素 - 保留必要的换行
-          const blockElements = ['DIV', 'P', 'LI', 'UL', 'OL', 'BLOCKQUOTE'];
-          if (blockElements.includes(node.nodeName) && nodeText.trim().length > 0) {
-            // 检查是否有margin或padding样式
-            const hasMargin = node.hasAttribute('style') && 
-                           (node.getAttribute('style').includes('margin') || 
-                            node.getAttribute('style').includes('padding'));
-            
-            // 添加适当的换行
-            if (!lastNodeWasBlock && !nodeText.startsWith('<br>')) {
-              nodeText = '<br>' + nodeText;
-            }
-            
-            // 确保块级元素后有换行
-            if (!nodeText.endsWith('<br>')) {
-              nodeText = nodeText + '<br>';
-            }
-            
-            lastNodeWasBlock = true;
-            lastNodeWasHeading = false;
-            return nodeText;
-          }
-          
-          // 处理换行元素 - 保留原始换行
-          if (node.nodeName === 'BR') {
-            lastNodeWasBlock = false;
-            lastNodeWasHeading = false;
-            return '<br>';
-          }
-          
-          // 其他元素不做特殊处理
-          lastNodeWasBlock = false;
-          lastNodeWasHeading = false;
-          return nodeText;
-        };
-        
-        let result = processNode(element);
-        
-        // 清理多余的连续换行（超过三个的换行替换为三个）
-        result = result.replace(/<br><br><br><br>+/g, '<br><br><br>');
-        
-        return result;
-      }
-      
-      // 清理粘贴的HTML，保留文本、链接、加粗和换行
-      function cleanPastedHTML(element, originalText) {
-        // 检查原始文本中的换行情况
-        const newlinePositions = [];
-        if (originalText) {
-          let position = 0;
-          while (position < originalText.length) {
-            position = originalText.indexOf('\n', position);
-            if (position === -1) break;
-            newlinePositions.push(position);
-            position++;
-          }
-        }
-        
-        // 递归处理所有子节点
-        const processNode = (node, textOffset = 0) => {
-          // 如果是文本节点，直接返回
-          if (node.nodeType === Node.TEXT_NODE) {
-            return node.textContent;
-          }
-          
-          // 如果是链接，保留链接属性
-          if (node.nodeName === 'A' && node.hasAttribute('href')) {
-            const a = document.createElement('a');
-            a.href = node.getAttribute('href');
-            a.textContent = node.textContent;
-            return a.outerHTML;
-          }
-          
-          // 如果是加粗元素，保留加粗格式
-          if (['B', 'STRONG'].includes(node.nodeName)) {
-            const b = document.createElement('b');
-            let currentOffset = textOffset;
-            for (const child of node.childNodes) {
-              const processed = processNode(child, currentOffset);
-              b.innerHTML += processed;
-              if (child.nodeType === Node.TEXT_NODE) {
-                currentOffset += child.textContent.length;
-              }
-            }
-            return b.outerHTML;
-          }
-          
-          // 如果是换行元素，保留换行
-          if (node.nodeName === 'BR') {
-            return '<br>';
-          }
-          
-          // 如果是标题元素，保留为div并添加足够的换行
-          const headingElements = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
-          if (headingElements.includes(node.nodeName)) {
-            const div = document.createElement('div');
-            let currentOffset = textOffset;
-            for (const child of node.childNodes) {
-              const processed = processNode(child, currentOffset);
-              div.innerHTML += processed;
-              if (child.nodeType === Node.TEXT_NODE) {
-                currentOffset += child.textContent.length;
-              }
-            }
-            // 添加足够的换行以确保视觉分隔
-            return '<br><div><b>' + div.innerHTML + '</b></div><br>';
-          }
-          
-          // 对于其他元素，只保留其文本内容、链接、加粗和换行
-          let result = '';
-          let currentOffset = textOffset;
-          for (const child of node.childNodes) {
-            const processed = processNode(child, currentOffset);
-            result += processed;
-            if (child.nodeType === Node.TEXT_NODE) {
-              currentOffset += child.textContent.length;
-            }
-          }
-          
-          // 对于块级元素，添加适当的换行
-          const blockElements = ['DIV', 'P', 'LI', 'UL', 'OL', 'BLOCKQUOTE'];
-          if (blockElements.includes(node.nodeName) && result.length > 0) {
-            // 添加适当的换行
-            if (!result.startsWith('<br>')) {
-              result = '<br>' + result;
-            }
-            if (!result.endsWith('<br>')) {
-              result += '<br>';
-            }
-          }
-          
-          return result;
-        };
-        
-        let result = processNode(element);
-        
-        // 确保保留原始文本中的换行
-        if (originalText && originalText.includes('\n')) {
-          // 将原始文本中的换行转换为<br>标签
-          for (const position of newlinePositions) {
-            // 在这里，我们可以更精确地处理换行
-            // 但为简单起见，我们只确保结果中有足够的<br>标签
-          }
-          // 将连续的换行符替换为多个<br>
-          result = result.replace(/\n\n+/g, '<br><br>');
-          result = result.replace(/\n/g, '<br>');
-        }
-        
-        // 清理多余的连续换行，最多保留三个连续的<br>
-        result = result.replace(/<br><br><br><br>+/g, '<br><br><br>');
-        
-        return result;
-      }
-    });
-  </script>
+
+  <script src="js/app.js"></script>
 </body>
 </html>
