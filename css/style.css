@@ -946,7 +946,7 @@
     font-weight: 500;
   }
   
-  /* 动画效果 */
+  /* 动画效果，没什么用 */
   @keyframes fadeInUp {
     from {
       opacity: 0;
