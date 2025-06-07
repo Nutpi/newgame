@@ -7,68 +7,325 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>文本处理工具集</h1>
-      <nav class="tool-nav">
-        <button class="nav-btn active" data-tool="link-extractor">链接提取器</button>
-        <button class="nav-btn" data-tool="json-formatter">JSON 格式化</button>
-      </nav>
-    </header>
-
-    <!-- 链接提取工具 -->
-    <div id="link-extractor" class="tool-section active">
-      <h2>富文本超链接提取转换工具</h2>
-      
-      <div class="tool-layout">
-        <div class="input-section">
-          <label for="rich-text-input">输入区：</label>
-          <div id="rich-text-input" contenteditable="true" placeholder="在此粘贴包含链接的文本……"></div>
-          
-          <div class="button-group">
-            <button id="convert-btn">转换</button>
-            <button id="clear-btn">清空</button>
-          </div>
-        </div>
-        
-        <div class="output-section">
-          <label for="plain-text-output">输出区：</label>
-          <div id="plain-text-output" readonly></div>
-          <button id="copy-btn" disabled>复制</button>
-        </div>
+  <!-- 主题切换器 -->
+  <div class="theme-switcher">
+    <button class="theme-toggle" id="theme-toggle">
+      <svg class="theme-icon sun-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="theme-icon moon-icon" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <div class="theme-dropdown" id="theme-dropdown">
+      <div class="theme-option" data-theme="light">
+        <span class="theme-preview light-preview"></span>
+        <span>浅色模式</span>
+      </div>
+      <div class="theme-option" data-theme="dark">
+        <span class="theme-preview dark-preview"></span>
+        <span>深色模式</span>
+      </div>
+      <div class="theme-option" data-theme="blue">
+        <span class="theme-preview blue-preview"></span>
+        <span>蓝色科技</span>
+      </div>
+      <div class="theme-option" data-theme="green">
+        <span class="theme-preview green-preview"></span>
+        <span>绿色护眼</span>
+      </div>
+      <div class="theme-option" data-theme="purple">
+        <span class="theme-preview purple-preview"></span>
+        <span>紫色优雅</span>
       </div>
     </div>
+  </div>
 
-    <!-- JSON 格式化工具 -->
-    <div id="json-formatter" class="tool-section">
-      <h2>JSON 可视化工具</h2>
-      
-      <div class="tool-layout">
-        <div class="input-section">
-          <label for="json-input">JSON 输入：</label>
-          <textarea id="json-input" placeholder="在此粘贴或输入 JSON 数据..."></textarea>
+  <!-- 移动端菜单按钮 -->
+  <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- 侧边栏导航 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>工具集</h2>
+      <button class="sidebar-close" id="sidebar-close">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="tool-category">
+        <h3>文本处理</h3>
+        <button class="nav-btn" data-tool="link-extractor">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          链接提取器
+        </button>
+      </div>
+      <div class="tool-category">
+        <h3>数据处理</h3>
+        <button class="nav-btn active" data-tool="json-formatter">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5z"/>
+            <path d="M9 9h6v6H9z"/>
+          </svg>
+          JSON 可视化
+        </button>
+      </div>
+      <div class="tool-category">
+        <h3>实用工具</h3>
+        <button class="nav-btn" data-tool="qr-generator">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="5" height="5"/>
+            <rect x="16" y="3" width="5" height="5"/>
+            <rect x="3" y="16" width="5" height="5"/>
+            <rect x="11" y="11" width="2" height="2"/>
+            <rect x="15" y="11" width="2" height="2"/>
+            <rect x="11" y="15" width="2" height="2"/>
+            <rect x="19" y="15" width="2" height="2"/>
+          </svg>
+          二维码生成器
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <div class="container">
+      <header>
+        <h1>文本处理工具集</h1>
+        <!-- 桌面端导航 -->
+        <nav class="desktop-nav">
+          <button class="nav-btn active" data-tool="json-formatter">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5z"/>
+              <path d="M9 9h6v6H9z"/>
+            </svg>
+            JSON 可视化
+          </button>
+          <button class="nav-btn" data-tool="link-extractor">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            链接提取器
+          </button>
+          <button class="nav-btn" data-tool="qr-generator">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="5" height="5"/>
+              <rect x="16" y="3" width="5" height="5"/>
+              <rect x="3" y="16" width="5" height="5"/>
+              <rect x="11" y="11" width="2" height="2"/>
+              <rect x="15" y="11" width="2" height="2"/>
+              <rect x="11" y="15" width="2" height="2"/>
+              <rect x="19" y="15" width="2" height="2"/>
+            </svg>
+            二维码生成器
+          </button>
+        </nav>
+      </header>
+
+      <div class="tools-container">
+        <!-- JSON 格式化工具 -->
+        <div id="json-formatter" class="tool-section active">
+          <div class="tool-header">
+            <h2>JSON 可视化工具</h2>
+            <p class="tool-description">格式化、验证和可视化 JSON 数据</p>
+            
+            <!-- 将功能模块移到顶端 -->
+            <div class="json-controls-top">
+              <div class="button-group">
+                <button id="format-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+                  </svg>
+                  格式化
+                </button>
+                <button id="minify-btn" class="btn-secondary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 13H5v-2h14v2z"/>
+                  </svg>
+                  压缩
+                </button>
+                <button id="validate-btn" class="btn-accent">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  验证
+                </button>
+                <button id="clear-json-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  清空
+                </button>
+                <button id="copy-json-btn" class="btn-success" disabled>
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  复制
+                </button>
+              </div>
+              
+              <div class="json-info">
+                <div class="info-item">
+                  <span class="label">状态：</span>
+                  <span id="json-status">等待输入</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">大小：</span>
+                  <span id="json-size">0 字符</span>
+                </div>
+              </div>
+            </div>
+          </div>
           
-          <div class="button-group">
-            <button id="format-btn">格式化</button>
-            <button id="minify-btn">压缩</button>
-            <button id="validate-btn">验证</button>
-            <button id="clear-json-btn">清空</button>
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="json-input">JSON 输入：</label>
+              <textarea id="json-input" placeholder="在此粘贴或输入 JSON 数据..."></textarea>
+            </div>
+            
+            <div class="output-section">
+              <label for="json-output">可视化输出：</label>
+              <div id="json-output"></div>
+            </div>
           </div>
         </div>
-        
-        <div class="output-section">
-          <label for="json-output">可视化输出：</label>
-          <div id="json-output"></div>
-          <button id="copy-json-btn" disabled>复制</button>
+
+        <!-- 链接提取器 -->
+        <div id="link-extractor" class="tool-section">
+          <div class="tool-header">
+            <h2>富文本超链接提取转换工具</h2>
+            <p class="tool-description">从富文本中提取并转换超链接</p>
+          </div>
           
-          <div class="json-info">
-            <div class="info-item">
-              <span class="label">状态：</span>
-              <span id="json-status">等待输入</span>
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="rich-text-input">输入区：</label>
+              <div id="rich-text-input" contenteditable="true" placeholder="在此粘贴包含链接的文本……"></div>
+              
+              <div class="button-group">
+                <button id="convert-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8 17l4 4 4-4m-4-5v9"/>
+                    <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"/>
+                  </svg>
+                  转换
+                </button>
+                <button id="clear-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  清空
+                </button>
+              </div>
             </div>
-            <div class="info-item">
-              <span class="label">大小：</span>
-              <span id="json-size">0 字符</span>
+            
+            <div class="output-section">
+              <label for="plain-text-output">输出区：</label>
+              <div id="plain-text-output" readonly></div>
+              <button id="copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                复制
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 二维码生成器 -->
+        <div id="qr-generator" class="tool-section">
+          <div class="tool-header">
+            <h2>二维码生成器</h2>
+            <p class="tool-description">将文本转换为二维码图片</p>
+          </div>
+          
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="qr-text-input">文本输入：</label>
+              <textarea id="qr-text-input" placeholder="输入要生成二维码的文本内容..."></textarea>
+              
+              <div class="qr-options">
+                <div class="option-group">
+                  <label for="qr-size">尺寸：</label>
+                  <select id="qr-size">
+                    <option value="200">200x200</option>
+                    <option value="300" selected>300x300</option>
+                    <option value="400">400x400</option>
+                    <option value="500">500x500</option>
+                  </select>
+                </div>
+                <div class="option-group">
+                  <label for="qr-error-level">容错级别：</label>
+                  <select id="qr-error-level">
+                    <option value="L">低 (7%)</option>
+                    <option value="M" selected>中 (15%)</option>
+                    <option value="Q">较高 (25%)</option>
+                    <option value="H">高 (30%)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="button-group">
+                <button id="generate-qr-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="5" height="5"/>
+                    <rect x="16" y="3" width="5" height="5"/>
+                    <rect x="3" y="16" width="5" height="5"/>
+                    <rect x="11" y="11" width="2" height="2"/>
+                    <rect x="15" y="11" width="2" height="2"/>
+                    <rect x="11" y="15" width="2" height="2"/>
+                    <rect x="19" y="15" width="2" height="2"/>
+                  </svg>
+                  生成二维码
+                </button>
+                <button id="clear-qr-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  清空
+                </button>
+              </div>
+            </div>
+            
+            <div class="output-section">
+              <label>二维码输出：</label>
+              <div id="qr-output">
+                <div class="qr-placeholder">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="5" height="5"/>
+                    <rect x="16" y="3" width="5" height="5"/>
+                    <rect x="3" y="16" width="5" height="5"/>
+                    <rect x="11" y="11" width="2" height="2"/>
+                    <rect x="15" y="11" width="2" height="2"/>
+                    <rect x="11" y="15" width="2" height="2"/>
+                    <rect x="19" y="15" width="2" height="2"/>
+                  </svg>
+                  <p>二维码将在此显示</p>
+                </div>
+              </div>
+              <button id="download-qr-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="7,10 12,15 17,10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                下载
+              </button>
             </div>
           </div>
         </div>
@@ -76,6 +333,11 @@
     </div>
   </div>
 
+  <!-- 遮罩层 -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- 脚本加载 -->
+  <script src="js/qrcode.min.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
