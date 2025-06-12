@@ -72,12 +72,15 @@ class NavigationManager {
 
   init() {
     this.bindEvents();
+    this.initMobileMenu();
   }
 
   bindEvents() {
     // 移动端菜单按钮
-    this.mobileMenuToggle?.addEventListener('click', () => {
-      this.openSidebar();
+    this.mobileMenuToggle?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleSidebar();
     });
 
     // 侧边栏关闭按钮
@@ -98,16 +101,61 @@ class NavigationManager {
     });
   }
 
+  toggleSidebar() {
+    const isOpen = this.sidebar?.classList.contains('open');
+    if (isOpen) {
+      this.closeSidebar();
+    } else {
+      this.openSidebar();
+    }
+  }
+
   openSidebar() {
     this.sidebar?.classList.add('open');
     this.overlay?.classList.add('show');
+    this.mobileMenuToggle?.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
   closeSidebar() {
     this.sidebar?.classList.remove('open');
     this.overlay?.classList.remove('show');
+    this.mobileMenuToggle?.classList.remove('active');
     document.body.style.overflow = '';
+  }
+
+  initMobileMenu() {
+    // 添加触摸滑动支持
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    
+    document.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+    }, { passive: true });
+    
+    document.addEventListener('touchmove', (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      const diffX = currentX - startX;
+      
+      // 向右滑动超过50px且起始位置在屏幕左侧20px内，打开侧边栏
+      if (diffX > 50 && startX < 20) {
+        this.openSidebar();
+      }
+      
+      // 向左滑动超过50px且侧边栏已打开，关闭侧边栏
+      if (diffX < -50 && this.sidebar?.classList.contains('open')) {
+        this.closeSidebar();
+      }
+    }, { passive: true });
   }
 }
 
@@ -685,6 +733,28 @@ class TextToolsApp {
           }
         }
       }, 500); // 500ms延迟
+    });
+
+    // 格式化 JSON
+    formatBtn.addEventListener('click', () => {
+      const input = jsonInput.value.trim();
+      if (!input) {
+        this.updateJsonStatus('请输入 JSON 数据', 'waiting');
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(input);
+        currentJsonData = parsed;
+        this.jsonVisualizer.render(parsed);
+        this.updateJsonStatus('格式化成功', 'valid');
+        this.updateJsonSize(JSON.stringify(parsed, null, 2).length);
+        copyJsonBtn.disabled = false;
+      } catch (error) {
+        this.updateJsonStatus(`JSON 格式错误: ${error.message}`, 'invalid');
+        this.jsonVisualizer.container.innerHTML = `<div style="color: #721c24; padding: 10px; background-color: #f8d7da; border-radius: 4px;">解析错误：${error.message}</div>`;
+        copyJsonBtn.disabled = true;
+      }
     });
 
     // 压缩 JSON
