@@ -143,8 +143,8 @@ class JsonVisualizer {
     const nodeDiv = document.createElement('div');
     nodeDiv.className = 'json-node';
     
-    // 构建当前节点的完整路径
-    const currentPath = isRoot ? '$' : (path ? `${path}.${key}` : key);
+    // 修复：直接使用传入的路径，如果没有路径则构建
+    const currentPath = isRoot ? '$' : (path || key);
     
     const isArray = Array.isArray(data);
     const isObject = typeof data === 'object' && data !== null && !isArray;
@@ -234,7 +234,8 @@ class JsonVisualizer {
       
       if (isArray) {
         data.forEach((item, index) => {
-          const childPath = isRoot ? `$[${index}]` : `${currentPath}[${index}]`;
+          // 修复：直接使用当前路径加上数组索引
+          const childPath = `${currentPath}[${index}]`;
           const childNode = this.createNode(item, index.toString(), false, level + 1, childPath);
           childrenDiv.appendChild(childNode);
           
@@ -246,7 +247,8 @@ class JsonVisualizer {
             childNode.appendChild(comma);
           }
         });
-      } else {
+      }
+      else {
         const keys = Object.keys(data);
         keys.forEach((objKey, index) => {
           const childPath = isRoot ? `$.${objKey}` : `${currentPath}.${objKey}`;
