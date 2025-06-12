@@ -135,13 +135,16 @@ class JsonVisualizer {
       return;
     }
     
-    const node = this.createNode(data, '', isRoot);
+    const node = this.createNode(data, '', isRoot, 0, '');
     this.container.appendChild(node);
   }
 
-  createNode(data, key, isRoot = false, level = 0) {
+  createNode(data, key, isRoot = false, level = 0, path = '') {
     const nodeDiv = document.createElement('div');
     nodeDiv.className = 'json-node';
+    
+    // 构建当前节点的完整路径
+    const currentPath = isRoot ? '$' : (path ? `${path}.${key}` : key);
     
     const isArray = Array.isArray(data);
     const isObject = typeof data === 'object' && data !== null && !isArray;
@@ -175,6 +178,19 @@ class JsonVisualizer {
       colon.textContent = ': ';
       colon.className = 'json-bracket';
       headerDiv.appendChild(colon);
+    }
+    
+    // 添加复制路径按钮
+    if (!isRoot) {
+      const copyPathBtn = document.createElement('button');
+      copyPathBtn.className = 'json-copy-path';
+      copyPathBtn.innerHTML = '📋';
+      copyPathBtn.title = `复制路径: ${currentPath}`;
+      copyPathBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.copyPathToClipboard(currentPath, copyPathBtn);
+      });
+      headerDiv.appendChild(copyPathBtn);
     }
     
     // 值类型和括号
@@ -218,7 +234,8 @@ class JsonVisualizer {
       
       if (isArray) {
         data.forEach((item, index) => {
-          const childNode = this.createNode(item, index.toString(), false, level + 1);
+          const childPath = isRoot ? `$[${index}]` : `${currentPath}[${index}]`;
+          const childNode = this.createNode(item, index.toString(), false, level + 1, childPath);
           childrenDiv.appendChild(childNode);
           
           // 添加逗号（除了最后一个元素）
@@ -232,7 +249,8 @@ class JsonVisualizer {
       } else {
         const keys = Object.keys(data);
         keys.forEach((objKey, index) => {
-          const childNode = this.createNode(data[objKey], objKey, false, level + 1);
+          const childPath = isRoot ? `$.${objKey}` : `${currentPath}.${objKey}`;
+          const childNode = this.createNode(data[objKey], objKey, false, level + 1, childPath);
           childrenDiv.appendChild(childNode);
           
           // 添加逗号（除了最后一个属性）
@@ -852,6 +870,56 @@ class TextToolsApp {
     } catch (error) {
       console.error('复制失败:', error);
       alert('复制失败，请手动选择文本并复制');
+    }
+  }
+
+  // 在 JsonVisualizer 类中添加 copyPathToClipboard 方法
+  // 找到 escapeHtml 方法后，在其后添加：
+  
+  // 复制路径到剪贴板
+  async copyPathToClipboard(path, button) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(path);
+      } else {
+        // 降级方案：使用传统的复制方法
+        const textArea = document.createElement('textarea');
+        textArea.value = path;
+        textArea.style.position = 'absolute';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      // 显示复制成功的反馈
+      const originalText = button.innerHTML;
+      button.innerHTML = '✅';
+      button.style.backgroundColor = '#28a745';
+      button.style.color = 'white';
+      
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.backgroundColor = '';
+        button.style.color = '';
+      }, 1000);
+    } catch (error) {
+      console.error('复制失败:', error);
+      // 降级方案
+      const textArea = document.createElement('textarea');
+      textArea.value = path;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      // 显示复制成功的反馈
+      const originalText = button.innerHTML;
+      button.innerHTML = '✅';
+      setTimeout(() => {
+        button.innerHTML = originalText;
+      }, 1000);
     }
   }
 }

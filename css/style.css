@@ -1156,6 +1156,30 @@
     }
   }
   
+  .json-copy-path {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 8px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .json-header:hover .json-copy-path {
+    opacity: 1;
+  }
+  
+  .json-copy-path:hover {
+    background-color: var(--hover-bg);
+  }
+  
+  .json-copy-path:active {
+    transform: scale(0.95);
+  }
+
   /* 打印样式 */
   @media print {
     .theme-switcher,
