@@ -313,6 +313,53 @@ class JsonVisualizer {
       nodeDiv.classList.remove('collapsed');
     }
   }
+  // 复制路径到剪贴板
+  async copyPathToClipboard(path, button) {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(path);
+      } else {
+        // 降级方案：使用传统的复制方法
+        const textArea = document.createElement('textarea');
+        textArea.value = path;
+        textArea.style.position = 'absolute';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+      }
+      
+      // 显示复制成功的反馈
+      const originalText = button.innerHTML;
+      button.innerHTML = '✅';
+      button.style.backgroundColor = '#28a745';
+      button.style.color = 'white';
+      
+      setTimeout(() => {
+        button.innerHTML = originalText;
+        button.style.backgroundColor = '';
+        button.style.color = '';
+      }, 1000);
+    } catch (error) {
+      console.error('复制失败:', error);
+      // 降级方案
+      const textArea = document.createElement('textarea');
+      textArea.value = path;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      // 显示复制成功的反馈
+      const originalText = button.innerHTML;
+      button.innerHTML = '✅';
+      setTimeout(() => {
+        button.innerHTML = originalText;
+      }, 1000);
+    }
+  }
+
 
   getPlainText(data) {
     return JSON.stringify(data, null, 2);
