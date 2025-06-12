@@ -652,26 +652,39 @@ class TextToolsApp {
 
     let currentJsonData = null;
 
-    // 格式化 JSON
-    formatBtn.addEventListener('click', () => {
-      const input = jsonInput.value.trim();
-      if (!input) {
-        this.updateJsonStatus('请输入 JSON 数据', 'waiting');
-        return;
-      }
+    // 自动格式化功能 - 在输入时自动格式化
+    let formatTimeout;
+    jsonInput.addEventListener('input', () => {
+      // 清除之前的定时器，避免频繁格式化
+      clearTimeout(formatTimeout);
+      
+      // 设置延迟格式化，用户停止输入500ms后自动格式化
+      formatTimeout = setTimeout(() => {
+        const input = jsonInput.value.trim();
+        if (!input) {
+          this.updateJsonStatus('等待输入', 'waiting');
+          this.jsonVisualizer.container.innerHTML = '';
+          this.updateJsonSize(0);
+          copyJsonBtn.disabled = true;
+          currentJsonData = null;
+          return;
+        }
 
-      try {
-        const parsed = JSON.parse(input);
-        currentJsonData = parsed;
-        this.jsonVisualizer.render(parsed);
-        this.updateJsonStatus('格式化成功', 'valid');
-        this.updateJsonSize(JSON.stringify(parsed, null, 2).length);
-        copyJsonBtn.disabled = false;
-      } catch (error) {
-        this.updateJsonStatus(`JSON 格式错误: ${error.message}`, 'invalid');
-        this.jsonVisualizer.container.innerHTML = `<div style="color: #721c24; padding: 10px; background-color: #f8d7da; border-radius: 4px;">解析错误：${error.message}</div>`;
-        copyJsonBtn.disabled = true;
-      }
+        try {
+          const parsed = JSON.parse(input);
+          currentJsonData = parsed;
+          this.jsonVisualizer.render(parsed);
+          this.updateJsonStatus('自动格式化成功', 'valid');
+          this.updateJsonSize(JSON.stringify(parsed, null, 2).length);
+          copyJsonBtn.disabled = false;
+        } catch (error) {
+          // 如果JSON格式不完整，不显示错误，等待用户继续输入
+          // 只有在输入看起来完整但格式错误时才显示错误
+          if (input.includes('{') && input.includes('}') || input.includes('[') && input.includes(']')) {
+            this.updateJsonStatus('JSON格式检查中...', 'waiting');
+          }
+        }
+      }, 500); // 500ms延迟
     });
 
     // 压缩 JSON
