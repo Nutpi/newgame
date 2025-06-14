@@ -163,7 +163,7 @@ class NavigationManager {
 class JsonVisualizer {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
-    this.pathFormat = 'jsonpath'; // 默认格式
+    this.pathFormat = 'python-data'; // 修改默认格式为Python数据
     if (!this.container) {
       console.error(`Container with ID '${containerId}' not found`);
     }
