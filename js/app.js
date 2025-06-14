@@ -163,10 +163,17 @@ class NavigationManager {
 class JsonVisualizer {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
-    this.pathFormat = 'python-data'; // 修改默认格式为Python数据
+    this.pathFormat = 'python-data';
+    this.searchResults = [];
+    this.currentSearchIndex = -1;
+    this.searchTerm = '';
+    this.jsonData = null;
     if (!this.container) {
       console.error(`Container with ID '${containerId}' not found`);
     }
+    
+    // 在构造函数中立即创建工具栏
+    this.createHeaderBar();
   }
 
   // 路径格式转换方法
@@ -277,12 +284,13 @@ class JsonVisualizer {
   render(data, isRoot = true) {
     if (!this.container) return;
     
+    this.jsonData = data;
     this.container.innerHTML = '';
     
-    // 添加路径格式选择器
-    if (isRoot) {
-      this.addPathFormatSelector();
-    }
+    // 移除这里的工具栏创建，因为已经在构造函数中创建了
+    // if (isRoot) {
+    //   this.createHeaderBar();
+    // }
     
     if (data === null) {
       this.container.innerHTML += '<span class="json-null">null</span>';
@@ -296,29 +304,51 @@ class JsonVisualizer {
     
     const node = this.createNode(data, '', isRoot, 0, '');
     this.container.appendChild(node);
+    
+    // 有数据时启用搜索功能
+    this.enableSearchFeatures();
   }
   
-  addPathFormatSelector() {
-    // 检查是否已存在选择器
-    if (document.getElementById('path-format-selector')) return;
+  createHeaderBar() {
+    // 查找固定工具栏容器
+    const toolbarContainer = document.getElementById('json-toolbar-container');
+    if (!toolbarContainer) {
+      console.error('未找到工具栏容器');
+      return;
+    }
     
-    const selectorDiv = document.createElement('div');
-    selectorDiv.id = 'path-format-selector';
-    selectorDiv.className = 'path-format-selector';
+    // 清空容器
+    toolbarContainer.innerHTML = '';
     
-    const label = document.createElement('label');
-    label.textContent = '路径格式: ';
+    const headerBar = document.createElement('div');
+    headerBar.className = 'json-output-header';
+    headerBar.id = 'json-output-header';
     
-    const select = document.createElement('select');
-    select.id = 'path-format-select';
+    // 标题
+    const title = document.createElement('h3');
+    title.textContent = '可视化输出';
+    title.className = 'json-output-title';
+    headerBar.appendChild(title);
+    
+    // 路径格式选择器
+    const pathFormatGroup = document.createElement('div');
+    pathFormatGroup.className = 'path-format-group';
+    
+    const pathLabel = document.createElement('label');
+    pathLabel.textContent = '路径格式:';
+    pathLabel.className = 'path-format-label';
+    
+    const pathSelect = document.createElement('select');
+    pathSelect.id = 'path-format-select';
+    pathSelect.className = 'path-format-select';
     
     const formats = [
-      { value: 'jsonpath', text: 'JSONPath ($.key[0])' },
-      { value: 'python-dict', text: 'Python字典 (["key"][0])' },
-      { value: 'python-data', text: 'Python数据 (data["key"][0])' },
-      { value: 'javascript', text: 'JavaScript (.key[0])' },
-      { value: 'javascript-data', text: 'JavaScript数据 (data.key[0])' },
-      { value: 'dot-notation', text: '点分路径 (key.0)' }
+      { value: 'jsonpath', text: 'JSONPath' },
+      { value: 'python-dict', text: 'Python字典' },
+      { value: 'python-data', text: 'Python数据' },
+      { value: 'javascript', text: 'JavaScript' },
+      { value: 'javascript-data', text: 'JavaScript数据' },
+      { value: 'dot-notation', text: '点分路径' }
     ];
     
     formats.forEach(format => {
@@ -328,19 +358,328 @@ class JsonVisualizer {
       if (format.value === this.pathFormat) {
         option.selected = true;
       }
-      select.appendChild(option);
+      pathSelect.appendChild(option);
     });
     
-    select.addEventListener('change', (e) => {
+    pathSelect.addEventListener('change', (e) => {
       this.pathFormat = e.target.value;
       this.updateAllCopyButtons();
     });
     
-    selectorDiv.appendChild(label);
-    selectorDiv.appendChild(select);
+    pathFormatGroup.appendChild(pathLabel);
+    pathFormatGroup.appendChild(pathSelect);
+    headerBar.appendChild(pathFormatGroup);
     
-    // 插入到容器顶部
-    this.container.appendChild(selectorDiv);
+    // 搜索区域
+    const searchGroup = document.createElement('div');
+    searchGroup.className = 'search-group';
+    
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.id = 'json-search-input';
+    searchInput.className = 'json-search-input';
+    searchInput.placeholder = '搜索键名或值...';
+    searchInput.disabled = true; // 初始状态禁用
+    
+    const searchBtn = document.createElement('button');
+    searchBtn.className = 'json-search-btn';
+    searchBtn.innerHTML = '🔍';
+    searchBtn.title = '搜索';
+    searchBtn.disabled = true; // 初始状态禁用
+    
+    searchGroup.appendChild(searchInput);
+    searchGroup.appendChild(searchBtn);
+    headerBar.appendChild(searchGroup);
+    
+    // 导航区域
+    const navGroup = document.createElement('div');
+    navGroup.className = 'search-nav-group';
+    
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'search-nav-btn';
+    prevBtn.id = 'search-prev-btn';
+    prevBtn.innerHTML = '⬆';
+    prevBtn.title = '上一个';
+    prevBtn.disabled = true;
+    
+    const searchCounter = document.createElement('span');
+    searchCounter.className = 'search-counter';
+    searchCounter.id = 'search-counter';
+    searchCounter.textContent = '0/0';
+    
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'search-nav-btn';
+    nextBtn.id = 'search-next-btn';
+    nextBtn.innerHTML = '⬇';
+    nextBtn.title = '下一个';
+    nextBtn.disabled = true;
+    
+    navGroup.appendChild(prevBtn);
+    navGroup.appendChild(searchCounter);
+    navGroup.appendChild(nextBtn);
+    headerBar.appendChild(navGroup);
+    
+    // 绑定搜索事件
+    this.bindSearchEvents(searchInput, searchBtn, prevBtn, nextBtn, searchCounter);
+    
+    // 将工具栏添加到固定容器
+    toolbarContainer.appendChild(headerBar);
+  }
+  
+  // 新增方法：启用搜索功能
+  enableSearchFeatures() {
+    const searchInput = document.getElementById('json-search-input');
+    const searchBtn = document.querySelector('.json-search-btn');
+    
+    if (searchInput && searchBtn) {
+      searchInput.disabled = false;
+      searchBtn.disabled = false;
+      searchInput.placeholder = '搜索键名或值...';
+    }
+  }
+  
+  // 新增方法：禁用搜索功能
+  disableSearchFeatures() {
+    const searchInput = document.getElementById('json-search-input');
+    const searchBtn = document.querySelector('.json-search-btn');
+    const searchCounter = document.getElementById('search-counter');
+    
+    if (searchInput && searchBtn) {
+      searchInput.disabled = true;
+      searchBtn.disabled = true;
+      searchInput.placeholder = '请先输入JSON数据...';
+      searchInput.value = '';
+    }
+    
+    if (searchCounter) {
+      searchCounter.textContent = '0/0';
+    }
+    
+    // 清除搜索结果
+    this.clearSearch();
+  }
+  
+  bindSearchEvents(searchInput, searchBtn, prevBtn, nextBtn, searchCounter) {
+    // 搜索按钮点击
+    searchBtn.addEventListener('click', () => {
+      const term = searchInput.value.trim();
+      if (term) {
+        this.performSearch(term);
+      } else {
+        this.clearSearch();
+      }
+    });
+    
+    // 回车搜索
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const term = searchInput.value.trim();
+        if (term) {
+          this.performSearch(term);
+        } else {
+          this.clearSearch();
+        }
+      } else if (e.key === 'Escape') {
+        this.clearSearch();
+        searchInput.value = '';
+      }
+    });
+    
+    // 导航按钮
+    prevBtn.addEventListener('click', () => {
+      this.navigateToPrevious();
+    });
+    
+    nextBtn.addEventListener('click', () => {
+      this.navigateToNext();
+    });
+    
+    // 实时搜索（可选）
+    searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.trim();
+      if (term.length >= 2) {
+        this.performSearch(term);
+      } else if (term.length === 0) {
+        this.clearSearch();
+      }
+    });
+  }
+  
+  performSearch(term) {
+    this.searchTerm = term;
+    this.searchResults = [];
+    this.currentSearchIndex = -1;
+    
+    // 清除之前的高亮
+    this.clearHighlights();
+    
+    // 搜索JSON数据
+    this.searchInData(this.jsonData, '', term);
+    
+    // 更新UI
+    this.updateSearchUI();
+    
+    // 跳转到第一个结果
+    if (this.searchResults.length > 0) {
+      this.navigateToNext();
+    }
+  }
+  
+  searchInData(data, path, term) {
+    if (typeof data === 'object' && data !== null) {
+      if (Array.isArray(data)) {
+        data.forEach((item, index) => {
+          const currentPath = path ? `${path}[${index}]` : `$[${index}]`;
+          this.searchInData(item, currentPath, term);
+        });
+      } else {
+        Object.keys(data).forEach(key => {
+          const currentPath = path ? `${path}.${key}` : `$.${key}`;
+          
+          // 搜索键名
+          if (key.toLowerCase().includes(term.toLowerCase())) {
+            this.searchResults.push({
+              path: currentPath,
+              type: 'key',
+              value: key,
+              element: null // 稍后设置
+            });
+          }
+          
+          // 搜索值
+          const value = data[key];
+          if (typeof value === 'string' || typeof value === 'number') {
+            if (String(value).toLowerCase().includes(term.toLowerCase())) {
+              this.searchResults.push({
+                path: currentPath,
+                type: 'value',
+                value: value,
+                element: null
+              });
+            }
+          }
+          
+          // 递归搜索
+          this.searchInData(value, currentPath, term);
+        });
+      }
+    }
+  }
+  
+  updateSearchUI() {
+    const counter = document.getElementById('search-counter');
+    const prevBtn = document.getElementById('search-prev-btn');
+    const nextBtn = document.getElementById('search-next-btn');
+    
+    if (counter) {
+      counter.textContent = `${this.currentSearchIndex + 1}/${this.searchResults.length}`;
+    }
+    
+    if (prevBtn && nextBtn) {
+      const hasResults = this.searchResults.length > 0;
+      prevBtn.disabled = !hasResults;
+      nextBtn.disabled = !hasResults;
+    }
+    
+    // 高亮搜索结果
+    this.highlightSearchResults();
+  }
+  
+  navigateToNext() {
+    if (this.searchResults.length === 0) return;
+    
+    this.currentSearchIndex = (this.currentSearchIndex + 1) % this.searchResults.length;
+    this.updateSearchUI();
+    this.scrollToCurrentResult();
+  }
+  
+  navigateToPrevious() {
+    if (this.searchResults.length === 0) return;
+    
+    this.currentSearchIndex = this.currentSearchIndex <= 0 
+      ? this.searchResults.length - 1 
+      : this.currentSearchIndex - 1;
+    this.updateSearchUI();
+    this.scrollToCurrentResult();
+  }
+  
+  highlightSearchResults() {
+    // 清除之前的高亮
+    this.clearHighlights();
+    
+    // 为每个搜索结果添加高亮
+    this.searchResults.forEach((result, index) => {
+      const element = this.findElementByPath(result.path, result.type);
+      if (element) {
+        result.element = element;
+        element.classList.add('search-highlight');
+        
+        if (index === this.currentSearchIndex) {
+          element.classList.add('search-current');
+        }
+        
+        // 展开到该节点的路径
+        this.expandPathToElement(element);
+      }
+    });
+  }
+  
+  findElementByPath(path, type) {
+    // 根据路径查找对应的DOM元素
+    const copyButtons = this.container.querySelectorAll('.json-copy-path');
+    for (const button of copyButtons) {
+      const buttonPath = button.getAttribute('data-original-path');
+      if (buttonPath === path) {
+        const header = button.closest('.json-header');
+        if (type === 'key') {
+          return header.querySelector('.json-key');
+        } else {
+          return header.querySelector('.json-string, .json-number, .json-boolean');
+        }
+      }
+    }
+    return null;
+  }
+  
+  expandPathToElement(element) {
+    let current = element;
+    while (current) {
+      const node = current.closest('.json-node');
+      if (node && node.classList.contains('collapsed')) {
+        const toggle = node.querySelector('.json-toggle');
+        if (toggle) {
+          this.toggleNode(node, toggle);
+        }
+      }
+      current = current.parentElement;
+    }
+  }
+  
+  scrollToCurrentResult() {
+    if (this.currentSearchIndex >= 0 && this.currentSearchIndex < this.searchResults.length) {
+      const result = this.searchResults[this.currentSearchIndex];
+      if (result.element) {
+        result.element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }
+    }
+  }
+  
+  clearSearch() {
+    this.searchResults = [];
+    this.currentSearchIndex = -1;
+    this.searchTerm = '';
+    this.clearHighlights();
+    this.updateSearchUI();
+  }
+  
+  clearHighlights() {
+    const highlights = this.container.querySelectorAll('.search-highlight, .search-current');
+    highlights.forEach(element => {
+      element.classList.remove('search-highlight', 'search-current');
+    });
   }
   
   updateAllCopyButtons() {
@@ -927,6 +1266,8 @@ class TextToolsApp {
           this.updateJsonSize(0);
           copyJsonBtn.disabled = true;
           currentJsonData = null;
+          // 禁用搜索功能
+          this.jsonVisualizer.disableSearchFeatures();
           return;
         }
 
@@ -1040,6 +1381,8 @@ class TextToolsApp {
       this.updateJsonSize(0);
       copyJsonBtn.disabled = true;
       currentJsonData = null;
+      // 禁用搜索功能
+      this.jsonVisualizer.disableSearchFeatures();
     });
   }
 
