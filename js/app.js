@@ -163,9 +163,115 @@ class NavigationManager {
 class JsonVisualizer {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
+    this.pathFormat = 'jsonpath'; // 默认格式
     if (!this.container) {
       console.error(`Container with ID '${containerId}' not found`);
     }
+  }
+
+  // 路径格式转换方法
+  convertPath(jsonPath, format) {
+    if (!jsonPath || jsonPath === '$') return '';
+    
+    // 移除开头的 $.
+    let path = jsonPath.replace(/^\$\.?/, '');
+    
+    switch (format) {
+      case 'jsonpath':
+        return jsonPath; // 保持原格式
+        
+      case 'python-dict':
+        // 转换为 Python 字典格式: ['key'][0]['subkey']
+        return this.toPythonDictPath(path);
+        
+      case 'python-data':
+        // 转换为 Python 数据访问格式: data['key'][0]['subkey']
+        return 'data' + this.toPythonDictPath(path);
+        
+      case 'javascript':
+        // 转换为 JavaScript 对象格式: .key[0].subkey
+        return this.toJavaScriptPath(path);
+        
+      case 'javascript-data':
+        // 转换为 JavaScript 数据访问格式: data.key[0].subkey
+        return 'data' + this.toJavaScriptPath(path);
+        
+      case 'dot-notation':
+        // 转换为点分路径: key.0.subkey
+        return this.toDotNotation(path);
+        
+      default:
+        return jsonPath;
+    }
+  }
+  
+  toPythonDictPath(path) {
+    if (!path) return '';
+    
+    // 将路径按点分割，但保留数组索引
+    let result = '';
+    let parts = [];
+    let currentPart = '';
+    let inBracket = false;
+    
+    for (let i = 0; i < path.length; i++) {
+      const char = path[i];
+      
+      if (char === '[') {
+        if (currentPart) {
+          parts.push(currentPart);
+          currentPart = '';
+        }
+        inBracket = true;
+        currentPart += char;
+      } else if (char === ']') {
+        currentPart += char;
+        parts.push(currentPart);
+        currentPart = '';
+        inBracket = false;
+      } else if (char === '.' && !inBracket) {
+        if (currentPart) {
+          parts.push(currentPart);
+          currentPart = '';
+        }
+      } else {
+        currentPart += char;
+      }
+    }
+    
+    if (currentPart) {
+      parts.push(currentPart);
+    }
+    
+    // 转换每个部分
+    for (const part of parts) {
+      if (part.startsWith('[') && part.endsWith(']')) {
+        // 数组索引，直接添加
+        result += part;
+      } else {
+        // 对象键，添加引号
+        result += `['${part}']`;
+      }
+    }
+    
+    return result;
+  }
+  
+  toJavaScriptPath(path) {
+    if (!path) return '';
+    
+    // 确保以点开头（除非是数组索引）
+    if (!path.startsWith('[')) {
+      path = '.' + path;
+    }
+    return path;
+  }
+  
+  toDotNotation(path) {
+    if (!path) return '';
+    
+    // 将数组索引转换为点分格式
+    return path.replace(/\[(\d+)\]/g, '.$1');
   }
 
   render(data, isRoot = true) {
@@ -173,18 +279,80 @@ class JsonVisualizer {
     
     this.container.innerHTML = '';
     
+    // 添加路径格式选择器
+    if (isRoot) {
+      this.addPathFormatSelector();
+    }
+    
     if (data === null) {
-      this.container.innerHTML = '<span class="json-null">null</span>';
+      this.container.innerHTML += '<span class="json-null">null</span>';
       return;
     }
     
     if (typeof data !== 'object') {
-      this.container.innerHTML = this.renderPrimitive(data);
+      this.container.innerHTML += this.renderPrimitive(data);
       return;
     }
     
     const node = this.createNode(data, '', isRoot, 0, '');
     this.container.appendChild(node);
+  }
+  
+  addPathFormatSelector() {
+    // 检查是否已存在选择器
+    if (document.getElementById('path-format-selector')) return;
+    
+    const selectorDiv = document.createElement('div');
+    selectorDiv.id = 'path-format-selector';
+    selectorDiv.className = 'path-format-selector';
+    
+    const label = document.createElement('label');
+    label.textContent = '路径格式: ';
+    
+    const select = document.createElement('select');
+    select.id = 'path-format-select';
+    
+    const formats = [
+      { value: 'jsonpath', text: 'JSONPath ($.key[0])' },
+      { value: 'python-dict', text: 'Python字典 (["key"][0])' },
+      { value: 'python-data', text: 'Python数据 (data["key"][0])' },
+      { value: 'javascript', text: 'JavaScript (.key[0])' },
+      { value: 'javascript-data', text: 'JavaScript数据 (data.key[0])' },
+      { value: 'dot-notation', text: '点分路径 (key.0)' }
+    ];
+    
+    formats.forEach(format => {
+      const option = document.createElement('option');
+      option.value = format.value;
+      option.textContent = format.text;
+      if (format.value === this.pathFormat) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+    
+    select.addEventListener('change', (e) => {
+      this.pathFormat = e.target.value;
+      this.updateAllCopyButtons();
+    });
+    
+    selectorDiv.appendChild(label);
+    selectorDiv.appendChild(select);
+    
+    // 插入到容器顶部
+    this.container.appendChild(selectorDiv);
+  }
+  
+  updateAllCopyButtons() {
+    const copyButtons = this.container.querySelectorAll('.json-copy-path');
+    copyButtons.forEach(button => {
+      const originalPath = button.getAttribute('data-original-path');
+      if (originalPath) {
+        const convertedPath = this.convertPath(originalPath, this.pathFormat);
+        button.title = `复制路径: ${convertedPath}`;
+        button.setAttribute('data-current-path', convertedPath);
+      }
+    });
   }
 
   createNode(data, key, isRoot = false, level = 0, path = '') {
@@ -233,10 +401,17 @@ class JsonVisualizer {
       const copyPathBtn = document.createElement('button');
       copyPathBtn.className = 'json-copy-path';
       copyPathBtn.innerHTML = '📋';
-      copyPathBtn.title = `复制路径: ${currentPath}`;
+      
+      // 存储原始JSONPath和当前转换后的路径
+      copyPathBtn.setAttribute('data-original-path', currentPath);
+      const convertedPath = this.convertPath(currentPath, this.pathFormat);
+      copyPathBtn.setAttribute('data-current-path', convertedPath);
+      copyPathBtn.title = `复制路径: ${convertedPath}`;
+      
       copyPathBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.copyPathToClipboard(currentPath, copyPathBtn);
+        const pathToCopy = copyPathBtn.getAttribute('data-current-path');
+        this.copyPathToClipboard(pathToCopy, copyPathBtn);
       });
       headerDiv.appendChild(copyPathBtn);
     }
