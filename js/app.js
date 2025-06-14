@@ -359,6 +359,21 @@ class JsonVisualizer {
     const nodeDiv = document.createElement('div');
     nodeDiv.className = 'json-node';
     
+    // 添加层级颜色样式
+    const levelColors = [
+      '#2563eb', // 蓝色 - 第0层
+      '#dc2626', // 红色 - 第1层
+      '#059669', // 绿色 - 第2层
+      '#d97706', // 橙色 - 第3层
+      '#7c3aed', // 紫色 - 第4层
+      '#db2777', // 粉色 - 第5层
+      '#0891b2', // 青色 - 第6层
+      '#65a30d'  // 黄绿色 - 第7层及以上
+    ];
+    
+    const colorIndex = Math.min(level, levelColors.length - 1);
+    const levelColor = levelColors[colorIndex];
+    
     // 修复：直接使用传入的路径，如果没有路径则构建
     const currentPath = isRoot ? '$' : (path || key);
     
@@ -370,10 +385,16 @@ class JsonVisualizer {
     const headerDiv = document.createElement('div');
     headerDiv.className = 'json-header';
     
+    // 为头部添加层级颜色
+    headerDiv.style.borderLeft = `3px solid ${levelColor}`;
+    headerDiv.style.paddingLeft = '8px';
+    headerDiv.style.marginLeft = `${level * 20}px`;
+    
     // 展开/折叠按钮
     if (hasChildren) {
       const toggle = document.createElement('span');
       toggle.className = 'json-toggle expanded';
+      toggle.style.color = levelColor;
       toggle.addEventListener('click', () => this.toggleNode(nodeDiv, toggle));
       headerDiv.appendChild(toggle);
     } else {
@@ -388,11 +409,14 @@ class JsonVisualizer {
       const keySpan = document.createElement('span');
       keySpan.className = 'json-key';
       keySpan.textContent = `"${key}"`;
+      keySpan.style.color = levelColor;
+      keySpan.style.fontWeight = 'bold';
       headerDiv.appendChild(keySpan);
       
       const colon = document.createElement('span');
       colon.textContent = ': ';
       colon.className = 'json-bracket';
+      colon.style.color = levelColor;
       headerDiv.appendChild(colon);
     }
     
@@ -401,6 +425,7 @@ class JsonVisualizer {
       const copyPathBtn = document.createElement('button');
       copyPathBtn.className = 'json-copy-path';
       copyPathBtn.innerHTML = '📋';
+      copyPathBtn.style.borderColor = levelColor;
       
       // 存储原始JSONPath和当前转换后的路径
       copyPathBtn.setAttribute('data-original-path', currentPath);
@@ -421,30 +446,38 @@ class JsonVisualizer {
       const bracket = document.createElement('span');
       bracket.className = 'json-bracket';
       bracket.textContent = '[';
+      bracket.style.color = levelColor;
+      bracket.style.fontWeight = 'bold';
       headerDiv.appendChild(bracket);
       
       if (hasChildren) {
         const length = document.createElement('span');
         length.className = 'json-array-length';
         length.textContent = `${data.length} items`;
+        length.style.color = levelColor;
+        length.style.opacity = '0.7';
         headerDiv.appendChild(length);
       }
     } else if (isObject) {
       const bracket = document.createElement('span');
       bracket.className = 'json-bracket';
       bracket.textContent = '{';
+      bracket.style.color = levelColor;
+      bracket.style.fontWeight = 'bold';
       headerDiv.appendChild(bracket);
       
       if (hasChildren) {
         const length = document.createElement('span');
         length.className = 'json-object-length';
         length.textContent = `${Object.keys(data).length} properties`;
+        length.style.color = levelColor;
+        length.style.opacity = '0.7';
         headerDiv.appendChild(length);
       }
     } else {
       // 原始值
       const valueSpan = document.createElement('span');
-      valueSpan.innerHTML = this.renderPrimitive(data);
+      valueSpan.innerHTML = this.renderPrimitive(data, levelColor);
       headerDiv.appendChild(valueSpan);
     }
     
@@ -467,6 +500,7 @@ class JsonVisualizer {
             const comma = document.createElement('span');
             comma.className = 'json-comma';
             comma.textContent = ',';
+            comma.style.color = levelColor;
             childNode.appendChild(comma);
           }
         });
@@ -483,6 +517,7 @@ class JsonVisualizer {
             const comma = document.createElement('span');
             comma.className = 'json-comma';
             comma.textContent = ',';
+            comma.style.color = levelColor;
             childNode.appendChild(comma);
           }
         });
@@ -492,30 +527,32 @@ class JsonVisualizer {
       
       // 结束括号
       const closingBracket = document.createElement('div');
-      closingBracket.innerHTML = `<span style="margin-left: 17px;"></span><span class="json-bracket">${isArray ? ']' : '}'}</span>`;
+      closingBracket.innerHTML = `<span style="margin-left: ${17 + level * 20}px;"></span><span class="json-bracket" style="color: ${levelColor}; font-weight: bold;">${isArray ? ']' : '}'}</span>`;
       nodeDiv.appendChild(closingBracket);
     } else if (isArray || isObject) {
       // 空数组或对象的结束括号
       const closingBracket = document.createElement('span');
       closingBracket.className = 'json-bracket';
       closingBracket.textContent = isArray ? ']' : '}';
+      closingBracket.style.color = levelColor;
+      closingBracket.style.fontWeight = 'bold';
       headerDiv.appendChild(closingBracket);
     }
     
     return nodeDiv;
   }
 
-  renderPrimitive(value) {
+  renderPrimitive(value, levelColor = '#666') {
     if (typeof value === 'string') {
-      return `<span class="json-string">"${this.escapeHtml(value)}"</span>`;
+      return `<span class="json-string" style="color: ${levelColor};">"${this.escapeHtml(value)}"</span>`;
     } else if (typeof value === 'number') {
-      return `<span class="json-number">${value}</span>`;
+      return `<span class="json-number" style="color: ${levelColor};">${value}</span>`;
     } else if (typeof value === 'boolean') {
-      return `<span class="json-boolean">${value}</span>`;
+      return `<span class="json-boolean" style="color: ${levelColor};">${value}</span>`;
     } else if (value === null) {
-      return `<span class="json-null">null</span>`;
+      return `<span class="json-null" style="color: ${levelColor};">null</span>`;
     } else {
-      return `<span class="json-string">"${this.escapeHtml(String(value))}"</span>`;
+      return `<span class="json-string" style="color: ${levelColor};">"${this.escapeHtml(String(value))}"</span>`;
     }
   }
 
