@@ -11,13 +11,13 @@
     height: 50px;
     border-radius: 50%;
     background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color); /* 边框改细 */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all var(--transition-medium);
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light); /* 减弱阴影 */
     position: relative;
     overflow: hidden;
   }
@@ -62,7 +62,7 @@
     top: 60px;
     right: 0;
     background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color); /* 边框改细 */
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-heavy);
     padding: var(--spacing-sm);
@@ -107,24 +107,25 @@
   }
   
   .light-preview {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 您可以更新这个预览色以匹配新的浅色主题 */
   }
   
   .dark-preview {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); /* 您可以更新这个预览色以匹配新的深色主题 */
   }
   
   .blue-preview {
-    background: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%);
+    background: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%); /* 您可以更新这个预览色以匹配新的蓝色主题 */
   }
   
-  .green-preview {
+  /* 移除了 .green-preview 和 .purple-preview 的定义 */
+  /* .green-preview {
     background: linear-gradient(135deg, #2d5016 0%, #68b030 100%);
-  }
+  } */
   
-  .purple-preview {
+  /* .purple-preview {
     background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
-  }
+  } */
   
   /* 移动端菜单 */
   .mobile-menu-toggle {
@@ -136,7 +137,7 @@
     width: 50px;
     height: 50px;
     background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color); /* 边框改细 */
     border-radius: 50%;
     cursor: pointer;
     flex-direction: column;
@@ -144,7 +145,7 @@
     justify-content: center;
     gap: 4px;
     transition: all var(--transition-medium);
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light); /* 减弱阴影 */
     /* 确保触摸区域足够大 */
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -179,11 +180,11 @@
     width: 300px;
     height: 100vh;
     background: var(--bg-secondary);
-    border-right: 2px solid var(--border-color);
+    border-right: 1px solid var(--border-color); /* 边框改细 */
     z-index: 1000;
     transition: all var(--transition-medium);
     overflow-y: auto;
-    box-shadow: var(--shadow-heavy);
+    box-shadow: var(--shadow-medium); /* 减弱阴影 */
   }
   
   .sidebar.active {
@@ -264,7 +265,7 @@
   /* JSON 可视化特定样式 */
   .json-container {
     background: var(--bg-secondary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     padding: var(--spacing-lg);
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
@@ -326,7 +327,7 @@
     background: var(--bg-tertiary);
     color: var(--text-primary);
     transform: scale(1.1);
-    box-shadow: var(--shadow-light);
+    box-shadow: none; /* 移除阴影，或使用非常轻微的 */
   }
   
   /* 优化的折叠/展开图标 */
@@ -437,7 +438,7 @@
     align-items: center;
     justify-content: center;
     background: var(--bg-secondary);
-    border: 2px dashed var(--border-color);
+    border: 1px dashed var(--border-color); /* 边框改细 */
     border-radius: var(--border-radius);
     transition: all var(--transition-medium);
   }
@@ -466,8 +467,8 @@
     justify-content: space-between;
     padding: var(--spacing-md);
     background: var(--bg-tertiary);
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius-small);
+    border: 1px solid var(--border-color); /* 边框改细 */
+    border-radius: var(--border-radius-small); /* 较小圆角 */
     margin-bottom: var(--spacing-sm);
     transition: all var(--transition-medium);
     gap: var(--spacing-md);
@@ -475,7 +476,7 @@
   
   .link-item:hover {
     border-color: var(--accent-primary);
-    box-shadow: var(--shadow-light);
+    box-shadow: var(--shadow-light); /* 减弱悬停阴影 */
   }
   
   .link-text {
@@ -574,7 +575,7 @@
   flex: 1;
   min-width: 200px;
   padding: 8px 12px;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-color); /* 边框改细 */
   border-radius: 6px;
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -892,4 +893,32 @@
     border: none !important;
   }
 }
+
+/* 额外优化路径格式选择器的可读性
+
+如果上述修改还不够清晰，可以在 <mcfile name="components.css" path="/Users/weiguangxieyu/Trae/wangzhantest/newgame/css/components.css"></mcfile> 中为蓝色主题专门设置路径选择器样式：
+```css
+/* 蓝色主题下路径格式选择器特殊优化 */
+body.theme-blue .path-format-selector {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+}
+
+body.theme-blue .path-format-selector label {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+body.theme-blue .path-format-selector select {
+  background: #ffffff;
+  color: #0f172a;
+  border: 2px solid #cbd5e1;
+  font-weight: 600;
+}
+
+body.theme-blue .path-format-selector select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
   

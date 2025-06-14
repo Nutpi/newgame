@@ -970,14 +970,14 @@ class TextToolsApp {
           <div style="color: #155724; padding: 15px; background-color: #d4edda; border-radius: 4px; margin-bottom: 10px;">
             ✅ JSON 格式有效
           </div>
-          <div style="background-color: #f8f9fa; padding: 15px; border-radius: 4px; font-family: monospace; white-space: pre-line;">
+          <div style="background-color: var(--bg-tertiary); padding: 15px; border-radius: 4px; font-family: monospace; white-space: pre-line; color: var(--text-primary);">
             <strong>结构分析：</strong>\n${analysis}
           </div>
         `;
         this.updateJsonStatus('验证通过', 'valid');
         this.updateJsonSize(input.length);
       } catch (error) {
-        this.jsonVisualizer.container.innerHTML = `<div style="color: #721c24; padding: 10px; background-color: #f8d7da; border-radius: 4px;">❌ JSON 格式无效：${error.message}</div>`;
+        this.jsonVisualizer.container.innerHTML = `<div style="color: var(--text-danger, #721c24); padding: 10px; background-color: var(--bg-danger, #f8d7da); border-radius: 4px;">❌ JSON 格式无效：${error.message}</div>`;
         this.updateJsonStatus(`验证失败: ${error.message}`, 'invalid');
       }
     });

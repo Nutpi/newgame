@@ -8,75 +8,83 @@
   /* CSS 变量定义 - 基础变量（所有主题共享） */
   :root {
     /* 通用变量 */
-    --transition-fast: 0.2s ease;
-    --transition-medium: 0.3s ease;
-    --transition-slow: 0.5s ease;
-    --border-radius: 12px;
-    --border-radius-small: 6px;
-    --spacing-xs: 4px;
-    --spacing-sm: 8px;
-    --spacing-md: 16px;
-    --spacing-lg: 24px;
-    --spacing-xl: 32px;
-    --accent-warning: #ff9800;
-    --accent-error: #f44336;
-    --accent-purple: #9c27b0;
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-medium: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --border-radius: 12px; /* 稍微增大圆角，更显柔和 */
+    --border-radius-small: 8px;
+    --spacing-xs: 6px;
+    --spacing-sm: 12px;
+    --spacing-md: 20px;
+    --spacing-lg: 30px;
+    --spacing-xl: 40px;
+    --accent-warning: #ffc107;
+    --accent-error: #dc3545;
+    --accent-purple: #6f42c1; /* 保留紫色变量，以防其他地方用到，但主题中移除 */
     
-    /* 浅色主题 */
-    --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* 浅色主题 (作为默认备用) */
+    --bg-primary: #f7f9fc; /* 更柔和的浅灰蓝 */
     --bg-secondary: #ffffff;
-    --bg-tertiary: #f8f9fa;
-    --text-primary: #2d3748;
-    --text-secondary: #4a5568;
-    --text-muted: #718096;
-    --border-color: #e2e8f0;
-    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.05);
-    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.1);
-    --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.15);
-    --accent-primary: #4285f4;
-    --accent-secondary: #34a853;
+    --bg-tertiary: #eef2f7; /* 略带蓝调的浅灰 */
+    --text-primary: #1f2937; /* 深灰蓝，增加对比度 */
+    --text-secondary: #4b5563;
+    --text-muted: #6b7280;
+    --border-color: #d1d5db; /* 柔和的灰色边框 */
+    /* 更新阴影，使其更柔和、更弥散 */
+    --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.07), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+    --accent-primary: #3b82f6; /* 鲜明而现代的蓝色 */
+    --accent-primary-rgb: 59, 130, 246;
+    --accent-secondary: #10b981; /* 绿色作为辅助强调色 */
+    --bg-hover: rgba(59, 130, 246, 0.07); /* 蓝色调的悬停背景 */
   }
   
-  /* 深色主题 - 只定义不同的变量 */
+  /* 深色主题 */
   body.theme-dark {
-    --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    --bg-secondary: #2d3748;
-    --bg-tertiary: #4a5568;
-    --text-primary: #f7fafc;
-    --text-secondary: #e2e8f0;
-    --text-muted: #a0aec0;
-    --border-color: #4a5568;
-    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.3);
-    --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.4);
-    --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.5);
-    --accent-primary: #4285f4;
-    --accent-secondary: #34a853;
-    --bg-hover: rgba(255, 255, 255, 0.05);
+    --bg-primary: #111827; /* 更深邃的蓝黑背景 */
+    --bg-secondary: #1f2937; /* 深灰蓝的卡片背景 */
+    --bg-tertiary: #374151; /* 略浅的灰蓝作为第三层背景 */
+    --text-primary: #f3f4f6; /* 浅灰色文本，确保对比度 */
+    --text-secondary: #d1d5db;
+    --text-muted: #9ca3af;
+    --border-color: #4b5563; /* 深色模式下的边框颜色 */
+    /* 深色模式下的阴影，可以更依赖高光和细微的颜色变化 */
+    --shadow-light: 0 1px 2px 0 rgba(0, 0, 0, 0.15), 0 1px 1px 0 rgba(255,255,255,0.03) inset; /* 增加细微内发光模拟高光 */
+    --shadow-medium: 0 4px 8px -2px rgba(0, 0, 0, 0.2), 0 2px 3px -2px rgba(255,255,255,0.04) inset;
+    --shadow-heavy: 0 12px 20px -5px rgba(0, 0, 0, 0.25), 0 5px 8px -5px rgba(255,255,255,0.05) inset;
+    --accent-primary: #60a5fa; /* 深色模式下更亮的蓝色 */
+    --accent-primary-rgb: 96, 165, 250;
+    --accent-secondary: #34d399; /* 深色模式下的亮绿色 */
+    --bg-hover: rgba(255, 255, 255, 0.06);
   }
   
-  /* 蓝色科技主题 - 只定义不同的变量 */
+  /* 进一步优化蓝色主题的文本对比度
+  
+  请在 <mcfile name="base.css" path="/Users/weiguangxieyu/Trae/wangzhantest/newgame/css/base.css"></mcfile> 中将蓝色主题的文本颜色调整为更深的颜色：
+  
+  /* 蓝色科技主题 */
   body.theme-blue {
-    --bg-primary: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%);
-    --bg-tertiary: #f0f8ff;
-    --accent-primary: #0066cc;
-    --accent-secondary: #0080ff;
+    --bg-primary: #1e3a8a; /* 深邃的科技蓝作为主背景 */
+    --bg-secondary: #ffffff; /* 白色卡片背景，形成对比 */
+    --bg-tertiary: #f8fafc; /* 更浅的背景色，提高对比度 */
+    --text-primary: #0f172a; /* 改为非常深的灰黑色，最高对比度 */
+    --text-secondary: #1e293b; /* 深灰色 */
+    --text-muted: #475569; /* 中等灰色 */
+    --border-color: #cbd5e1; /* 更浅的边框色 */
+    /* 蓝色主题下的阴影可以带有轻微的蓝色调 */
+    --shadow-light: 0 2px 5px rgba(23, 70, 165, 0.1);
+    --shadow-medium: 0 5px 12px rgba(23, 70, 165, 0.15);
+    --shadow-heavy: 0 10px 25px rgba(23, 70, 165, 0.2);
+    --accent-primary: #2563eb; /* 主强调色 - 鲜明的蓝色 */
+    --accent-primary-rgb: 37, 99, 235;
+    --accent-secondary: #dc2626; /* 改为红色作为对比强烈的辅助强调色 */
+    --bg-hover: rgba(37, 99, 235, 0.08);
   }
   
-  /* 绿色护眼主题 - 只定义不同的变量 */
-  body.theme-green {
-    --bg-primary: linear-gradient(135deg, #2d5016 0%, #68b030 100%);
-    --bg-tertiary: #f0fff0;
-    --accent-primary: #4caf50;
-    --accent-secondary: #8bc34a;
-  }
-  
-  /* 紫色优雅主题 - 只定义不同的变量 */
-  body.theme-purple {
-    --bg-primary: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
-    --bg-tertiary: #faf5ff;
-    --accent-primary: #9c27b0;
-    --accent-secondary: #e91e63;
-  }
+  /* 移除绿色护眼主题和紫色优雅主题的定义 */
+  /* body.theme-green { ... } */
+  /* body.theme-purple { ... } */
   
   /* 基础布局 */
   body {
@@ -117,32 +125,17 @@
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: var(--spacing-lg);
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  h2 {
-    font-size: 1.75rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-lg);
-    text-align: center;
-    position: relative;
-    padding-bottom: var(--spacing-md);
+    /* 移除渐变文字，使用纯色，或调整为更现代的渐变 */
+    /* background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); */
+    /* -webkit-background-clip: text; */
+    /* -webkit-text-fill-color: transparent; */
+    /* background-clip: text; */
+    color: var(--accent-primary); /* 使用纯色或更微妙的渐变 */
+    letter-spacing: -0.5px; /* 调整字间距 */
   }
   
   h2::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-    border-radius: 3px;
+    display: none;
   }
   
   /* 导航样式 */
@@ -166,10 +159,10 @@
     align-items: center;
     gap: var(--spacing-sm);
     padding: var(--spacing-md) var(--spacing-lg);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color); /* 边框改细 */
     background: var(--bg-tertiary);
     color: var(--text-secondary);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small); /* 较小的圆角 */
     cursor: pointer;
     font-size: 0.875rem;
     font-weight: 500;
@@ -179,23 +172,24 @@
   }
   
   .nav-btn:hover {
-    border-color: var(--accent-primary);
+    background: var(--bg-hover);
     color: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+    border-color: var(--accent-primary); /* 悬停时显示边框 */
+    transform: translateY(-1px); /* 更细微的移动 */
+    box-shadow: none; /* 移除悬停阴影，或使用非常淡的 */
   }
   
   .nav-btn.active {
     background: var(--accent-primary);
     border-color: var(--accent-primary);
     color: white;
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light);
   }
   
   .nav-btn.active:hover {
     background: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
   }
   
   .tool-icon {
@@ -294,8 +288,8 @@
     width: 100%;
     min-height: 450px;
     max-height: 900px;
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color); /* 边框改细 */
+    border-radius: var(--border-radius-small); /* 较小的圆角 */
     padding: var(--spacing-lg);
     font-size: 15px;
     line-height: 1.7;
@@ -322,7 +316,7 @@
   textarea:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb), 0.15), inset 0 1px 2px rgba(0,0,0,0.03);
   }
   
   #rich-text-input:empty:before {
@@ -347,7 +341,7 @@
     gap: var(--spacing-sm);
     padding: var(--spacing-md) var(--spacing-lg);
     border: none;
-    border-radius: var(--border-radius-small);
+    border-radius: var(--border-radius-small); /* 较小的圆角 */
     font-size: 0.875rem;
     font-weight: 500;
     cursor: pointer;
@@ -379,7 +373,7 @@
   
   button:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light); /* 减弱悬停阴影 */
   }
   
   button:disabled {
@@ -401,7 +395,8 @@
   #convert-btn,
   #format-btn,
   #generate-qr-btn {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    /* background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); */
+    background: var(--accent-primary); /* 改为单色 */
     color: white;
     border: none;
     font-weight: 600;
@@ -410,7 +405,8 @@
   #convert-btn:hover,
   #format-btn:hover,
   #generate-qr-btn:hover {
-    background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+    /* background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary)); */
+    background-color: var(--accent-secondary); /* 改为单色 */
     color: white;
   }
   
@@ -419,7 +415,7 @@
   #download-btn {
     background: var(--bg-tertiary);
     color: var(--text-secondary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color); /* 边框改细 */
   }
   
   #clear-btn:hover,
