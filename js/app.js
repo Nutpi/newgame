@@ -255,18 +255,75 @@ class TextToolsApp {
     }
   }
 
-  // 显示JSON错误
+  // 优化JSON错误显示函数
   showJsonError(message, isAutoCheck = false) {
     const title = isAutoCheck ? '⚠️ 自动解析失败' : '❌ 解析错误';
-    const hint = isAutoCheck ? '<div style="font-size: 12px; margin-top: 8px; opacity: 0.8;">提示：可以点击"格式化"按钮查看详细错误</div>' : '';
+    const hint = isAutoCheck 
+      ? `<div style="font-size: 12px; margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; opacity: 0.9;">
+           💡 <strong>提示：</strong>可以点击"格式化"按钮查看详细错误信息
+         </div>` 
+      : '';
+    
+    // 格式化错误信息，添加换行和缩进
+    const formattedMessage = this.formatErrorMessage(message);
     
     this.jsonVisualizer.container.innerHTML = `
-      <div style="color: #721c24; padding: 15px; background-color: #f8d7da; border-radius: 4px; line-height: 1.5;">
-        <div style="font-weight: bold; margin-bottom: 8px;">${title}</div>
-        <div style="font-size: 14px;">${this.escapeHtml(message)}</div>
+      <div style="color: #721c24; padding: 20px; background-color: #f8d7da; border-radius: 8px; line-height: 1.6; border-left: 4px solid #dc3545;">
+        <div style="font-weight: bold; margin-bottom: 12px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+          ${title}
+        </div>
+        <div style="font-size: 14px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; background: rgba(255,255,255,0.2); padding: 12px; border-radius: 4px; white-space: pre-line; word-break: break-word;">
+          ${this.escapeHtml(formattedMessage)}
+        </div>
         ${hint}
+        <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 12px;">
+          <strong>🔍 常见问题检查：</strong><br>
+          • 检查是否有未闭合的引号<br>
+          • 确认所有括号 {} [] 是否配对<br>
+          • 属性名是否用双引号包围<br>
+          • 是否有多余的逗号（特别是最后一个元素后）<br>
+          • 检查特殊字符是否正确转义
+        </div>
       </div>
     `;
+  }
+
+  // 新增：格式化错误信息函数
+  formatErrorMessage(message) {
+    // 处理常见的JSON错误信息，使其更易读
+    let formatted = message;
+    
+    // 处理位置信息
+    formatted = formatted.replace(/at position (\d+)/g, '在位置 $1');
+    formatted = formatted.replace(/\(line (\d+) column (\d+)\)/g, '（第 $1 行，第 $2 列）');
+    
+    // 处理常见错误类型
+    const errorMappings = {
+      'Unexpected token': '意外的字符',
+      'Expected property name': '期望属性名',
+      'Expected double-quoted property name': '属性名需要用双引号包围',
+      'Unexpected end of JSON input': 'JSON 输入意外结束',
+      'Expected \',\' or \'}\'': '期望逗号 \',\' 或右大括号 \'}\'',
+      'Expected \',\' or \']\'': '期望逗号 \',\' 或右方括号 \']\'',
+      'Unexpected string': '意外的字符串',
+      'Unexpected number': '意外的数字',
+      'Invalid or unexpected token': '无效或意外的字符'
+    };
+    
+    // 替换错误信息
+    for (const [english, chinese] of Object.entries(errorMappings)) {
+      formatted = formatted.replace(new RegExp(english, 'gi'), chinese);
+    }
+    
+    // 添加换行，使长错误信息更易读
+    if (formatted.length > 60) {
+      // 在句号、逗号、分号后添加换行
+      formatted = formatted.replace(/([。，；])\s*/g, '$1\n');
+      // 在 "at position" 或类似位置信息前添加换行
+      formatted = formatted.replace(/\s+(在位置|（第)/g, '\n$1');
+    }
+    
+    return formatted.trim();
   }
 
   // 显示压缩后的JSON
@@ -276,27 +333,45 @@ class TextToolsApp {
     `;
   }
 
-  // 显示验证结果
+  // 同时优化验证结果显示
   showValidationResult(isValid, content, smartParseUsed = false) {
     if (isValid) {
       const smartParseHint = smartParseUsed 
-        ? '<div style="font-size: 14px; opacity: 0.8;">🔧 已自动修复格式问题（单引号、缺失引号等）</div>' 
+        ? `<div style="font-size: 14px; opacity: 0.9; margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.3); border-radius: 4px;">
+             🔧 <strong>智能修复：</strong>已自动修复格式问题（单引号转双引号、补全缺失引号等）
+           </div>` 
         : '';
       
       this.jsonVisualizer.container.innerHTML = `
-        <div style="color: #155724; padding: 15px; background-color: #d4edda; border-radius: 4px; margin-bottom: 15px;">
-          <div style="font-weight: bold; margin-bottom: 8px;">✅ JSON 格式有效</div>
+        <div style="color: #155724; padding: 20px; background-color: #d4edda; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #28a745;">
+          <div style="font-weight: bold; margin-bottom: 8px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+            ✅ JSON 格式有效
+          </div>
           ${smartParseHint}
         </div>
-        <div style="background-color: var(--bg-tertiary); padding: 15px; border-radius: 4px; font-family: 'Fira Code', 'Consolas', monospace; white-space: pre-line; color: var(--text-primary); line-height: 1.6;">
-          <strong>📊 结构分析：</strong>\n${content}
+        <div style="background-color: var(--bg-tertiary); padding: 20px; border-radius: 8px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; white-space: pre-line; color: var(--text-primary); line-height: 1.8; border-left: 4px solid var(--accent-primary);">
+          <strong style="color: var(--accent-primary);">📊 结构分析：</strong>
+
+${content}
         </div>
       `;
     } else {
+      // 错误情况下也使用格式化的错误信息
+      const formattedError = this.formatErrorMessage(content);
+      
       this.jsonVisualizer.container.innerHTML = `
-        <div style="color: var(--text-danger, #721c24); padding: 15px; background-color: var(--bg-danger, #f8d7da); border-radius: 4px; line-height: 1.5;">
-          <div style="font-weight: bold; margin-bottom: 8px;">❌ JSON 格式无效</div>
-          <div style="font-size: 14px;">${this.escapeHtml(content)}</div>
+        <div style="color: var(--text-danger, #721c24); padding: 20px; background-color: var(--bg-danger, #f8d7da); border-radius: 8px; line-height: 1.6; border-left: 4px solid #dc3545;">
+          <div style="font-weight: bold; margin-bottom: 12px; font-size: 16px;">❌ JSON 格式无效</div>
+          <div style="font-size: 14px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; background: rgba(255,255,255,0.2); padding: 12px; border-radius: 4px; white-space: pre-line; word-break: break-word;">
+            ${this.escapeHtml(formattedError)}
+          </div>
+          <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 12px;">
+            <strong>🔍 建议检查：</strong><br>
+            • 所有字符串是否用双引号包围<br>
+            • 对象属性名是否用双引号包围<br>
+            • 是否有多余的逗号<br>
+            • 括号是否正确配对
+          </div>
         </div>
       `;
     }
