@@ -603,8 +603,8 @@
 
 .path-format-select:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.1);
 }
 
 /* 搜索组优化 */
@@ -630,8 +630,8 @@
 
 .json-search-input:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(var(--accent-primary-rgb), 0.1);
 }
 
 .json-search-input:disabled {
@@ -706,19 +706,127 @@
   font-weight: 500;
 }
 
-/* 搜索高亮样式 */
+/* 更新搜索高亮样式 - 更明显的效果 */
 .search-highlight {
-  background-color: #fff3cd !important;
-  border: 1px solid #ffeaa7 !important;
+  background-color: #ffeb3b !important;
+  border: 1px solid #ffc107 !important;
   border-radius: 3px !important;
   padding: 1px 3px !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(255, 193, 7, 0.3) !important;
 }
 
 .search-current {
-  background-color: #ff7675 !important;
+  background-color: #f44336 !important;
   color: white !important;
-  border-color: #d63031 !important;
-  box-shadow: 0 0 5px rgba(214, 48, 49, 0.5) !important;
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.7) !important;
+  font-weight: 700 !important;
+  animation: pulse-highlight 1.5s ease-in-out infinite !important;
+  transform: scale(1.05) !important;
+}
+
+/* 深色主题下的搜索高亮 */
+body.theme-dark .search-highlight {
+  background-color: #ffc107 !important;
+  border-color: #ff9800 !important;
+  color: #1a1a1a !important;
+  box-shadow: 0 1px 3px rgba(255, 193, 7, 0.5) !important;
+}
+
+body.theme-dark .search-current {
+  background-color: #f44336 !important;
+  border-color: #d32f2f !important;
+  color: white !important;
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.8) !important;
+}
+
+/* 蓝色主题下的搜索高亮 */
+body.theme-blue .search-highlight {
+  background-color: #ffeb3b !important;
+  border-color: #ffc107 !important;
+  color: #1a1a1a !important;
+  box-shadow: 0 1px 3px rgba(255, 235, 59, 0.5) !important;
+}
+
+body.theme-blue .search-current {
+  background-color: #f44336 !important;
+  border-color: #d32f2f !important;
+  color: white !important;
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.8) !important;
+}
+
+/* 改进的脉冲动画 */
+@keyframes pulse-highlight {
+  0% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.7);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(244, 67, 54, 0.9);
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.7);
+  }
+}
+
+/* 搜索框提示优化 */
+.json-search-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.json-search-input:focus::placeholder {
+  opacity: 0.5;
+}
+
+/* 搜索结果计数器 - 更明显 */
+.search-counter {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  padding: 4px 8px;
+  background: var(--accent-primary);
+  color: white;
+  border-radius: 12px;
+  min-width: 45px;
+  text-align: center;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* 搜索导航按钮优化 */
+.search-nav-btn {
+  padding: 6px 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-size: 0.875rem;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-nav-btn:hover:not(:disabled) {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.search-nav-btn:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* 响应式设计 */
@@ -1042,7 +1150,7 @@
 /* 额外优化路径格式选择器的可读性
 
 如果上述修改还不够清晰，可以在 <mcfile name="components.css" path="/Users/weiguangxieyu/Trae/wangzhantest/newgame/css/components.css"></mcfile> 中为蓝色主题专门设置路径选择器样式：
-```css
+```
 /* 蓝色主题下路径格式选择器特殊优化 */
 body.theme-blue .path-format-selector {
   background: #ffffff;
@@ -1066,4 +1174,393 @@ body.theme-blue .path-format-selector select:focus {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
+  /* 在文件末尾添加以下内容 */
+
+/* ===== JSON 可视化组件样式优化 ===== */
+
+/* 路径复制按钮优化 */
+.copy-path-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-left: 6px;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  position: relative;
+  vertical-align: middle;
+}
+
+/* 悬停时显示复制按钮 */
+.json-node:hover .copy-path-btn,
+.json-primitive:hover .copy-path-btn,
+.json-array-header:hover .copy-path-btn,
+.json-object-header:hover .copy-path-btn {
+  opacity: 1;
+}
+
+/* 复制按钮悬停效果 */
+.copy-path-btn:hover {
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+  transform: scale(1.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 复制按钮激活效果 */
+.copy-path-btn:active {
+  transform: scale(0.95);
+}
+
+/* 成功状态 */
+.copy-path-btn.success {
+  background: var(--accent-secondary);
+  color: white;
+  opacity: 1;
+}
+
+/* 失败状态 */
+.copy-path-btn.error {
+  background: var(--accent-error);
+  color: white;
+  opacity: 1;
+}
+
+/* JSON 节点样式优化 */
+.json-node {
+  position: relative;
+  margin: 2px 0;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.json-node:hover {
+  background: rgba(var(--accent-primary-rgb), 0.02);
+}
+
+/* JSON 头部样式 */
+.json-array-header,
+.json-object-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.json-array-header:hover,
+.json-object-header:hover {
+  background: rgba(var(--accent-primary-rgb), 0.04);
+}
+
+/* JSON 原始值样式 */
+.json-primitive {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+}
+
+.json-primitive:hover {
+  background: rgba(var(--accent-primary-rgb), 0.02);
+}
+
+/* 覆盖现有的 JSON 键名样式 */
+.json-key {
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+/* 覆盖现有的 JSON 值类型样式 */
+.json-string {
+  color: #059669;
+  font-style: italic;
+}
+
+.json-number {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.json-boolean {
+  color: #7c3aed;
+  font-weight: 500;
+}
+
+.json-null {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* JSON 括号样式 */
+.json-bracket {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* JSON 计数样式 */
+.json-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+}
+
+/* 覆盖现有的 JSON 展开/折叠按钮样式 */
+.json-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: all var(--transition-fast);
+  border-radius: 2px;
+}
+
+.json-toggle:hover {
+  background: var(--bg-hover);
+  transform: scale(1.1);
+}
+
+/* JSON 内容容器 */
+.json-content {
+  margin-left: 16px;
+  border-left: 1px solid var(--border-color);
+  padding-left: 8px;
+  margin-top: 4px;
+}
+
+/* JSON 结束括号 */
+.json-close-bracket {
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .copy-path-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+    opacity: 0.7; /* 移动端默认显示，但透明度较低 */
+  }
   
+  .json-count {
+    font-size: 0.7rem;
+    padding: 1px 4px;
+  }
+}
+
+/* 深色主题下的特殊调整 */
+body.theme-dark .json-string {
+  color: #10b981;
+}
+
+body.theme-dark .json-number {
+  color: #f87171;
+}
+
+body.theme-dark .json-boolean {
+  color: #a78bfa;
+}
+
+/* 蓝色主题下的特殊调整 */
+body.theme-blue .json-string {
+  color: #059669;
+}
+
+body.theme-blue .json-number {
+  color: #dc2626;
+}
+
+body.theme-blue .json-boolean {
+  color: #7c3aed;
+}
+
+/* 在文件末尾添加以下样式，修复横向滚动和层级显示问题 */
+
+/* ===== JSON 输出区域横向滚动优化 ===== */
+
+/* 修复 JSON 输出容器的滚动问题 */
+#json-output {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  white-space: nowrap; /* 防止自动换行 */
+  min-width: 0; /* 确保可以缩小 */
+  max-width: 100%;
+}
+
+/* 确保 JSON 内容可以横向滚动 */
+.json-container {
+  display: inline-block;
+  min-width: 100%;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+/* JSON 节点样式优化 - 支持横向布局 */
+.json-node {
+  position: relative;
+  margin: 2px 0;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+  white-space: nowrap; /* 防止节点内容换行 */
+  display: block;
+}
+
+/* JSON 内容缩进优化 */
+.json-content {
+  margin-left: 20px; /* 增加缩进 */
+  border-left: 1px solid var(--border-color);
+  padding-left: 12px;
+  margin-top: 4px;
+  display: block;
+  position: relative;
+}
+
+/* 复制按钮在横向滚动时的固定定位优化 */
+.copy-path-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-left: 8px; /* 增加一点间距 */
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  position: relative;
+  vertical-align: middle;
+  flex-shrink: 0; /* 防止按钮被压缩 */
+}
+
+/* 确保在深层级时复制按钮仍然可见和可点击 */
+.json-node:hover .copy-path-btn,
+.json-primitive:hover .copy-path-btn,
+.json-array-header:hover .copy-path-btn,
+.json-object-header:hover .copy-path-btn {
+  opacity: 1;
+  z-index: 10; /* 确保按钮在最上层 */
+}
+
+/* 优化 JSON 头部布局，确保内容不会被截断 */
+.json-array-header,
+.json-object-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* JSON 原始值样式优化 */
+.json-primitive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* 自定义滚动条样式，让横向滚动更明显 */
+#json-output::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#json-output::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+#json-output::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+  opacity: 0.6;
+}
+
+#json-output::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-primary);
+  opacity: 0.8;
+}
+
+#json-output::-webkit-scrollbar-corner {
+  background: var(--bg-tertiary);
+}
+
+/* 确保在移动端也有良好的滚动体验 */
+@media (max-width: 768px) {
+  #json-output {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .json-content {
+    margin-left: 16px; /* 移动端减少缩进 */
+    padding-left: 8px;
+  }
+  
+  .copy-path-btn {
+    width: 18px; /* 移动端稍微增大按钮 */
+    height: 18px;
+    font-size: 11px;
+  }
+}
+
+/* 深色主题下的滚动条优化 */
+body.theme-dark #json-output::-webkit-scrollbar-track {
+  background: #2d3748;
+}
+
+body.theme-dark #json-output::-webkit-scrollbar-thumb {
+  background: #a0aec0;
+}
+
+body.theme-dark #json-output::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa;
+}
+
+/* 蓝色主题下的滚动条优化 */
+body.theme-blue #json-output::-webkit-scrollbar-track {
+  background: #e2e8f0;
+}
+
+body.theme-blue #json-output::-webkit-scrollbar-thumb {
+  background: #64748b;
+}
+
+body.theme-blue #json-output::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
+}
