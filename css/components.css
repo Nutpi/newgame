@@ -1564,3 +1564,230 @@ body.theme-blue #json-output::-webkit-scrollbar-thumb {
 body.theme-blue #json-output::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+
+/* 复制按钮组样式 */
+.copy-button-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 8px;
+  position: relative;
+}
+
+/* 复制路径按钮样式 */
+.copy-path-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  position: relative;
+  vertical-align: middle;
+}
+
+/* 复制内容按钮样式 */
+.copy-content-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 9px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  position: relative;
+  vertical-align: middle;
+}
+
+/* 悬停时显示复制按钮 */
+.json-node:hover .copy-path-btn,
+.json-node:hover .copy-content-btn,
+.json-primitive:hover .copy-path-btn,
+.json-primitive:hover .copy-content-btn,
+.json-array-header:hover .copy-path-btn,
+.json-array-header:hover .copy-content-btn,
+.json-object-header:hover .copy-path-btn,
+.json-object-header:hover .copy-content-btn {
+  opacity: 1;
+}
+
+/* 复制按钮悬停效果 */
+.copy-path-btn:hover,
+.copy-content-btn:hover {
+  background: var(--bg-hover);
+  color: var(--accent-primary);
+  transform: scale(1.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 复制按钮激活效果 */
+.copy-path-btn:active,
+.copy-content-btn:active {
+  transform: scale(0.95);
+}
+
+/* 成功状态 */
+.copy-path-btn.success,
+.copy-content-btn.success {
+  background: var(--accent-secondary);
+  color: white;
+  opacity: 1;
+}
+
+/* 失败状态 */
+.copy-path-btn.error,
+.copy-content-btn.error {
+  background: var(--accent-error);
+  color: white;
+  opacity: 1;
+}
+
+/* 格式选择下拉菜单 */
+.format-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-small);
+  box-shadow: var(--shadow-heavy);
+  padding: var(--spacing-xs);
+  min-width: 160px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all var(--transition-medium);
+}
+
+.format-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 格式选项样式 */
+.format-option {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: var(--spacing-xs);
+}
+
+.format-option:last-child {
+  margin-bottom: 0;
+}
+
+.format-option:hover {
+  background: var(--bg-hover);
+}
+
+.format-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.format-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* 复制反馈样式 */
+.copy-feedback {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-medium);
+  opacity: 0;
+  transition: all var(--transition-fast);
+  pointer-events: none;
+}
+
+.copy-feedback.success {
+  background: var(--accent-secondary);
+  color: white;
+}
+
+.copy-feedback.error {
+  background: var(--accent-error);
+  color: white;
+}
+
+/* 移动端优化 */
+@media (max-width: 768px) {
+  .copy-path-btn,
+  .copy-content-btn {
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    opacity: 0.7; /* 移动端默认显示，但透明度较低 */
+  }
+  
+  .format-dropdown {
+    min-width: 140px;
+    right: -20px; /* 调整位置避免超出屏幕 */
+  }
+  
+  .format-label {
+    font-size: 0.8rem;
+  }
+  
+  .format-description {
+    font-size: 0.7rem;
+  }
+}
+
+/* 深色主题适配 */
+body.theme-dark .format-dropdown {
+  background: #1f2937;
+  border-color: #4b5563;
+}
+
+body.theme-dark .copy-feedback {
+  background: #374151;
+  color: #f3f4f6;
+}
+
+/* 蓝色主题适配 */
+body.theme-blue .format-dropdown {
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+body.theme-blue .copy-feedback {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+/* 临时调试：让下拉菜单更明显 */
+.format-dropdown.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  background: #ff0000 !important; /* 临时用红色背景 */
+  border: 2px solid #000 !important; /* 临时用黑色边框 */
+}

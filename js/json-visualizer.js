@@ -66,11 +66,6 @@ class JsonVisualizer {
   }
 
   render(data, isRoot = true) {
-    console.log('JsonVisualizer render 开始...');
-    console.log('- container 存在:', !!this.container);
-    console.log('- container ID:', this.container?.id);
-    console.log('- data:', data);
-    
     if (!this.container) {
       console.error('JsonVisualizer container 不存在！');
       return;
@@ -78,31 +73,23 @@ class JsonVisualizer {
     
     this.jsonData = data;
     this.container.innerHTML = '';
-    console.log('已清空容器内容');
     
     if (data === null) {
       this.container.innerHTML += '<span class="json-null">null</span>';
-      console.log('渲染 null 值');
       return;
     }
     
     if (typeof data !== 'object') {
       const primitiveHtml = this.renderPrimitive(data);
       this.container.innerHTML += primitiveHtml;
-      console.log('渲染原始值:', primitiveHtml);
       return;
     }
     
-    console.log('开始创建节点...');
-    const node = this.createNode(data, '', isRoot, 0, '');
-    console.log('节点创建完成:', node);
-    
+    const node = this.createNode(data, '', isRoot, 0, '$');
     this.container.appendChild(node);
-    console.log('节点已添加到容器，最终内容长度:', this.container.innerHTML.length);
     
     // 有数据时启用搜索功能
     this.enableSearchFeatures();
-    console.log('JsonVisualizer render 完成');
   }
 
   createHeaderBar() {
@@ -303,7 +290,6 @@ class JsonVisualizer {
 
   // 重新实现搜索功能
   performSearch(term) {
-    console.log('开始搜索:', term);
     this.clearHighlights();
     this.searchTerm = term.toLowerCase();
     this.searchResults = [];
@@ -320,8 +306,6 @@ class JsonVisualizer {
       this.currentSearchIndex = 0;
       this.scrollToCurrentResult();
     }
-    
-    console.log('搜索完成，找到结果:', this.searchResults.length);
   }
 
   // 简化的搜索实现 - 直接在DOM中搜索
@@ -351,8 +335,6 @@ class JsonVisualizer {
       return;
     }
 
-    console.log('开始高亮', this.searchResults.length, '个结果');
-
     this.searchResults.forEach((result, index) => {
       const element = result.element;
       const text = result.text;
@@ -372,8 +354,6 @@ class JsonVisualizer {
         element.innerHTML = highlightedText;
       }
     });
-
-    console.log('高亮完成');
   }
 
   // 转义正则表达式特殊字符
@@ -384,8 +364,6 @@ class JsonVisualizer {
   // 滚动到当前结果
   scrollToCurrentResult() {
     if (this.currentSearchIndex >= 0 && this.currentSearchIndex < this.searchResults.length) {
-      console.log('滚动到结果', this.currentSearchIndex + 1);
-      
       // 移除之前的当前高亮
       const currentHighlights = this.container.querySelectorAll('.search-current');
       currentHighlights.forEach(el => el.classList.remove('search-current'));
@@ -407,8 +385,6 @@ class JsonVisualizer {
           block: 'center',
           inline: 'nearest'
         });
-        
-        console.log('已滚动到当前结果');
       }
     }
   }
@@ -427,8 +403,6 @@ class JsonVisualizer {
         if (toggle) {
           toggle.textContent = '▼';
         }
-        
-        console.log('展开了一个折叠的节点');
       }
       current = current.parentElement;
     }
@@ -446,8 +420,6 @@ class JsonVisualizer {
     // 清除搜索结果
     this.searchResults = [];
     this.currentSearchIndex = -1;
-    
-    console.log('已清除所有高亮');
   }
 
   // 导航到下一个结果
@@ -493,11 +465,10 @@ class JsonVisualizer {
     this.clearHighlights();
     this.searchTerm = '';
     this.updateSearchUI();
-    console.log('搜索已清除');
   }
 
   // 修复：完整实现 createNode 方法
-  createNode(data, key, isRoot = false, level = 0, path = '') {
+  createNode(data, key, isRoot = false, level = 0, path = '$') {
     const nodeDiv = document.createElement('div');
     nodeDiv.className = 'json-node';
     nodeDiv.dataset.level = level;
@@ -548,10 +519,10 @@ class JsonVisualizer {
     arrayLabel.innerHTML = `<span class="json-bracket">[</span> <span class="json-count">${data.length} items</span>`;
     header.appendChild(arrayLabel);
     
-    // 路径复制按钮
+    // 复制按钮组
     if (path) {
-      const copyBtn = this.createCopyButton(path);
-      header.appendChild(copyBtn);
+      const copyButtonGroup = this.createCopyButtonGroup(path, data);
+      header.appendChild(copyButtonGroup);
     }
     
     header.appendChild(toggle);
@@ -563,7 +534,7 @@ class JsonVisualizer {
     
     // 创建数组项
     data.forEach((item, index) => {
-      const itemPath = path ? `${path}[${index}]` : `$[${index}]`;
+      const itemPath = path === '$' ? `$[${index}]` : `${path}[${index}]`;
       const itemNode = this.createNode(item, index.toString(), false, level + 1, itemPath);
       content.appendChild(itemNode);
     });
@@ -611,10 +582,10 @@ class JsonVisualizer {
     objectLabel.innerHTML = `<span class="json-bracket">{</span> <span class="json-count">${keys.length} properties</span>`;
     header.appendChild(objectLabel);
     
-    // 路径复制按钮
+    // 复制按钮组
     if (path) {
-      const copyBtn = this.createCopyButton(path);
-      header.appendChild(copyBtn);
+      const copyButtonGroup = this.createCopyButtonGroup(path, data);
+      header.appendChild(copyButtonGroup);
     }
     
     header.appendChild(toggle);
@@ -627,7 +598,7 @@ class JsonVisualizer {
     // 创建对象属性
     keys.forEach(objKey => {
       const value = data[objKey];
-      const itemPath = path ? `${path}.${objKey}` : `$.${objKey}`;
+      const itemPath = path === '$' ? `$.${objKey}` : `${path}.${objKey}`;
       const itemNode = this.createNode(value, objKey, false, level + 1, itemPath);
       content.appendChild(itemNode);
     });
@@ -667,28 +638,37 @@ class JsonVisualizer {
     valueSpan.innerHTML = this.renderPrimitive(data, levelColor);
     wrapper.appendChild(valueSpan);
     
-    // 路径复制按钮
+    // 复制按钮组
     if (path) {
-      const copyBtn = this.createCopyButton(path);
-      wrapper.appendChild(copyBtn);
+      const copyButtonGroup = this.createCopyButtonGroup(path, data);
+      wrapper.appendChild(copyButtonGroup);
     }
     
     nodeDiv.appendChild(wrapper);
   }
 
-  // 创建复制按钮（多种图标选择）
-  createCopyButton(path) {
+  // 创建复制按钮组（包含复制路径和复制内容）
+  createCopyButtonGroup(path, data) {
+    const buttonGroup = document.createElement('div');
+    buttonGroup.className = 'copy-button-group';
+    
+    // 复制路径按钮
+    const pathBtn = this.createCopyPathButton(path);
+    buttonGroup.appendChild(pathBtn);
+    
+    // 复制内容按钮
+    const contentBtn = this.createCopyContentButton(path, data);
+    buttonGroup.appendChild(contentBtn);
+    
+    return buttonGroup;
+  }
+
+  // 创建复制路径按钮
+  createCopyPathButton(path) {
     const copyBtn = document.createElement('button');
     copyBtn.className = 'copy-path-btn';
-    
-    // 可以选择不同的图标风格：
-    // copyBtn.innerHTML = '⋯';     // 省略号（简约）
-    // copyBtn.innerHTML = '⌘';     // 命令符号（Mac风格）
-    // copyBtn.innerHTML = '◦';     // 小圆点（极简）
-    // copyBtn.innerHTML = '⊕';     // 圆加号（现代）
-    copyBtn.innerHTML = '◈';     // 菱形（优雅）
-    
-    copyBtn.title = `复制路径: ${path}`;
+    copyBtn.innerHTML = '◈';
+    copyBtn.title = `复制路径: ${this.convertPath(path, this.pathFormat)}`;
     copyBtn.dataset.path = path;
     
     copyBtn.addEventListener('click', async (e) => {
@@ -697,6 +677,214 @@ class JsonVisualizer {
     });
     
     return copyBtn;
+  }
+
+  // 创建复制内容按钮
+  createCopyContentButton(path, data) {
+    const copyBtn = document.createElement('button');
+    copyBtn.className = 'copy-content-btn';
+    copyBtn.innerHTML = '📋';
+    copyBtn.title = `复制层级内容`;
+    copyBtn.dataset.path = path;
+    
+    copyBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await this.copyContentDirectly(path, copyBtn);
+    });
+    
+    return copyBtn;
+  }
+
+  // 直接复制内容（不需要下拉菜单）
+  async copyContentDirectly(path, button) {
+    try {
+      // 获取该路径对应的数据
+      const pathData = this.getDataByPath(this.jsonData, path);
+      
+      // 使用美化格式
+      const content = JSON.stringify(pathData, null, 2);
+      
+      // 复制到剪贴板
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(content);
+      } else {
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = content;
+        tempTextarea.style.position = 'absolute';
+        tempTextarea.style.left = '-9999px';
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+      }
+      
+      // 显示成功反馈
+      const originalIcon = button.innerHTML;
+      button.innerHTML = '✓';
+      button.className = 'copy-content-btn success';
+      
+      setTimeout(() => {
+        button.innerHTML = originalIcon;
+        button.className = 'copy-content-btn';
+      }, 1200);
+      
+    } catch (error) {
+      console.error('复制内容失败:', error);
+      
+      // 显示失败反馈
+      const originalIcon = button.innerHTML;
+      button.innerHTML = '✕';
+      button.className = 'copy-content-btn error';
+      
+      setTimeout(() => {
+        button.innerHTML = originalIcon;
+        button.className = 'copy-content-btn';
+      }, 1200);
+    }
+  }
+
+  // 根据路径获取数据
+  getDataByPath(data, path) {
+    if (!path || path === '$' || path === '') {
+      return data;
+    }
+    
+    try {
+      // 移除开头的 $ 和点
+      let cleanPath = path.replace(/^\$\.?/, '');
+      
+      if (!cleanPath) {
+        return data;
+      }
+      
+      // 解析路径并获取数据
+      let current = data;
+      const pathParts = this.parsePath(cleanPath);
+      
+      for (const part of pathParts) {
+        if (current === null || current === undefined) {
+          return null;
+        }
+        current = current[part];
+      }
+      
+      return current;
+    } catch (error) {
+      console.error('获取路径数据失败:', error, path);
+      return null;
+    }
+  }
+
+  // 解析路径
+  parsePath(path) {
+    const parts = [];
+    let current = '';
+    let inBrackets = false;
+    let inQuotes = false;
+    let quoteChar = '';
+    
+    for (let i = 0; i < path.length; i++) {
+      const char = path[i];
+      
+      if (char === '"' || char === "'") {
+        if (!inQuotes) {
+          inQuotes = true;
+          quoteChar = char;
+        } else if (char === quoteChar) {
+          inQuotes = false;
+          quoteChar = '';
+        }
+        continue;
+      }
+      
+      if (!inQuotes) {
+        if (char === '[') {
+          if (current) {
+            parts.push(current);
+            current = '';
+          }
+          inBrackets = true;
+          continue;
+        } else if (char === ']') {
+          if (current) {
+            // 尝试转换为数字索引
+            const num = parseInt(current);
+            parts.push(isNaN(num) ? current : num);
+            current = '';
+          }
+          inBrackets = false;
+          continue;
+        } else if (char === '.' && !inBrackets) {
+          if (current) {
+            parts.push(current);
+            current = '';
+          }
+          continue;
+        }
+      }
+      
+      current += char;
+    }
+    
+    if (current) {
+      if (inBrackets) {
+        const num = parseInt(current);
+        parts.push(isNaN(num) ? current : num);
+      } else {
+        parts.push(current);
+      }
+    }
+    
+    return parts;
+  }
+
+  // 显示复制反馈
+  showCopyFeedback(element, message, type, dataSize = null) {
+    // 创建反馈提示
+    const feedback = document.createElement('div');
+    feedback.className = `copy-feedback ${type}`;
+    
+    let feedbackText = message;
+    if (dataSize !== null) {
+      const sizeText = this.formatDataSize(dataSize);
+      feedbackText += ` (${sizeText})`;
+    }
+    
+    feedback.textContent = feedbackText;
+    feedback.style.position = 'absolute';
+    feedback.style.top = '-30px';
+    feedback.style.left = '50%';
+    feedback.style.transform = 'translateX(-50%)';
+    feedback.style.whiteSpace = 'nowrap';
+    feedback.style.zIndex = '1000';
+    
+    // 添加到元素
+    element.style.position = 'relative';
+    element.appendChild(feedback);
+    
+    // 动画显示
+    setTimeout(() => {
+      feedback.style.opacity = '1';
+      feedback.style.transform = 'translateX(-50%) translateY(-5px)';
+    }, 10);
+    
+    // 自动移除
+    setTimeout(() => {
+      if (feedback.parentNode) {
+        feedback.remove();
+      }
+    }, 2500);
+  }
+
+  // 格式化数据大小
+  formatDataSize(size) {
+    if (size < 1024) {
+      return `${size} 字符`;
+    } else if (size < 1024 * 1024) {
+      return `${(size / 1024).toFixed(1)}KB`;
+    } else {
+      return `${(size / (1024 * 1024)).toFixed(1)}MB`;
+    }
   }
 
   // 渲染原始值
