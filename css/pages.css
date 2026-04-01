@@ -340,16 +340,24 @@
   margin: 0 0 4px 0;
 }
 
+.contact-info-item .contact-detail {
+  min-width: 0;
+  flex: 1;
+}
+
 .contact-info-item .contact-detail p {
   font-size: 0.95rem;
   color: var(--text-primary);
   font-weight: 500;
   margin: 0;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .contact-info-item .contact-detail a {
   color: var(--accent-primary);
   text-decoration: none;
+  word-break: break-all;
 }
 
 /* Highlight Box */

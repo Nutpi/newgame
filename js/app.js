@@ -31,12 +31,7 @@ class TextToolsApp {
     if (typeof UrlTool !== 'undefined') new UrlTool();
     if (typeof Base64Tool !== 'undefined') new Base64Tool();
     if (typeof HashTool !== 'undefined') new HashTool();
-  }
-
-  initTools() {
-    this.initJsonFormatter();
-    this.initLinkExtractor();
-    // QR生成器在其自己的类中初始化
+    // QR生成器在 init() 中或者其自己的类中初始化
   }
 
   setDefaultTool() {

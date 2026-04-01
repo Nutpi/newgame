@@ -105,7 +105,7 @@
   .container {
     width: 100%;
     max-width: 100%;
-    background-color: var(--bg-secondary);
+    background-color: transparent;
     border-radius: 0;
     box-shadow: none;
     padding: 0;
