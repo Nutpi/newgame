@@ -69,11 +69,6 @@
         <span class="theme-preview dark-preview"></span>
         <span>深色模式</span>
       </div>
-      <div class="theme-option" data-theme="blue">
-        <span class="theme-preview blue-preview"></span>
-        <span>蓝色科技</span>
-      </div>
-      <!-- Removed Green and Purple theme options -->
     </div>
   </div>
 
@@ -186,8 +181,8 @@
       <header style="margin-bottom: 30px; padding-top: 10px; text-align: center;">
         <h1 class="page-title">在线工具集</h1>
         <p class="page-subtitle">高效、免费、本地化的文本和开发者工具，所有数据仅在您的浏览器中处理。</p>
-        <!-- 桌面端导航 -->
-        <nav class="desktop-nav" style="margin-top: 20px;">
+        <!-- 悬浮型桌面端导航 Dock -->
+        <nav class="desktop-nav">
           <button class="nav-btn active" data-tool="json-formatter">
             <svg class="tool-icon" viewBox="0 0 24 24">
               <path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5z"/>
@@ -311,7 +306,12 @@
             <div class="output-section">
               <!-- 固定工具栏容器 -->
               <div id="json-toolbar-container" class="json-toolbar-container"></div>
-              <div id="json-output"></div>
+              <div id="json-output">
+                <div class="empty-state">
+                  <svg viewBox="0 0 24 24" fill="none" class="empty-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  <p>在此粘贴您的 JSON，见证魔法发生✨</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

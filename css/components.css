@@ -253,15 +253,7 @@
     transition: all var(--transition-medium);
   }
   
-  /* 桌面端导航 */
-  .desktop-nav {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-xl);
-    flex-wrap: wrap;
-    padding: 0 var(--spacing-lg);
-  }
+
   
   /* JSON 可视化特定样式 */
   .json-container {

@@ -1,7 +1,11 @@
 // 主题管理类
 class ThemeManager {
   constructor() {
-    this.currentTheme = localStorage.getItem('theme') || 'light';
+    let savedTheme = localStorage.getItem('theme') || 'light';
+    if (savedTheme === 'blue' || savedTheme === 'green' || savedTheme === 'purple') {
+      savedTheme = 'dark'; // Migrate legacy themes
+    }
+    this.currentTheme = savedTheme;
     this.themeToggle = document.getElementById('theme-toggle');
     this.themeDropdown = document.getElementById('theme-dropdown');
     this.init();
