@@ -162,19 +162,28 @@
     </div>
   </nav>
 
-  <!-- 主内容区域 -->
-  <div class="main-content">
-    <div class="container">
-      <header>
-        <h1>文本处理工具集</h1>
-        <!-- 页面导航 -->
-        <nav class="page-nav-links">
+  <div class="page-wrapper">
+    <!-- 统一导航头 -->
+    <header class="page-header">
+      <div class="page-header-inner">
+        <a href="index.html" class="site-logo">
+          <span class="logo-icon">🛠️</span>
+          <span>文本处理工具集</span>
+        </a>
+        <nav class="page-header-nav">
           <a href="index.html" class="active">工具</a>
           <a href="about.html">关于我们</a>
           <a href="contact.html">联系方式</a>
           <a href="privacy.html">隐私政策</a>
           <a href="terms.html">服务条款</a>
         </nav>
+      </div>
+    </header>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <div class="container">
+      <header style="margin-bottom: 30px; padding-top: 10px;">
         <!-- 桌面端导航 -->
         <nav class="desktop-nav">
           <button class="nav-btn active" data-tool="json-formatter">
@@ -634,6 +643,7 @@
       <span>Powered by ☁️ Cloudflare</span>
     </div>
   </footer>
+  </div>
 
   <!-- 脚本加载 - 按依赖顺序加载 -->
   <script src="js/qrcode.min.js"></script>
