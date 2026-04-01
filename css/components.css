@@ -248,6 +248,7 @@
   /* 主内容区域 */
   .main-content {
     width: 100%;
+    flex: 1;
     padding: var(--spacing-lg);
     transition: all var(--transition-medium);
   }
@@ -540,9 +541,8 @@
 
 /* 固定工具栏容器 */
 .json-toolbar-container {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  position: relative;
+  z-index: 1;
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   margin-bottom: 10px;
@@ -1001,8 +1001,11 @@ body.theme-blue .search-current {
   
   .tool-layout {
     flex-direction: row;
-    height: calc(100vh - 100px);
+    height: 65vh;
+    min-height: 400px;
+    max-height: 700px;
     gap: 10px;
+    overflow: hidden;
   }
   
   .input-section,
@@ -1013,6 +1016,8 @@ body.theme-blue .search-current {
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    margin-bottom: 0;
+    overflow: auto;
   }
   .output-section #json-output {
     flex: 1;
@@ -1034,9 +1039,9 @@ body.theme-blue .search-current {
   #qr-text-input,
   #qr-output {
     flex: 1;
-    min-height: auto;
+    min-height: 0;
     max-height: none;
-    height: 100%;
+    height: auto;
     width: 100%;
   }
   
@@ -1054,13 +1059,6 @@ body.theme-blue .search-current {
   
   .container {
     padding: 0;
-  }
-  
-  #rich-text-input,
-  #plain-text-output,
-  #json-input,
-  #json-output {
-    min-height: 550px;
   }
 }
 
@@ -1783,11 +1781,9 @@ body.theme-blue .copy-feedback {
   color: #0f172a;
 }
 
-/* 临时调试：让下拉菜单更明显 */
+/* 格式下拉菜单显示 */
 .format-dropdown.show {
   opacity: 1 !important;
   visibility: visible !important;
   transform: translateY(0) !important;
-  background: #ff0000 !important; /* 临时用红色背景 */
-  border: 2px solid #000 !important; /* 临时用黑色边框 */
 }

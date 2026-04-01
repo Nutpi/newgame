@@ -1,0 +1,11 @@
+# robots.txt for realpine.top
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://realpine.top/sitemap.xml
+
+# Disallow non-content directories
+Disallow: /.git/
+Disallow: /.vscode/
+Disallow: /.DS_Store

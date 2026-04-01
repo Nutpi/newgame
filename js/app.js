@@ -16,11 +16,21 @@ class TextToolsApp {
     this.jsonParser = new JsonParser();
     this.jsonVisualizer = new JsonVisualizer('json-output');
     this.qrGenerator = new QRCodeGenerator();
-    
+
     // 初始化工具
     this.initTools();
     this.setDefaultTool();
     this.initNavigation();
+  }
+
+  initTools() {
+    this.initJsonFormatter();
+    this.initLinkExtractor();
+    // 初始化新工具
+    if (typeof TimestampTool !== 'undefined') new TimestampTool();
+    if (typeof UrlTool !== 'undefined') new UrlTool();
+    if (typeof Base64Tool !== 'undefined') new Base64Tool();
+    if (typeof HashTool !== 'undefined') new HashTool();
   }
 
   initTools() {
