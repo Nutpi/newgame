@@ -20,6 +20,7 @@ class TextToolsApp {
     // 初始化工具
     this.initTools();
     this.setDefaultTool();
+    this.initTutorialDrawers(); // 初始化使用说明侧滑抽屉
     this.initNavigation();
   }
 
@@ -56,14 +57,22 @@ class TextToolsApp {
     navButtons.forEach(button => {
       button.addEventListener('click', () => {
         const targetTool = button.dataset.tool;
+        if (!targetTool) return;
         
         // 更新按钮状态
         navButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
         
-        // 更新工具显示
+        // 更新工具显示并添加过渡动画
         toolSections.forEach(section => {
-          section.classList.toggle('active', section.id === targetTool);
+          if (section.id === targetTool) {
+            section.classList.add('active');
+            section.classList.add('animate-in'); // 添加过渡类
+            setTimeout(() => section.classList.remove('animate-in'), 400); // 动效结束后移除
+          } else {
+            section.classList.remove('active');
+            section.classList.remove('animate-in');
+          }
         });
         
         // 关闭移动端侧边栏
@@ -71,6 +80,72 @@ class TextToolsApp {
           this.navigationManager.closeSidebar();
         }
       });
+    });
+  }
+
+  // 初始化侧滑说明抽屉
+  initTutorialDrawers() {
+    const sections = document.querySelectorAll('.tool-section');
+    sections.forEach(section => {
+      const tutorial = section.querySelector('.tool-tutorial');
+      const header = section.querySelector('.tool-header');
+      if (tutorial && header) {
+        // 创建打开教程的按钮
+        const btn = document.createElement('button');
+        btn.className = 'btn-tutorial-open';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> 教程说明';
+        btn.onclick = () => tutorial.classList.add('drawer-open');
+        
+        // 放置在 header 的描述下方或直接存入 header
+        const p = header.querySelector('.tool-description');
+        if (p) {
+          p.insertAdjacentElement('afterend', btn);
+        } else {
+          header.appendChild(btn);
+        }
+
+        // 把原来的折叠模式改为侧滑抽屉结构
+        tutorial.classList.add('tutorial-drawer-wrapper');
+        
+        // 移除原有的折叠触发按钮
+        const oldToggle = tutorial.querySelector('.tool-tutorial-toggle');
+        if (oldToggle) oldToggle.remove();
+
+        // 增加背景遮罩
+        const overlay = document.createElement('div');
+        overlay.className = 'tutorial-overlay';
+        overlay.onclick = () => tutorial.classList.remove('drawer-open');
+        tutorial.insertBefore(overlay, tutorial.firstChild);
+
+        // 改造内容区
+        const body = tutorial.querySelector('.tool-tutorial-body');
+        if (body) {
+          body.classList.add('tutorial-drawer-panel');
+          body.style.height = 'auto'; // 移除可能内联的高度
+          
+          const closeBtn = document.createElement('button');
+          closeBtn.className = 'tutorial-close-btn';
+          closeBtn.innerHTML = '&times;';
+          closeBtn.title = '关闭';
+          closeBtn.onclick = () => tutorial.classList.remove('drawer-open');
+          
+          const inner = body.querySelector('.tool-tutorial-inner');
+          if (inner) {
+            inner.insertBefore(closeBtn, inner.firstChild);
+          } else {
+            body.insertBefore(closeBtn, body.firstChild);
+          }
+        }
+      }
+    });
+
+    // 处理全局键盘 ESC 关闭抽屉
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.tutorial-drawer-wrapper.drawer-open').forEach(drawer => {
+          drawer.classList.remove('drawer-open');
+        });
+      }
     });
   }
 

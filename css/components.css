@@ -821,6 +821,175 @@ body.theme-blue .search-current {
   opacity: 0.5;
 }
 
+/* =========================================================
+   Fullscreen Mode for Tools (JSON Formatter 特别适配)
+   ========================================================= */
+
+/* 全屏按钮的统一样式 */
+.json-fullscreen-btn {
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.json-fullscreen-btn:hover {
+  background: var(--accent-primary);
+  color: #fff;
+  border-color: var(--accent-primary);
+}
+
+.json-fullscreen-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* =========================================================
+   Fullscreen Mode for Tools (JSON Formatter 特别适配) - 沉浸式类
+   ========================================================= */
+
+/* 当工具进入全屏模式 */
+.tool-section.is-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999;
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  margin: 0;
+  border-radius: 0;
+  overflow-y: auto;
+  box-sizing: border-box;
+  animation: none !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex !important;
+  flex-direction: column;
+}
+
+/* 全屏内部布局紧凑放大 */
+.tool-section.is-fullscreen .tool-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--spacing-md);
+  min-height: 0; /* 允许 flex shrink */
+}
+
+/* 基础的全屏内部布局设置（全尺寸通用） */
+.tool-section.is-fullscreen .input-section,
+.tool-section.is-fullscreen .output-section {
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 桌面端宽度大时，使用横向布局，大幅提升输出区占比 */
+@media (min-width: 1024px) {
+  .tool-section.is-fullscreen .tool-layout {
+    flex-direction: row;
+    height: 100%;
+    align-items: stretch;
+  }
+
+  .tool-section.is-fullscreen .input-section {
+    flex: 0 0 25%; /* 输入区域压缩到25% */
+    max-width: 350px; /* 限制最大宽度 */
+  }
+
+  .tool-section.is-fullscreen .output-section {
+    flex: 1;
+    min-width: 60%; /* 全屏模式下 json-output 撑满剩余空间 */
+  }
+}
+
+.tool-section.is-fullscreen textarea,
+.tool-section.is-fullscreen #json-output {
+  height: 100%;
+  max-height: none;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 优化全屏下的输出面板头部：单行、紧凑、隐藏冗余文字 */
+.tool-section.is-fullscreen .json-output-header {
+  flex-wrap: nowrap;
+  padding: 8px 12px;
+  overflow-x: auto;
+  min-height: 40px;
+}
+.tool-section.is-fullscreen .json-output-header::-webkit-scrollbar {
+  height: 4px;
+}
+.tool-section.is-fullscreen .json-output-title {
+  display: none; /* 隐藏"可视化输出"标题，节省横向空间 */
+}
+
+.tool-section.is-fullscreen .json-container {
+  max-height: none;
+  flex: 1;
+  overflow: auto;
+}
+
+.tool-section.is-fullscreen .tool-header {
+  margin-bottom: var(--spacing-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.tool-section.is-fullscreen .tool-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.tool-section.is-fullscreen .tool-description,
+.tool-section.is-fullscreen .btn-tutorial-open,
+.tool-section.is-fullscreen .tool-tutorial-wrapper,
+.tool-section.is-fullscreen .json-info {
+  display: none !important; /* 隐藏打扰元素 */
+}
+
+/* 顶部控制栏 */
+.tool-section.is-fullscreen .json-controls-top {
+  width: auto;
+  margin: 0;
+  margin-left: auto;
+}
+
+.tool-section.is-fullscreen .json-toolbar-container {
+  flex-shrink: 0;
+}
+
+/* 退出全屏的高亮按钮放在按钮组中 */
+.json-fs-exit-btn {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--accent-error) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  margin-left: 8px;
+}
+
+.json-fs-exit-btn:hover {
+  background: var(--accent-error) !important;
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* 隐藏部分非关键元素 */
+.tool-section.is-fullscreen .json-fullscreen-btn,
+.tool-section.is-fullscreen .tutorial-drawer-wrapper {
+  display: none !important;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .json-output-header {

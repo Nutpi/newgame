@@ -201,12 +201,77 @@ class JsonVisualizer {
     navGroup.appendChild(searchCounter);
     navGroup.appendChild(nextBtn);
     headerBar.appendChild(navGroup);
-    
+
+    // 全屏按钮
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.className = 'json-fullscreen-btn';
+    fullscreenBtn.title = '全屏查看';
+    fullscreenBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>';
+    fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+    headerBar.appendChild(fullscreenBtn);
+
     // 绑定搜索事件
     this.bindSearchEvents(searchInput, searchBtn, prevBtn, nextBtn, searchCounter);
-    
+
     // 将工具栏添加到固定容器
     toolbarContainer.appendChild(headerBar);
+  }
+
+  // 纯原生全屏切换支持
+  toggleFullscreen() {
+    const formatter = document.getElementById('json-formatter');
+    if (!formatter) return;
+
+    // 如果已经是全屏状态，则关闭
+    if (formatter.classList.contains('is-fullscreen')) {
+      this.closeFullscreen();
+      return;
+    }
+
+    formatter.classList.add('is-fullscreen');
+    document.body.style.overflow = 'hidden'; // 防止背部滚动
+
+    // 查找控制按钮区域，追加一个临时的高亮退出全屏按钮（如果不存在）
+    const btnGroup = formatter.querySelector('.json-controls-top .button-group');
+    if (btnGroup && !btnGroup.querySelector('.json-fs-exit-btn')) {
+      const exitBtn = document.createElement('button');
+      exitBtn.className = 'btn-outline json-fs-exit-btn';
+      exitBtn.innerHTML = '<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg> 退出全屏';
+      
+      // 插在最后一个按钮前面
+      btnGroup.appendChild(exitBtn);
+      
+      this._exitBtnClickHandler = () => this.closeFullscreen();
+      exitBtn.addEventListener('click', this._exitBtnClickHandler);
+    }
+
+    // Esc 关闭
+    this._fsEscHandler = (e) => {
+      if (e.key === 'Escape') {
+        this.closeFullscreen();
+      }
+    };
+    document.addEventListener('keydown', this._fsEscHandler);
+  }
+
+  closeFullscreen() {
+    const formatter = document.getElementById('json-formatter');
+    if (!formatter) return;
+
+    formatter.classList.remove('is-fullscreen');
+    document.body.style.overflow = ''; // 恢复滚动
+
+    // 清理退出全屏按钮
+    const exitBtn = formatter.querySelector('.json-fs-exit-btn');
+    if (exitBtn) {
+      exitBtn.removeEventListener('click', this._exitBtnClickHandler);
+      exitBtn.remove();
+    }
+
+    if (this._fsEscHandler) {
+      document.removeEventListener('keydown', this._fsEscHandler);
+      this._fsEscHandler = null;
+    }
   }
 
   // 启用搜索功能

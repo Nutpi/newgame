@@ -1037,33 +1037,6 @@
   <script src="js/app.js"></script>
   <script src="js/cookie-consent.js"></script>
   <script>
-    // 手风琴教程展开/收起
-    function toggleTutorial(btn) {
-      const body = btn.nextElementSibling;
-      const inner = body.querySelector('.tool-tutorial-inner');
-      const isOpen = btn.classList.contains('active');
-
-      if (isOpen) {
-        const h = body.scrollHeight;
-        body.style.height = h + 'px';
-        body.offsetHeight;
-        body.style.height = '0';
-        btn.classList.remove('active');
-        body.classList.remove('open');
-      } else {
-        const targetH = inner.scrollHeight;
-        body.style.height = targetH + 'px';
-        btn.classList.add('active');
-        body.classList.add('open');
-        const onEnd = () => {
-          if (body.classList.contains('open')) body.style.height = 'auto';
-          body.removeEventListener('transitionend', onEnd);
-        };
-        body.addEventListener('transitionend', onEnd);
-      }
-    }
-  </script>
-  <script>
     document.addEventListener('DOMContentLoaded', () => {
       new CookieConsent();
     });
