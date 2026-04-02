@@ -92,13 +92,12 @@
         <p>填写以下表单，我们会尽快回复您的消息。带 <span style="color: var(--accent-error);">*</span> 的为必填项。</p>
 
         <div class="contact-form">
-          <form id="contact-form" action="https://formsubmit.co/weiguangxieyu@gmail.com" method="POST">
-            <!-- FormSubmit 配置 -->
-            <input type="hidden" name="_subject" value="新消息 - 文本处理工具集">
-            <input type="hidden" name="_captcha" value="true">
-            <input type="hidden" name="_next" value="https://realpine.top/contact.html?sent=1">
-            <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+            <!-- Web3Forms 配置 -->
+            <input type="hidden" name="access_key" value="7a3d1a6b-487d-472e-a927-d5de8a781ef3">
+            <input type="hidden" name="subject" value="新消息 - 文本处理工具集">
+            <input type="hidden" name="from_name" value="文本处理工具集">
+            <input type="checkbox" name="botcheck" style="display:none">
 
             <div class="form-group">
               <label for="contact-name">您的称呼 <span style="color: var(--accent-error);">*</span></label>
