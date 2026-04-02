@@ -314,6 +314,58 @@
               </div>
             </div>
           </div>
+
+          <div class="tool-tutorial">
+            <h3>JSON 可视化工具 — 使用教程</h3>
+
+            <h4>什么是 JSON？</h4>
+            <p>JSON（JavaScript Object Notation）是一种轻量级的数据交换格式，由 Douglas Crockford 在 2001 年提出。它基于 JavaScript 对象字面量语法，但独立于编程语言，已成为 Web 开发中最常用的数据传输格式之一。几乎所有现代编程语言都原生支持 JSON 的解析和生成。</p>
+            <p>JSON 的设计目标是简洁、易读、易于机器解析。与 XML 相比，JSON 更加紧凑，解析效率更高，可读性也更好。RESTful API、配置文件、NoSQL 数据库等场景大量使用 JSON 格式。</p>
+
+            <h4>JSON 基础语法</h4>
+            <p>JSON 支持以下数据类型：</p>
+            <ul>
+              <li><strong>对象（Object）</strong>：用花括号 <code>{}</code> 包裹，包含键值对，键必须用双引号包围。例如：<code>{"name": "张三", "age": 25}</code></li>
+              <li><strong>数组（Array）</strong>：用方括号 <code>[]</code> 包裹，包含有序的值列表。例如：<code>[1, 2, 3, "hello"]</code></li>
+              <li><strong>字符串（String）</strong>：用双引号 <code>""</code> 包围的 Unicode 文本</li>
+              <li><strong>数字（Number）</strong>：整数或浮点数，例如 <code>42</code> 或 <code>3.14</code></li>
+              <li><strong>布尔值（Boolean）</strong>：<code>true</code> 或 <code>false</code></li>
+              <li><strong>空值（Null）</strong>：<code>null</code></li>
+            </ul>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li>在左侧输入框中粘贴或输入您的 JSON 数据</li>
+              <li>工具会自动检测并格式化，无需手动点击按钮</li>
+              <li>点击<strong>「格式化」</strong>按钮可将压缩的 JSON 美化为带缩进的可读格式</li>
+              <li>点击<strong>「压缩」</strong>按钮可移除所有空白字符，减小数据体积</li>
+              <li>点击<strong>「验证」</strong>按钮可检查 JSON 语法是否正确，并显示结构分析</li>
+              <li>格式化后支持点击节点进行折叠/展开，方便查看大型 JSON 结构</li>
+            </ol>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>API 调试</strong>：格式化接口返回的 JSON 数据，快速定位问题字段</li>
+              <li><strong>配置文件编辑</strong>：检查 JSON 配置文件（如 package.json、tsconfig.json）的语法错误</li>
+              <li><strong>数据迁移</strong>：查看和验证导出的 JSON 数据是否完整</li>
+              <li><strong>学习参考</strong>：通过树形可视化直观理解 JSON 数据结构</li>
+              <li><strong>代码调试</strong>：压缩 JSON 以减小网络传输体积</li>
+            </ul>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：为什么我的 JSON 无法解析？</strong>
+              <p>最常见的原因包括：使用了单引号代替双引号、最后一个元素后多写了逗号、注释（JSON 不支持注释）、缺少引号等。本工具的智能解析功能可以自动修复部分常见错误。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：我的数据安全吗？</strong>
+              <p>完全安全。所有数据处理都在您的浏览器本地完成，不会上传到任何服务器。关闭页面后数据自动消失。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：支持多大的 JSON 文件？</strong>
+              <p>本工具支持处理数 MB 级别的 JSON 数据，具体取决于您的浏览器性能。对于超大型 JSON 文件，建议使用专业的桌面端工具。</p>
+            </div>
+          </div>
         </div>
 
         <!-- 链接提取器 -->
@@ -354,6 +406,46 @@
                 </svg>
                 复制
               </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <h3>富文本超链接提取工具 — 使用教程</h3>
+
+            <h4>什么是富文本超链接提取？</h4>
+            <p>在日常工作场景中，我们经常需要从网页、Word 文档、邮件等富文本内容中提取所有的超链接地址。手动逐个复制不仅效率低下，而且容易遗漏。富文本超链接提取工具能够一键识别并提取文本中所有嵌入的超链接，将其转换为清晰的纯文本格式，大幅提升工作效率。</p>
+            <p>本工具特别适合内容编辑、SEO 优化、数据分析等需要批量处理链接的场景。无论您是从网页复制内容、从 Word 文档粘贴文本，还是从邮件中提取链接，都可以快速完成转换。</p>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li>从网页、Word 文档或邮件中复制包含超链接的内容</li>
+              <li>粘贴到上方的输入区域（支持直接粘贴富文本格式）</li>
+              <li>工具会自动识别文本中的所有超链接</li>
+              <li>也可以点击「转换」按钮手动触发</li>
+              <li>提取结果会显示在输出区，格式为「链接文字 (URL)」</li>
+              <li>点击「复制」按钮即可复制所有提取结果</li>
+            </ol>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>内容迁移</strong>：从旧网站内容中批量提取所有外部链接</li>
+              <li><strong>SEO 审查</strong>：快速获取页面中所有出站链接列表</li>
+              <li><strong>邮件整理</strong>：从营销邮件中提取所有落地页链接</li>
+              <li><strong>文档处理</strong>：从 Word、Excel 等文档中提取嵌入的链接</li>
+              <li><strong>竞品分析</strong>：批量收集竞品页面中的资源链接</li>
+            </ul>
+
+            <h4>功能特点</h4>
+            <p>本工具保留了文本中的<strong>加粗格式</strong>（以 <code>**文字**</code> 标记）和<strong>换行结构</strong>，确保转换后的文本可读性强。所有数据处理均在浏览器本地完成，您的文本内容不会上传到任何服务器。</p>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：为什么有些链接没有被提取？</strong>
+              <p>请确保您是以富文本格式粘贴的（直接 Ctrl+V 粘贴），而不是以纯文本格式粘贴（Ctrl+Shift+V）。纯文本粘贴会丢失超链接信息。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：支持哪些格式的内容？</strong>
+              <p>支持从浏览器、Word、Excel、PowerPoint、邮件客户端等应用中复制的富文本内容。只要是包含可点击链接的文本，都可以正确提取。</p>
             </div>
           </div>
         </div>
@@ -439,6 +531,50 @@
               </button>
             </div>
           </div>
+
+          <div class="tool-tutorial">
+            <h3>二维码生成器 — 使用教程</h3>
+
+            <h4>什么是二维码？</h4>
+            <p>二维码（QR Code，Quick Response Code）是由日本 Denso Wave 公司于 1994 年发明的一种矩阵式条形码。相比传统的一维条形码，二维码能够在更小的空间内存储更多信息，包括网址、文本、电话号码、WiFi 密码等。如今二维码已广泛应用于移动支付、广告营销、产品追溯、身份验证等众多领域。</p>
+            <p>标准二维码最大可存储 7,089 个数字字符或 4,296 个字母数字字符。通过容错机制，即使二维码部分损坏或被遮挡，仍然可以被正确扫描识别。</p>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li>在输入框中输入要编码的文本内容（可以是网址、文字、联系方式等）</li>
+              <li>选择二维码图片尺寸（200px 到 500px）</li>
+              <li>选择容错级别（推荐使用默认的「中 15%」）</li>
+              <li>点击「生成二维码」按钮</li>
+              <li>生成后可点击「下载」按钮保存为 PNG 图片</li>
+            </ol>
+
+            <h4>容错级别说明</h4>
+            <ul>
+              <li><strong>低（L 级）</strong>：约 7% 的数据可恢复。适合空间有限、环境干净的场景。</li>
+              <li><strong>中（M 级）</strong>：约 15% 的数据可恢复。日常使用推荐，兼顾容量和可靠性。</li>
+              <li><strong>较高（Q 级）</strong>：约 25% 的数据可恢复。适合可能添加 Logo 叠加的场景。</li>
+              <li><strong>高（H 级）</strong>：约 30% 的数据可恢复。适合工业环境或需要中心放置 Logo 的场景。</li>
+            </ul>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>网址分享</strong>：将网站链接转为二维码，方便用户扫码访问</li>
+              <li><strong>名片信息</strong>：将联系方式编码为二维码印在名片上</li>
+              <li><strong>WiFi 共享</strong>：将 WiFi 名称和密码编码为二维码</li>
+              <li><strong>产品标签</strong>：为产品生成追溯二维码</li>
+              <li><strong>活动签到</strong>：生成活动入场二维码</li>
+            </ul>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：二维码内容有长度限制吗？</strong>
+              <p>有。内容越长，二维码越密集，越不容易扫描。建议网址尽量使用短链接服务缩短后再生成二维码，中文内容也会占用更多空间。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：生成的二维码安全吗？</strong>
+              <p>本工具完全在浏览器本地生成二维码，不涉及任何服务器传输。但请注意，二维码本身是公开信息，不要将敏感信息（如密码）直接编码为二维码。</p>
+            </div>
+          </div>
         </div>
 
         <!-- 时间戳转换 -->
@@ -479,6 +615,45 @@
                 </svg>
                 复制
               </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <h3>时间戳转换工具 — 使用教程</h3>
+
+            <h4>什么是 Unix 时间戳？</h4>
+            <p>Unix 时间戳（Unix Timestamp）是从 1970 年 1 月 1 日 00:00:00 UTC（Unix 纪元）到当前时间的总秒数。它是计算机系统中最通用的时间表示方式，不受时区影响，便于计算和比较。几乎所有编程语言和数据库都原生支持时间戳。</p>
+            <p>常见的两种时间戳精度：</p>
+            <ul>
+              <li><strong>秒级时间戳</strong>：10 位数字，如 <code>1712000000</code>。大多数系统默认使用秒级精度。</li>
+              <li><strong>毫秒级时间戳</strong>：13 位数字，如 <code>1712000000000</code>。JavaScript 的 <code>Date.now()</code> 返回毫秒级时间戳。</li>
+            </ul>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li><strong>时间戳转日期</strong>：在输入框中输入时间戳数字，点击「时间戳转日期」，工具会自动识别秒级或毫秒级</li>
+              <li><strong>日期转时间戳</strong>：输入日期字符串（如 <code>2026-01-15</code> 或 <code>2026-01-15T10:30:00</code>），点击「日期转时间戳」</li>
+              <li><strong>获取当前时间戳</strong>：点击「当前时间戳」按钮可快速填入当前时间戳</li>
+              <li>页面顶部会实时显示当前时间戳，方便随时参考</li>
+            </ol>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>数据库调试</strong>：将数据库中存储的时间戳转换为可读日期</li>
+              <li><strong>API 开发</strong>：快速获取当前时间戳用于接口测试</li>
+              <li><strong>日志分析</strong>：将服务器日志中的时间戳转换为本地时间</li>
+              <li><strong>前端开发</strong>：JavaScript 时间戳与后端时间格式的互相转换</li>
+              <li><strong>定时任务</strong>：计算特定日期的时间戳用于 cron 任务配置</li>
+            </ul>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：时间戳会溢出吗？</strong>
+              <p>32 位有符号整数存储的秒级时间戳将在 2038 年 1 月 19 日溢出（即著名的「2038 年问题」）。但现代系统已普遍使用 64 位整数，这个问题在大多数平台上已得到解决。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：工具显示的是什么时区？</strong>
+              <p>工具会同时显示本地时间和 UTC 时间，方便对照。时间戳本身是 UTC 标准的，不包含时区信息。</p>
             </div>
           </div>
         </div>
@@ -525,6 +700,49 @@
               </button>
             </div>
           </div>
+
+          <div class="tool-tutorial">
+            <h3>URL 编解码工具 — 使用教程</h3>
+
+            <h4>什么是 URL 编码？</h4>
+            <p>URL 编码（也叫百分号编码，Percent-encoding）是将 URL 中不允许出现的字符转换为 <code>%XX</code> 格式的过程。根据 RFC 3986 规范，URL 中只允许出现 ASCII 字符的子集（字母、数字和少数特殊符号），其他字符（如中文、空格、特殊符号）必须经过编码才能安全传输。</p>
+            <p>例如，中文「你好」经过 URL 编码后变为 <code>%E4%BD%A0%E5%A5%BD</code>，空格变为 <code>%20</code> 或 <code>+</code>。这是 Web 开发中非常基础且重要的编码机制。</p>
+
+            <h4>encodeURIComponent 与 encodeURI 的区别</h4>
+            <p>JavaScript 提供了两种 URL 编码函数，适用场景不同：</p>
+            <ul>
+              <li><strong>encodeURIComponent</strong>：编码所有特殊字符（包括 <code>/</code>、<code>?</code>、<code>&amp;</code>、<code>=</code> 等）。适合编码 URL 参数值，例如：<code>?q=encodeURIComponent(值)</code></li>
+              <li><strong>encodeURI</strong>：保留 URL 结构字符（<code>/</code>、<code>?</code>、<code>#</code>、<code>&amp;</code>、<code>=</code> 等）。适合编码完整的 URL，例如：<code>encodeURI(完整网址)</code></li>
+            </ul>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li>在输入框中输入要编码或解码的文本</li>
+              <li>选择对应的操作按钮：
+                <ul>
+                  <li><code>encodeURIComponent</code> — 编码 URL 参数值（推荐）</li>
+                  <li><code>decodeURIComponent</code> — 解码 URL 参数值</li>
+                  <li><code>encodeURI</code> — 编码完整 URL</li>
+                  <li><code>decodeURI</code> — 解码完整 URL</li>
+                </ul>
+              </li>
+              <li>结果会显示在输出框中，可一键复制</li>
+            </ol>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>API 调试</strong>：编码含有中文或特殊字符的请求参数</li>
+              <li><strong>URL 解析</strong>：将浏览器地址栏中的编码 URL 解码为可读文本</li>
+              <li><strong>爬虫开发</strong>：正确编码爬取目标中的中文链接</li>
+              <li><strong>前后端对接</strong>：排查因 URL 编码不一致导致的参数传递问题</li>
+            </ul>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：为什么编码后变这么长？</strong>
+              <p>UTF-8 编码下，一个中文字符占 3 个字节，每个字节编码为 <code>%XX</code> 格式（3 个字符），所以一个中文字符编码后变为 9 个字符。这是正常现象。</p>
+            </div>
+          </div>
         </div>
 
         <!-- Base64 编解码 -->
@@ -561,6 +779,44 @@
                 </svg>
                 复制
               </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <h3>Base64 编解码工具 — 使用教程</h3>
+
+            <h4>什么是 Base64 编码？</h4>
+            <p>Base64 是一种基于 64 个可打印字符（A-Z、a-z、0-9、+、/）来表示二进制数据的编码方式。它将每 3 个字节（24 位）的数据分成 4 组，每组 6 位，映射为一个可打印字符。编码后的数据比原始数据大约增加 33% 的体积。</p>
+            <p>Base64 最初设计用于在电子邮件系统中传输二进制附件（如图片、文件），因为早期的邮件系统只能处理 ASCII 文本。如今 Base64 被广泛应用于 Web 开发的方方面面。</p>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>Data URL</strong>：将小图片直接嵌入 HTML 或 CSS 中，格式为 <code>data:image/png;base64,iVBOR...</code></li>
+              <li><strong>HTTP 认证</strong>：Basic Auth 使用 Base64 编码用户名和密码</li>
+              <li><strong>JWT 令牌</strong>：JSON Web Token 的 Header 和 Payload 使用 Base64 编码</li>
+              <li><strong>邮件附件</strong>：MIME 协议中附件的编码传输</li>
+              <li><strong>配置文件</strong>：在环境变量或配置文件中安全存储二进制数据</li>
+              <li><strong>API 数据传输</strong>：通过 JSON/XML 接口传输二进制数据</li>
+            </ul>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li><strong>编码</strong>：在输入框中输入任意文本（支持中文），点击「Base64 编码」</li>
+              <li><strong>解码</strong>：在输入框中粘贴 Base64 字符串，点击「Base64 解码」</li>
+              <li>结果会显示在输出框中，点击「复制」按钮即可使用</li>
+            </ol>
+
+            <h4>Base64 编码的特点</h4>
+            <p>Base64 是一种<strong>编码</strong>而非<strong>加密</strong>。任何人都可以轻松解码 Base64 内容，因此绝不应该用 Base64 来保护敏感数据。如果需要安全传输，应该使用 AES、RSA 等真正的加密算法。Base64 的作用仅在于将二进制数据转换为文本格式以便在文本协议中传输。</p>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：支持中文吗？</strong>
+              <p>支持。本工具使用 UTF-8 编码处理中文和所有 Unicode 字符，确保编解码结果与其他标准工具兼容。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：Base64 编码后的末尾为什么有等号？</strong>
+              <p>等号 <code>=</code> 是填充字符。因为 Base64 将 3 个字节转为 4 个字符，当原始数据长度不是 3 的倍数时，末尾会补 1 或 2 个 <code>=</code> 来对齐。</p>
             </div>
           </div>
         </div>
@@ -605,6 +861,55 @@
                 </svg>
                 复制
               </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <h3>哈希生成工具 — 使用教程</h3>
+
+            <h4>什么是哈希（Hash）？</h4>
+            <p>哈希（也称散列、摘要）是一种单向密码学函数，它将任意长度的输入数据转换为固定长度的输出字符串。这个输出被称为「哈希值」或「消息摘要」。哈希函数具有以下核心特性：</p>
+            <ul>
+              <li><strong>确定性</strong>：相同的输入永远产生相同的输出</li>
+              <li><strong>不可逆性</strong>：无法从哈希值反推出原始数据</li>
+              <li><strong>雪崩效应</strong>：输入数据的微小变化会导致完全不同的哈希值</li>
+              <li><strong>抗碰撞</strong>：几乎不可能找到两个不同的输入产生相同的哈希值</li>
+            </ul>
+
+            <h4>支持的哈希算法</h4>
+            <ul>
+              <li><strong>MD5</strong>：产生 128 位（32 个十六进制字符）哈希值。速度快，但已被发现安全漏洞，不推荐用于安全场景。仍广泛用于文件校验和缓存键等非安全用途。</li>
+              <li><strong>SHA-1</strong>：产生 160 位（40 个字符）哈希值。已被证明存在碰撞攻击，不推荐用于安全场景，但在一些遗留系统中仍在使用。</li>
+              <li><strong>SHA-256</strong>：产生 256 位（64 个字符）哈希值。SHA-2 家族成员，目前最广泛使用的安全哈希算法。推荐用于密码存储、数字签名、区块链等安全场景。</li>
+              <li><strong>SHA-512</strong>：产生 512 位（128 个字符）哈希值。SHA-2 家族中最高安全级别，适合对安全性要求极高的场景。输出更长，计算量稍大。</li>
+            </ul>
+
+            <h4>如何使用本工具？</h4>
+            <ol>
+              <li>在输入框中输入要计算哈希值的文本</li>
+              <li>点击对应的算法按钮（MD5、SHA-1、SHA-256、SHA-512）</li>
+              <li>哈希值会立即显示在输出框中</li>
+              <li>点击「复制」按钮即可复制哈希值</li>
+            </ol>
+
+            <h4>常见应用场景</h4>
+            <ul>
+              <li><strong>文件校验</strong>：验证下载的文件是否完整、未被篡改</li>
+              <li><strong>密码存储</strong>：数据库中存储密码的哈希值而非明文</li>
+              <li><strong>数据去重</strong>：通过比较哈希值判断两份数据是否相同</li>
+              <li><strong>数字签名</strong>：对文档或消息生成哈希值用于验证身份</li>
+              <li><strong>Git 版本控制</strong>：使用 SHA-1 标识每次提交</li>
+              <li><strong>区块链</strong>：比特币使用 SHA-256，以太坊使用 Keccak-256</li>
+            </ul>
+
+            <h4>常见问题</h4>
+            <div class="faq-item">
+              <strong>Q：MD5 还安全吗？</strong>
+              <p>MD5 已于 2004 年被证明存在碰撞漏洞，不应再用于安全敏感场景（如密码存储、数字签名）。但用于非安全场景（如文件缓存键、数据去重）仍然是合适的。对于安全场景，请使用 SHA-256 或更强的算法。</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q：哈希值可以解密吗？</strong>
+              <p>不可以。哈希是单向函数，设计上就不可逆。验证数据是否匹配的唯一方法是重新计算哈希值并比对。这正是哈希用于密码存储的原理：系统存储密码的哈希值，登录时重新计算并与存储值比对。</p>
             </div>
           </div>
         </div>
