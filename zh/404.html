@@ -6,7 +6,10 @@
   <title>页面未找到 - 文本处理工具集 | RealPine</title>
   <meta name="description" content="您访问的页面不存在。返回文本处理工具集首页，使用 JSON 可视化、链接提取、二维码生成等免费在线工具。">
   <meta name="robots" content="noindex, follow">
-  <link rel="canonical" href="https://realpine.top/">
+  <link rel="canonical" href="https://realpine.top/zh/">
+  <link rel="alternate" hreflang="en" href="https://realpine.top/en/">
+  <link rel="alternate" hreflang="zh" href="https://realpine.top/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://realpine.top/en/">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SQE7Q7MND"></script>
@@ -23,10 +26,10 @@
     gtag('config', 'G-2SQE7Q7MND');
   </script>
 
-  <link rel="icon" href="images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/pages.css">
+  <link rel="stylesheet" href="../static/css/components.css">
   <script>
     (function(){
       try {
@@ -82,9 +85,9 @@
           <a href="privacy.html">隐私政策</a>
           <a href="terms.html">服务条款</a>
           <div class="lang-switcher">
-            <a href="404.html" class="lang-btn active" data-lang="zh">中文</a>
+            <a href="../en/index.html" class="lang-btn" data-lang="en">EN</a>
             <span class="lang-divider">|</span>
-            <a href="en/404.html" class="lang-btn" data-lang="en">EN</a>
+            <a href="index.html" class="lang-btn active" data-lang="zh">中文</a>
           </div>
         </nav>
       </div>
@@ -132,15 +135,10 @@
   </div>
 
   <!-- Theme & Cookie Scripts -->
-  <script src="js/theme.js"></script>
-  <script src="js/cookie-consent.js"></script>
+  <script src="../static/js/i18n.js"></script>
+  <script src="../static/js/theme.js"></script>
+  <script src="../static/js/cookie-consent.js"></script>
   <script>
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.lang-btn');
-      if (btn && btn.dataset.lang) {
-        try { localStorage.setItem('preferred_lang', btn.dataset.lang); } catch(e) {}
-      }
-    });
     document.addEventListener('DOMContentLoaded', () => {
       new ThemeManager();
       new CookieConsent();

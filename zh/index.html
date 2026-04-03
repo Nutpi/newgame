@@ -7,7 +7,10 @@
   <meta name="description" content="免费在线文本处理工具集 - 提供 JSON 可视化格式化与验证、富文本超链接提取转换、二维码生成等开发者实用工具。所有数据本地处理，保护隐私安全。">
   <meta name="keywords" content="JSON格式化,JSON可视化,JSON验证,链接提取,二维码生成,在线工具,开发者工具,文本处理">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://realpine.top/">
+  <link rel="canonical" href="https://realpine.top/zh/">
+  <link rel="alternate" hreflang="en" href="https://realpine.top/en/">
+  <link rel="alternate" hreflang="zh" href="https://realpine.top/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://realpine.top/en/">
 
   <!-- Open Graph -->
   <meta property="og:title" content="文本处理工具集 - 免费在线开发者工具">
@@ -36,10 +39,10 @@
        crossorigin="anonymous"></script>
   
   <!-- 简化的 Favicon -->
-  <link rel="icon" href="images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages.css">
+  <link rel="icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/components.css">
+  <link rel="stylesheet" href="../static/css/pages.css">
   <script>
     (function(){
       try {
@@ -181,9 +184,9 @@
           <a href="privacy.html">隐私政策</a>
           <a href="terms.html">服务条款</a>
           <div class="lang-switcher">
-            <a href="index.html" class="lang-btn active" data-lang="zh">中文</a>
+            <a href="../en/index.html" class="lang-btn" data-lang="en">EN</a>
             <span class="lang-divider">|</span>
-            <a href="en/index.html" class="lang-btn" data-lang="en">EN</a>
+            <a href="index.html" class="lang-btn active" data-lang="zh">中文</a>
           </div>
         </nav>
       </div>
@@ -1037,26 +1040,21 @@
   </div>
 
   <!-- 脚本加载 - 按依赖顺序加载 -->
-  <script src="js/qrcode.min.js"></script>
-  <script src="js/text-tools.js"></script>
-  <script src="js/theme.js"></script>
-  <script src="js/navigation.js"></script>
-  <script src="js/json-parser.js"></script>
-  <script src="js/json-visualizer.js"></script>
-  <script src="js/qr-generator.js"></script>
-  <script src="js/timestamp-tool.js"></script>
-  <script src="js/url-tool.js"></script>
-  <script src="js/base64-tool.js"></script>
-  <script src="js/hash-tool.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/cookie-consent.js"></script>
+  <script src="../static/js/i18n.js"></script>
+  <script src="../static/js/qrcode.min.js"></script>
+  <script src="../static/js/text-tools.js"></script>
+  <script src="../static/js/theme.js"></script>
+  <script src="../static/js/navigation.js"></script>
+  <script src="../static/js/json-parser.js"></script>
+  <script src="../static/js/json-visualizer.js"></script>
+  <script src="../static/js/qr-generator.js"></script>
+  <script src="../static/js/timestamp-tool.js"></script>
+  <script src="../static/js/url-tool.js"></script>
+  <script src="../static/js/base64-tool.js"></script>
+  <script src="../static/js/hash-tool.js"></script>
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/cookie-consent.js"></script>
   <script>
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.lang-btn');
-      if (btn && btn.dataset.lang) {
-        try { localStorage.setItem('preferred_lang', btn.dataset.lang); } catch(e) {}
-      }
-    });
     document.addEventListener('DOMContentLoaded', () => {
       new CookieConsent();
     });

@@ -6,12 +6,15 @@
   <title>隐私政策 - 文本处理工具集 | RealPine</title>
   <meta name="description" content="了解文本处理工具集如何收集、使用和保护您的个人信息。我们重视您的隐私安全。">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://realpine.top/privacy.html">
+  <link rel="canonical" href="https://realpine.top/zh/privacy.html">
+  <link rel="alternate" hreflang="en" href="https://realpine.top/en/privacy.html">
+  <link rel="alternate" hreflang="zh" href="https://realpine.top/zh/privacy.html">
+  <link rel="alternate" hreflang="x-default" href="https://realpine.top/en/privacy.html">
 
   <!-- Open Graph -->
   <meta property="og:title" content="隐私政策 - 文本处理工具集">
   <meta property="og:description" content="了解文本处理工具集如何收集、使用和保护您的个人信息。">
-  <meta property="og:url" content="https://realpine.top/privacy.html">
+  <meta property="og:url" content="https://realpine.top/zh/privacy.html">
   <meta property="og:type" content="website">
 
   <!-- Google tag (gtag.js) -->
@@ -33,10 +36,10 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3101069602643525"
        crossorigin="anonymous"></script>
 
-  <link rel="icon" href="images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/pages.css">
+  <link rel="stylesheet" href="../static/css/components.css">
   <script>
     (function(){
       try {
@@ -92,9 +95,9 @@
           <a href="privacy.html" class="active">隐私政策</a>
           <a href="terms.html">服务条款</a>
           <div class="lang-switcher">
-            <a href="privacy.html" class="lang-btn active" data-lang="zh">中文</a>
+            <a href="../en/privacy.html" class="lang-btn" data-lang="en">EN</a>
             <span class="lang-divider">|</span>
-            <a href="en/privacy.html" class="lang-btn" data-lang="en">EN</a>
+            <a href="privacy.html" class="lang-btn active" data-lang="zh">中文</a>
           </div>
         </nav>
       </div>
@@ -253,15 +256,10 @@
   </div>
 
   <!-- Theme Script -->
-  <script src="js/theme.js"></script>
-  <script src="js/cookie-consent.js"></script>
+  <script src="../static/js/i18n.js"></script>
+  <script src="../static/js/theme.js"></script>
+  <script src="../static/js/cookie-consent.js"></script>
   <script>
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.lang-btn');
-      if (btn && btn.dataset.lang) {
-        try { localStorage.setItem('preferred_lang', btn.dataset.lang); } catch(e) {}
-      }
-    });
     document.addEventListener('DOMContentLoaded', () => {
       new ThemeManager();
       new CookieConsent();

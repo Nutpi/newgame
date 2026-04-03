@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Tools Suite - Free Online JSON Formatter, Link Extractor, QR Code Generator | RealPine</title>
+  <meta name="description" content="Free online text processing tools - JSON visualizer, formatter and validator, rich text hyperlink extractor, QR code generator and more. All data processed locally, protecting your privacy.">
+  <meta name="keywords" content="JSON formatter,JSON visualizer,JSON validator,link extractor,QR code generator,online tools,developer tools,text tools">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://realpine.top/en/">
+  <link rel="alternate" hreflang="en" href="https://realpine.top/en/">
+  <link rel="alternate" hreflang="zh" href="https://realpine.top/zh/">
+  <link rel="alternate" hreflang="x-default" href="https://realpine.top/en/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Text Tools Suite - Free Online Developer Tools">
+  <meta property="og:description" content="Free online JSON formatter, link extractor, QR code generator. All data processed locally, protecting your privacy.">
+  <meta property="og:url" content="https://realpine.top/en/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Text Tools Suite">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SQE7Q7MND"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-2SQE7Q7MND');
+  </script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3101069602643525"
+       crossorigin="anonymous"></script>
+  
+  <!-- 简化的 Favicon -->
+  <link rel="icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/components.css">
+  <link rel="stylesheet" href="../static/css/pages.css">
+  <script>
+    (function(){
+      try {
+        var t = localStorage.getItem('theme') || 'light';
+        if (t === 'blue' || t === 'green' || t === 'purple') t = 'dark';
+        document.documentElement.className = 'theme-' + t;
+      } catch(e) {}
+    })();
+  </script>
+</head>
+<body>
+  <!-- 主题切换器 -->
+  <div class="theme-switcher">
+    <button class="theme-toggle" id="theme-toggle">
+      <svg class="theme-icon sun-icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/>
+        <line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+      <svg class="theme-icon moon-icon" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+    <div class="theme-dropdown" id="theme-dropdown">
+      <div class="theme-option" data-theme="light">
+        <span class="theme-preview light-preview"></span>
+        <span>Light Mode</span>
+      </div>
+      <div class="theme-option" data-theme="dark">
+        <span class="theme-preview dark-preview"></span>
+        <span>Dark Mode</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 移动端菜单 button -->
+  <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- 侧边栏导航 -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Tools</h2>
+      <button class="sidebar-close" id="sidebar-close">&times;</button>
+    </div>
+    <div class="sidebar-content">
+      <div class="tool-category">
+        <h3>Text Processing</h3>
+        <button class="nav-btn" data-tool="link-extractor">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          Link Extractor
+        </button>
+      </div>
+      <div class="tool-category">
+        <h3>Data Processing</h3>
+        <button class="nav-btn active" data-tool="json-formatter">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5z"/>
+            <path d="M9 9h6v6H9z"/>
+          </svg>
+          JSON Visualizer
+        </button>
+      </div>
+      <div class="tool-category">
+        <h3>Utilities</h3>
+        <button class="nav-btn" data-tool="qr-generator">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="5" height="5"/>
+            <rect x="16" y="3" width="5" height="5"/>
+            <rect x="3" y="16" width="5" height="5"/>
+            <rect x="11" y="11" width="2" height="2"/>
+            <rect x="15" y="11" width="2" height="2"/>
+            <rect x="11" y="15" width="2" height="2"/>
+            <rect x="19" y="15" width="2" height="2"/>
+          </svg>
+          QR Code Generator
+        </button>
+        <button class="nav-btn" data-tool="timestamp-tool">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Timestamp Converter
+        </button>
+      </div>
+      <div class="tool-category">
+        <h3>Encoding</h3>
+        <button class="nav-btn" data-tool="url-tool">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          URL Encoder/Decoder
+        </button>
+        <button class="nav-btn" data-tool="base64-tool">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <polyline points="16 18 22 12 16 6"/>
+            <polyline points="8 6 2 12 8 18"/>
+          </svg>
+          Base64 Encoder/Decoder
+        </button>
+        <button class="nav-btn" data-tool="hash-tool">
+          <svg class="tool-icon" viewBox="0 0 24 24">
+            <line x1="4" y1="9" x2="20" y2="9"/>
+            <line x1="4" y1="15" x2="20" y2="15"/>
+            <line x1="10" y1="3" x2="8" y2="21"/>
+            <line x1="16" y1="3" x2="14" y2="21"/>
+          </svg>
+          Hash Generator
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <!-- 统一导航头 -->
+    <header class="page-header">
+      <div class="page-header-inner">
+        <a href="index.html" class="site-logo">
+          <span class="logo-icon">🛠️</span>
+          <span>Text Tools Suite</span>
+        </a>
+        <nav class="page-header-nav">
+          <a href="index.html" class="active">Tools</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+          <div class="lang-switcher">
+            <a href="index.html" class="lang-btn active" data-lang="en">EN</a>
+            <span class="lang-divider">|</span>
+            <a href="../zh/index.html" class="lang-btn" data-lang="zh">Chinese</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+  <!-- 主内容区域 -->
+  <div class="main-content">
+    <div class="container">
+      <header>
+        <h1 class="page-title sr-only">Online Tools Suite</h1>
+        <p class="page-subtitle sr-only">Efficient, free, local text and developer tools. All data is processed only in your browser.</p>
+        <!-- 悬浮型桌面端导航 Dock -->
+        <nav class="desktop-nav">
+          <button class="nav-btn active" data-tool="json-formatter">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <path d="M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5z"/>
+              <path d="M9 9h6v6H9z"/>
+            </svg>
+            JSON Visualizer
+          </button>
+          <button class="nav-btn" data-tool="link-extractor">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            Link Extractor
+          </button>
+          <button class="nav-btn" data-tool="qr-generator">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="5" height="5"/>
+              <rect x="16" y="3" width="5" height="5"/>
+              <rect x="3" y="16" width="5" height="5"/>
+              <rect x="11" y="11" width="2" height="2"/>
+              <rect x="15" y="11" width="2" height="2"/>
+              <rect x="11" y="15" width="2" height="2"/>
+              <rect x="19" y="15" width="2" height="2"/>
+            </svg>
+            QR Code Generator
+          </button>
+          <button class="nav-btn" data-tool="timestamp-tool">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            Timestamp Converter
+          </button>
+          <button class="nav-btn" data-tool="url-tool">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+            URL Encoder/Decoder
+          </button>
+          <button class="nav-btn" data-tool="base64-tool">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+            Base64 Encoder/Decoder
+          </button>
+          <button class="nav-btn" data-tool="hash-tool">
+            <svg class="tool-icon" viewBox="0 0 24 24">
+              <line x1="4" y1="9" x2="20" y2="9"/>
+              <line x1="4" y1="15" x2="20" y2="15"/>
+              <line x1="10" y1="3" x2="8" y2="21"/>
+              <line x1="16" y1="3" x2="14" y2="21"/>
+            </svg>
+            Hash Generator
+          </button>
+        </nav>
+      </header>
+
+      <div class="tools-container">
+        <!-- JSON FormatTools -->
+        <div id="json-formatter" class="tool-section active">
+          <div class="tool-header">
+            <h2>JSON VisualizerTools</h2>
+            <p class="tool-description">Format, validate and visualize JSON data</p>
+            
+            <!-- 将功能模块移到顶端 -->
+            <div class="json-controls-top">
+              <div class="button-group">
+                <button id="format-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/>
+                  </svg>
+                  Format
+                </button>
+                <button id="minify-btn" class="btn-secondary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 13H5v-2h14v2z"/>
+                  </svg>
+                  Minify
+                </button>
+                <button id="validate-btn" class="btn-accent">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Validate
+                </button>
+                <button id="clear-json-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Clear
+                </button>
+                <button id="copy-json-btn" class="btn-success" disabled>
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
+              
+              <div class="json-info">
+                <div class="info-item">
+                  <span class="label">Status:</span>
+                  <span id="json-status">Waiting for input</span>
+                </div>
+                <div class="info-item">
+                  <span class="label">Size:</span>
+                  <span id="json-size">0 chars</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="json-input">JSON Input:</label>
+              <textarea id="json-input" placeholder="Paste or enter JSON data here..."></textarea>
+            </div>
+            
+            <div class="output-section">
+              <!-- 固定Tools栏容器 -->
+              <div id="json-toolbar-container" class="json-toolbar-container"></div>
+              <div id="json-output">
+                <div class="empty-state">
+                  <svg viewBox="0 0 24 24" fill="none" class="empty-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  <p>Paste your JSON here and watch the magic happen</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>JSON VisualizerTools — Tutorial</h3>
+
+            <h4>What is JSON?</h4>
+            <p>JSON (JavaScript Object Notation) is a lightweight data interchange format proposed by Douglas Crockford in 2001. It is based on JavaScript object literal syntax but is language-independent, and has become one of the most commonly used data transmission formats in web development. Almost all modern programming languages natively support JSON parsing and generation.</p>
+            <p>JSON is designed to be concise, readable, and easy for machines to parse. Compared to XML, JSON is more compact, more efficient to parse, and more readable. RESTful APIs, configuration files, NoSQL databases, and many other scenarios heavily use JSON format.
+
+            <h4>JSON Basic Syntax</h4>
+            <p>JSON supports the following data types:</p>
+            <ul>
+              <li><strong>Object</strong>: Wrapped in curly braces <code>{}</code>, containing key-value pairs where keys must be double-quoted. For example: <code>{"name": "John", "age": 25}</code></li>
+              <li><strong>Array</strong>: Wrapped in square brackets <code>[]</code>, containing an ordered list of values. For example: <code>[1, 2, 3, "hello"]</code></li>
+              <li><strong>String</strong>: Unicode text wrapped in double quotes</li>
+              <li><strong>Number</strong>: Integer or floating-point numbers, e.g. <code>42</code> or <code>3.14</code></li>
+              <li><strong>Boolean</strong>: <code>true</code> or <code>false</code></li>
+              <li><strong>Null</strong>: <code>null</code></li>
+            </ul>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li>Paste or enter your JSON data in the input area</li>
+              <li>The tool auto-detects and formats, no manual clicking needed</li>
+              <li>Click the <strong>Format</strong> button to beautify minified JSON with indentation for readability</li>
+              <li>Click <strong>Minify</strong> to remove all whitespace
+              <li>Click <strong>Validate</strong> to check syntax correctness
+              <li>After formatting, click nodes to collapse/expand for navigating large JSON structures</li>
+            </ol>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>API Debugging</strong>: Format JSON data returned by APIs to quickly locate problematic fields</li>
+              <li><strong>Config Editing</strong>: Check syntax errors in JSON config files (package.json, tsconfig.json)</li>
+              <li><strong>Data Migration</strong>: Review and validate exported JSON data for completeness</li>
+              <li><strong>Learning</strong>: Intuitively understand JSON structure through tree visualization</li>
+              <li><strong>Code Debugging</strong>: Minify JSON to reduce network transfer size</li>
+            </ul>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Why can't my JSON be parsed?</strong>
+              <p>The most common causes include: using single quotes instead of double quotes, trailing commas after the last element, comments (JSON doesn't support comments), missing quotes, etc. This tool's smart parser can auto-fix some common errors.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: Is my data safe?</strong>
+              <p>Completely safe. All data is processed locally in your browser and is never uploaded to any server. Data is automatically cleared when you close the page.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: What size JSON files are supported?</strong>
+              <p>This tool supports JSON data up to several MB, depending on your browser performance. For very large JSON files, consider using a professional desktop tool.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link Extractor -->
+        <div id="link-extractor" class="tool-section">
+          <div class="tool-header">
+            <h2>Rich Text Link Extractor</h2>
+            <p class="tool-description">Extract and convert hyperlinks from rich text</p>
+          </div>
+          
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="rich-text-input">Input:</label>
+              <div id="rich-text-input" contenteditable="true" placeholder="Paste text containing links here..."></div>
+              
+              <div class="button-group">
+                <button id="convert-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M8 17l4 4 4-4m-4-5v9"/>
+                    <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"/>
+                  </svg>
+                  Convert
+                </button>
+                <button id="clear-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Clear
+                </button>
+              </div>
+            </div>
+            
+            <div class="output-section">
+              <label for="plain-text-output">Output:</label>
+              <div id="plain-text-output" readonly></div>
+              <button id="copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>Rich Text Link Extractor — Tutorial</h3>
+
+            <h4>What is Rich Text Link Extraction?</h4>
+            <p>In daily work, we often need to extract all hyperlinks from rich text content like web pages, Word documents, and emails. Manual copying is inefficient and error-prone. This tool can identify and extract all embedded links with one click, converting them to clean plain text format, greatly improving work efficiency.</p>
+            <p>This tool is ideal for content editing, SEO optimization, and data analysis scenarios requiring batch link processing. Whether copying from web pages, Word documents, or emails, you can quickly complete the conversion.</p>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li>Copy content containing hyperlinks from web pages, Word documents, or emails</li>
+              <li>Paste into the input area above (supports direct rich text paste)</li>
+              <li>The tool automatically identifies all hyperlinks in the text</li>
+              <li>Or click the "Convert" button to trigger manually</li>
+              <li>Extracted results appear in the output area in "link text (URL)" format</li>
+              <li>Click the "Copy" button to copy all extracted results</li>
+            </ol>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>Content Migration</strong>: Batch extract all external links from old website content</li>
+              <li><strong>SEO Auditing</strong>: Quickly get a list of all outbound links on a page</li>
+              <li><strong>Email Organization</strong>: Extract all landing page links from marketing emails</li>
+              <li><strong>Document Processing</strong>: Extract embedded links from Word, Excel, and other documents</li>
+              <li><strong>Competitor Analysis</strong>: Batch collect resource links from competitor pages</li>
+            </ul>
+
+            <h4>Features</h4>
+            <p>This tool preserves <strong>bold formatting</strong> (marked with <code>**text**</code>) and <strong>line break structure</strong> in the text, ensuring the converted text remains highly readable. All data processing is done locally in your browser, and your text content will never be uploaded to any server.</p>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Why were some links not extracted?</strong>
+              <p>Make sure you paste as rich text (Ctrl+V), not plain text (Ctrl+Shift+V). Plain text paste loses hyperlink information.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: What content formats are supported?</strong>
+              <p>Supports rich text copied from browsers, Word, Excel, PowerPoint, email clients, etc. Any text containing clickable links can be correctly extracted.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR Code Generator -->
+        <div id="qr-generator" class="tool-section">
+          <div class="tool-header">
+            <h2>QR Code Generator</h2>
+            <p class="tool-description">Convert text to QR code image</p>
+          </div>
+
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="qr-text-input">Text Input:</label>
+              <textarea id="qr-text-input" placeholder="Enter text to generate QR code..."></textarea>
+
+              <div class="qr-options">
+                <div class="option-group">
+                  <label for="qr-size">Size:</label>
+                  <select id="qr-size">
+                    <option value="200">200x200</option>
+                    <option value="300" selected>300x300</option>
+                    <option value="400">400x400</option>
+                    <option value="500">500x500</option>
+                  </select>
+                </div>
+                <div class="option-group">
+                  <label for="qr-error-level">Error Correction:</label>
+                  <select id="qr-error-level">
+                    <option value="L">Low (7%)</option>
+                    <option value="M" selected>Medium (15%)</option>
+                    <option value="Q">High (25%)</option>
+                    <option value="H">Highest (30%)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="button-group">
+                <button id="generate-qr-btn" class="btn-primary">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="5" height="5"/>
+                    <rect x="16" y="3" width="5" height="5"/>
+                    <rect x="3" y="16" width="5" height="5"/>
+                    <rect x="11" y="11" width="2" height="2"/>
+                    <rect x="15" y="11" width="2" height="2"/>
+                    <rect x="11" y="15" width="2" height="2"/>
+                    <rect x="19" y="15" width="2" height="2"/>
+                  </svg>
+                  Generate QR Code
+                </button>
+                <button id="clear-qr-btn" class="btn-outline">
+                  <svg class="btn-icon" viewBox="0 0 24 24">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                  </svg>
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <label>QR Code Output:</label>
+              <div id="qr-output">
+                <div class="qr-placeholder">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="5" height="5"/>
+                    <rect x="16" y="3" width="5" height="5"/>
+                    <rect x="3" y="16" width="5" height="5"/>
+                    <rect x="11" y="11" width="2" height="2"/>
+                    <rect x="15" y="11" width="2" height="2"/>
+                    <rect x="11" y="15" width="2" height="2"/>
+                    <rect x="19" y="15" width="2" height="2"/>
+                  </svg>
+                  <p>QR code will appear here</p>
+                </div>
+              </div>
+              <button id="download-qr-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="7,10 12,15 17,10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>QR Code Generator — Tutorial</h3>
+
+            <h4>What are QR Codes?</h4>
+            <p>QR Code (Quick Response Code) is a type of matrix barcode invented by the Japanese company Denso Wave in 1994. Compared to traditional one-dimensional barcodes, QR codes can store more information in a smaller space, including URLs, text, phone numbers, WiFi passwords, and more. Today, QR codes are widely used in mobile payments, advertising and marketing, product tracing, identity verification, and many other fields.</p>
+            <p>Standard QR codes can store up to 7,089 numeric characters or 4,296 alphanumeric characters. Through error correction, QR codes can still be correctly scanned even when partially damaged or obscured.</p>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li>Enter text to encode in the input box (URLs, text, contact info, etc.)</li>
+              <li>Select QR code image size (200px to 500px)</li>
+              <li>Select error correction level (default "Medium 15%" recommended)</li>
+              <li>Click the "Generate QR Code" button</li>
+              <li>After generation, click the "Download" button to save as PNG image</li>
+            </ol>
+
+            <h4>Error Correction Levels</h4>
+            <ul>
+              <li><strong>Low (Level L)</strong>: About 7% of data can be recovered. Suitable for scenarios with limited space and clean environments.</li>
+              <li><strong>Medium (Level M)</strong>: About 15% of data can be recovered. Recommended for daily use, balancing capacity and reliability.</li>
+              <li><strong>High (Level Q)</strong>: About 25% of data can be recovered. Suitable for scenarios where a Logo overlay may be added.</li>
+              <li><strong>Highest (Level H)</strong>: About 30% of data can be recovered. Suitable for industrial environments or when a Logo needs to be placed in the center.</li>
+            </ul>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>URL Sharing</strong>: Convert website links to QR codes for easy scanning</li>
+              <li><strong>Business Cards</strong>: Encode contact information as a QR code on business cards</li>
+              <li><strong>WiFi Sharing</strong>: Encode WiFi name and password as a QR code</li>
+              <li><strong>Product Labels</strong>: Generate traceability QR codes for products</li>
+              <li><strong>Event Check-in</strong>: Generate event entry QR codes</li>
+            </ul>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Is there a length limit for QR code content?</strong>
+              <p>Yes. The longer the content, the denser the QR code and the harder it is to scan. We recommend using URL shorteners for links. Non-ASCII characters (such as Chinese) also take up more space.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: Are the generated QR codes secure?</strong>
+              <p>This tool generates QR codes entirely in your browser locally with no server transmission. However, note that QR codes are public information — do not encode sensitive data (like passwords) directly.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timestamp Converter -->
+        <div id="timestamp-tool" class="tool-section">
+          <div class="tool-header">
+            <h2>Timestamp ConverterTools</h2>
+            <p class="tool-description">Convert between timestamps and readable dates</p>
+          </div>
+
+          <div class="tool-layout">
+            <div class="input-section">
+              <div id="timestamp-current" style="font-size: 0.875rem; color: var(--accent-primary); margin-bottom: 12px; font-family: monospace;">Current timestamp: ...</div>
+              <label for="timestamp-input">Input:</label>
+              <textarea id="timestamp-input" placeholder="Enter a timestamp (e.g. 1712000000) or date string (e.g. 2026-01-15T10:30:00)..." style="min-height: 120px;"></textarea>
+
+              <div class="button-group">
+                <button id="timestamp-now-btn" class="btn-secondary">
+                  Current Timestamp
+                </button>
+                <button id="timestamp-to-readable-btn" class="btn-primary">
+                  Timestamp to Date
+                </button>
+                <button id="timestamp-to-timestamp-btn" class="btn-primary">
+                  Date to Timestamp
+                </button>
+                <button id="timestamp-clear-btn" class="btn-outline">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <label for="timestamp-output">Conversion Result:</label>
+              <textarea id="timestamp-output" readonly placeholder="Conversion result will appear here..." style="min-height: 120px;"></textarea>
+              <button id="timestamp-copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>Timestamp ConverterTools — Tutorial</h3>
+
+            <h4>What is a Unix Timestamp?</h4>
+            <p>A Unix Timestamp is the total number of seconds elapsed since January 1, 1970 00:00:00 UTC (Unix Epoch). It is the most universal time representation in computer systems, timezone-independent, and easy to calculate and compare. Almost all programming languages and databases natively support timestamps.</p>
+            <p>Two common timestamp precisions:</p>
+            <ul>
+              <li><strong>Second-level timestamp</strong>: 10 digits, e.g. <code>1712000000</code>. Most systems use second-level precision by default.</li>
+              <li><strong>Millisecond-level timestamp</strong>: 13 digits, e.g. <code>1712000000000</code>. JavaScript's <code>Date.now()</code> returns millisecond-level timestamps.</li>
+            </ul>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li><strong>Timestamp to Date</strong>: Enter a timestamp number in the input box and click the "Timestamp to Date" button. The tool will automatically detect whether it is in seconds or milliseconds.</li>
+              <li><strong>Date to Timestamp</strong>: Enter a date string (e.g. <code>2026-01-15</code> or <code>2026-01-15T10:30:00</code>) and click the "Date to Timestamp" button.</li>
+              <li><strong>Get Current Timestamp</strong>: Click the "Current Timestamp" button to quickly fill in the current timestamp.</li>
+              <li>The top of the page displays the current timestamp in real-time for easy reference</li>
+            </ol>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>Database Debugging</strong>: Convert timestamps stored in databases to readable dates</li>
+              <li><strong>API Development</strong>: Quickly get the current timestamp for API testing</li>
+              <li><strong>Log Analysis</strong>: Convert timestamps in server logs to local time</li>
+              <li><strong>Frontend Development</strong>: Convert between JavaScript timestamps and backend time formats</li>
+              <li><strong>Scheduled Tasks</strong>: Calculate timestamps for specific dates to configure cron jobs</li>
+            </ul>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Will timestamps overflow?</strong>
+              <p>32-bit signed integer seconds timestamps will overflow on January 19, 2038 (the famous "Year 2038 problem"). However, modern systems generally use 64-bit integers, and this issue has been resolved on most platforms.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: What timezone does the tool display?</strong>
+              <p>The tool displays both local time and UTC time for easy comparison. Timestamps are UTC-standard and do not contain timezone information.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- URL Encoder/Decoder -->
+        <div id="url-tool" class="tool-section">
+          <div class="tool-header">
+            <h2>URL Encoder/DecoderTools</h2>
+            <p class="tool-description">URL encoding and decoding conversion</p>
+          </div>
+
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="url-input">Input:</label>
+              <textarea id="url-input" placeholder="Enter URL text to encode or decode..." style="min-height: 150px;"></textarea>
+
+              <div class="button-group">
+                <button id="url-encode-btn" class="btn-primary">
+                  encodeURIComponent
+                </button>
+                <button id="url-decode-btn" class="btn-primary">
+                  decodeURIComponent
+                </button>
+                <button id="url-encode-component-btn" class="btn-secondary">
+                  encodeURI
+                </button>
+                <button id="url-decode-component-btn" class="btn-secondary">
+                  decodeURI
+                </button>
+                <button id="url-clear-btn" class="btn-outline">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <label for="url-output">Result:</label>
+              <textarea id="url-output" readonly placeholder="Encoded/decoded result will appear here..." style="min-height: 150px;"></textarea>
+              <button id="url-copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>URL Encoder/DecoderTools — Tutorial</h3>
+
+            <h4>What is URL Encoding?</h4>
+            <p>URL encoding (also known as percent-encoding) is the process of converting characters that are not allowed in URLs into the <code>%XX</code> format. According to the RFC 3986 specification, only a subset of ASCII characters (letters, digits, and a few special symbols) are allowed in URLs. Other characters (such as non-ASCII text, spaces, and special symbols) must be encoded for safe transmission.</p>
+            <p>For example, the text "hello world" with a space becomes <code>hello%20world</code> after URL encoding, and the space becomes <code>%20</code> or <code>+</code>. This is a fundamental and essential encoding mechanism in web development.</p>
+
+            <h4>encodeURIComponent vs. encodeURI</h4>
+            <p>JavaScript provides two URL encoding functions for different scenarios:</p>
+            <ul>
+              <li><strong>encodeURIComponent</strong>: Encodes all special characters (including <code>/</code>, <code>?</code>, <code>&amp;</code>, <code>=</code>, etc.). Suitable for encoding URL parameter values, e.g.: <code>?q=encodeURIComponent(value)</code></li>
+              <li><strong>encodeURI</strong>: Preserves URL structural characters (<code>/</code>, <code>?</code>, <code>#</code>, <code>&amp;</code>, <code>=</code>, etc.). Suitable for encoding complete URLs, e.g.: <code>encodeURI(fullURL)</code></li>
+            </ul>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li>Enter the text to encode or decode in the input box</li>
+              <li>Select the corresponding action button:
+                <ul>
+                  <li><code>encodeURIComponent</code> — Encode URL parameter values (recommended)</li>
+                  <li><code>decodeURIComponent</code> — Decode URL parameter values</li>
+                  <li><code>encodeURI</code> — Encode complete URLs</li>
+                  <li><code>decodeURI</code> — Decode complete URLs</li>
+                </ul>
+              </li>
+              <li>The result will appear in the output box and can be copied with one click</li>
+            </ol>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>API Debugging</strong>: Encode request parameters containing special characters</li>
+              <li><strong>URL Parsing</strong>: Decode encoded URLs from the browser address bar into readable text</li>
+              <li><strong>Web Scraping</strong>: Properly encode non-ASCII links in scraping targets</li>
+              <li><strong>Frontend-Backend Integration</strong>: Troubleshoot parameter passing issues caused by inconsistent URL encoding</li>
+            </ul>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Why does the encoded text become so long?</strong>
+              <p>In UTF-8 encoding, a single non-ASCII character takes up 3 bytes, and each byte is encoded as <code>%XX</code> (3 characters), so one non-ASCII character becomes 9 characters after encoding. This is normal behavior.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Base64 Encoder/Decoder -->
+        <div id="base64-tool" class="tool-section">
+          <div class="tool-header">
+            <h2>Base64 Encoder/DecoderTools</h2>
+            <p class="tool-description">Base64 encoding and decoding, supports Unicode</p>
+          </div>
+
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="base64-input">Input:</label>
+              <textarea id="base64-input" placeholder="Enter text to encode, or Base64 string to decode..." style="min-height: 150px;"></textarea>
+
+              <div class="button-group">
+                <button id="base64-encode-btn" class="btn-primary">
+                  Base64 Encode
+                </button>
+                <button id="base64-decode-btn" class="btn-primary">
+                  Base64 Decode
+                </button>
+                <button id="base64-clear-btn" class="btn-outline">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <label for="base64-output">Result:</label>
+              <textarea id="base64-output" readonly placeholder="Encoded/decoded result will appear here..." style="min-height: 150px;"></textarea>
+              <button id="base64-copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>Base64 Encoder/DecoderTools — Tutorial</h3>
+
+            <h4>What is Base64 Encoding?</h4>
+            <p>Base64 is an encoding method that represents binary data using 64 printable characters (A-Z, a-z, 0-9, +, /). It divides every 3 bytes (24 bits) of data into 4 groups of 6 bits each, mapping each group to a printable character. The encoded data is approximately 33% larger than the original data.</p>
+            <p>Base64 was originally designed for transmitting binary attachments (such as images and files) in email systems, because early email systems could only handle ASCII text. Today, Base64 is widely used throughout web development.</p>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>Data URLs</strong>: Embed small images directly in HTML or CSS, e.g. <code>data:image/png;base64,iVBOR...</code></li>
+              <li><strong>HTTP Authentication</strong>: Basic Auth uses Base64 to encode usernames and passwords</li>
+              <li><strong>JWT Tokens</strong>: JSON Web Token's Header and Payload use Base64 encoding</li>
+              <li><strong>Email Attachments</strong>: Encoding and transmitting attachments in the MIME protocol</li>
+              <li><strong>Config Files</strong>: Safely store binary data in environment variables or configuration files</li>
+              <li><strong>API Data Transfer</strong>: Transmit binary data through JSON/XML interfaces</li>
+            </ul>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li><strong>Encode</strong>: Enter any text in the input box (supports Unicode characters) and click "Base64 Encode"</li>
+              <li><strong>Decode</strong>: Paste a Base64 string in the input box and click "Base64 Decode"</li>
+              <li>The result will appear in the output box. Click the "Copy" button to use it</li>
+            </ol>
+
+            <h4>Characteristics of Base64 Encoding</h4>
+            <p>Base64 is an <strong>encoding</strong> method, not <strong>encryption</strong>. Anyone can easily decode Base64 content, so it should never be used to protect sensitive data. If secure transmission is needed, use real encryption algorithms such as AES or RSA. Base64's purpose is solely to convert binary data into text format for transmission over text-based protocols.</p>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Does it support non-ASCII characters?</strong>
+              <p>Yes. This tool uses UTF-8 encoding to handle all Unicode characters, ensuring compatibility with other standard tools.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: Why are there equal signs at the end of Base64 encoded text?</strong>
+              <p>The equal sign <code>=</code> is a padding character. Because Base64 converts 3 bytes into 4 characters, when the original data length is not a multiple of 3, 1 or 2 <code>=</code> signs are appended at the end for alignment.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hash Generator -->
+        <div id="hash-tool" class="tool-section">
+          <div class="tool-header">
+            <h2>Hash GeneratorTools</h2>
+            <p class="tool-description">Generate MD5, SHA-1, SHA-256, SHA-512 hash values</p>
+          </div>
+
+          <div class="tool-layout">
+            <div class="input-section">
+              <label for="hash-input">Input Text:</label>
+              <textarea id="hash-input" placeholder="Enter text to compute hash value..." style="min-height: 120px;"></textarea>
+
+              <div class="button-group">
+                <button id="hash-md5-btn" class="btn-primary">
+                  MD5
+                </button>
+                <button id="hash-sha1-btn" class="btn-primary">
+                  SHA-1
+                </button>
+                <button id="hash-sha256-btn" class="btn-primary">
+                  SHA-256
+                </button>
+                <button id="hash-sha512-btn" class="btn-primary">
+                  SHA-512
+                </button>
+                <button id="hash-clear-btn" class="btn-outline">
+                  Clear
+                </button>
+              </div>
+            </div>
+
+            <div class="output-section">
+              <label for="hash-output">Hash Result:</label>
+              <textarea id="hash-output" readonly placeholder="Hash value will appear here..." style="min-height: 120px;"></textarea>
+              <button id="hash-copy-btn" class="btn-success" disabled>
+                <svg class="btn-icon" viewBox="0 0 24 24">
+                  <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+          </div>
+
+          <div class="tool-tutorial">
+            <button class="tool-tutorial-toggle" onclick="toggleTutorial(this)">
+              <span class="toggle-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Tutorial
+              </span>
+              <svg class="toggle-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="tool-tutorial-body">
+              <div class="tool-tutorial-inner">
+            <h3>Hash GeneratorTools — Tutorial</h3>
+
+            <h4>What is a Hash?</h4>
+            <p>A hash (also known as a digest or checksum) is a one-way cryptographic function that converts input data of arbitrary length into a fixed-length output string. This output is called a "hash value" or "message digest." Hash functions have the following core properties:</p>
+            <ul>
+              <li><strong>Deterministic</strong>: The same input always produces the same output</li>
+              <li><strong>Irreversible</strong>: It is impossible to derive the original data from the hash value</li>
+              <li><strong>Avalanche Effect</strong>: A tiny change in input data produces a completely different hash value</li>
+              <li><strong>Collision Resistant</strong>: It is practically impossible to find two different inputs that produce the same hash value</li>
+            </ul>
+
+            <h4>Supported Hash Algorithms</h4>
+            <ul>
+              <li><strong>MD5</strong>: Produces a 128-bit (32 hex character) hash value. Fast, but known security vulnerabilities have been found. Not recommended for security purposes. Still widely used for non-security purposes like file checksums and cache keys.</li>
+              <li><strong>SHA-1</strong>: Produces a 160-bit (40 character) hash value. Proven to be vulnerable to collision attacks. Not recommended for security purposes, but still used in some legacy systems.</li>
+              <li><strong>SHA-256</strong>: Produces a 256-bit (64 character) hash value. A member of the SHA-2 family, currently the most widely used secure hash algorithm. Recommended for security scenarios such as password storage, digital signatures, and blockchain.</li>
+              <li><strong>SHA-512</strong>: Produces a 512-bit (128 character) hash value. The highest security level in the SHA-2 family, suitable for scenarios requiring the utmost security. Longer output and slightly more computationally intensive.</li>
+            </ul>
+
+            <h4>How to Use This Tool?</h4>
+            <ol>
+              <li>Enter the text to compute a hash value in the input box</li>
+              <li>Click the corresponding algorithm button (MD5, SHA-1, SHA-256, SHA-512)</li>
+              <li>Hash values appear immediately in the output area</li>
+              <li>Click the "Copy" button to copy the hash value</li>
+            </ol>
+
+            <h4>Common Use Cases</h4>
+            <ul>
+              <li><strong>File Verification</strong>: Verify that downloaded files are complete and unmodified</li>
+              <li><strong>Password Storage</strong>: Store hash values of passwords in databases instead of plaintext</li>
+              <li><strong>Data Deduplication</strong>: Compare hash values to determine if two datasets are identical</li>
+              <li><strong>Digital Signatures</strong>: Generate hash values for documents or messages to verify identity</li>
+              <li><strong>Git Version Control</strong>: Uses SHA-1 to identify each commit</li>
+              <li><strong>Blockchain</strong>: Bitcoin uses SHA-256, Ethereum uses Keccak-256</li>
+            </ul>
+
+            <h4>FAQ</h4>
+            <div class="faq-item">
+              <strong>Q: Is MD5 still secure?</strong>
+              <p>MD5 was proven to have collision vulnerabilities in 2004 and should no longer be used for security-sensitive scenarios (such as password storage or digital signatures). However, it is still appropriate for non-security purposes (like file cache keys or data deduplication). For security scenarios, please use SHA-256 or stronger algorithms.</p>
+            </div>
+            <div class="faq-item">
+              <strong>Q: Can hash values be decrypted?</strong>
+              <p>No. Hashes are one-way functions and are irreversible by design. The only way to verify if data matches is to recompute the hash and compare. This is exactly how hashes are used for password storage: the system stores the hash of the password, and upon login, recalculates and compares with the stored value.</p>
+            </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo">🛠️ Text Tools Suite</div>
+        <p>A free online developer tools suite providing JSON visualization and formatting, rich text link extraction, QR code generation, and more. All data processing is done locally, protecting your privacy.</p>
+      </div>
+
+      <div class="footer-links">
+        <h4>About</h4>
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Text Tools Suite (realpine.top). All rights reserved.</span>
+      <span>Powered by ☁️ Cloudflare</span>
+    </div>
+  </footer>
+  </div>
+
+  <!-- 脚本加载 - 按依赖顺序加载 -->
+  <script src="../static/js/i18n.js"></script>
+  <script src="../static/js/qrcode.min.js"></script>
+  <script src="../static/js/text-tools.js"></script>
+  <script src="../static/js/theme.js"></script>
+  <script src="../static/js/navigation.js"></script>
+  <script src="../static/js/json-parser.js"></script>
+  <script src="../static/js/json-visualizer.js"></script>
+  <script src="../static/js/qr-generator.js"></script>
+  <script src="../static/js/timestamp-tool.js"></script>
+  <script src="../static/js/url-tool.js"></script>
+  <script src="../static/js/base64-tool.js"></script>
+  <script src="../static/js/hash-tool.js"></script>
+  <script src="../static/js/app.js"></script>
+  <script src="../static/js/cookie-consent.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      new CookieConsent();
+    });
+  </script>
+</body>
+</html>

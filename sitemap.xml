@@ -1,33 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Homepage - English (default) -->
   <url>
-    <loc>https://realpine.top/</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://realpine.top/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/"/>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Homepage - Chinese -->
   <url>
-    <loc>https://realpine.top/about.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://realpine.top/zh/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/"/>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- About - English -->
+  <url>
+    <loc>https://realpine.top/en/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/about.html"/>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- About - Chinese -->
   <url>
-    <loc>https://realpine.top/contact.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://realpine.top/zh/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/about.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/about.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/about.html"/>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact - English -->
+  <url>
+    <loc>https://realpine.top/en/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/contact.html"/>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <!-- Contact - Chinese -->
   <url>
-    <loc>https://realpine.top/privacy.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://realpine.top/zh/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/contact.html"/>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Privacy - English -->
+  <url>
+    <loc>https://realpine.top/en/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/privacy.html"/>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
+
+  <!-- Privacy - Chinese -->
   <url>
-    <loc>https://realpine.top/terms.html</loc>
-    <lastmod>2026-04-01</lastmod>
+    <loc>https://realpine.top/zh/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/privacy.html"/>
+    <lastmod>2026-04-03</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
+
+  <!-- Terms - English -->
+  <url>
+    <loc>https://realpine.top/en/terms.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/terms.html"/>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Terms - Chinese -->
+  <url>
+    <loc>https://realpine.top/zh/terms.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://realpine.top/en/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="zh" href="https://realpine.top/zh/terms.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://realpine.top/en/terms.html"/>
+    <lastmod>2026-04-03</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
 </urlset>

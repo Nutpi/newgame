@@ -1,0 +1,714 @@
+// 主应用入口
+class TextToolsApp {
+  constructor() {
+    // 等待DOM加载完成
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => this.init());
+    } else {
+      this.init();
+    }
+  }
+
+  init() {
+    // 初始化各个模块
+    this.themeManager = new ThemeManager();
+    this.navigationManager = new NavigationManager();
+    this.jsonParser = new JsonParser();
+    this.jsonVisualizer = new JsonVisualizer('json-output');
+    this.qrGenerator = new QRCodeGenerator();
+
+    // 初始化工具
+    this.initTools();
+    this.setDefaultTool();
+    this.initTutorialDrawers(); // 初始化使用说明侧滑抽屉
+    this.initNavigation();
+  }
+
+  initTools() {
+    this.initJsonFormatter();
+    this.initLinkExtractor();
+    // 初始化新工具
+    if (typeof TimestampTool !== 'undefined') new TimestampTool();
+    if (typeof UrlTool !== 'undefined') new UrlTool();
+    if (typeof Base64Tool !== 'undefined') new Base64Tool();
+    if (typeof HashTool !== 'undefined') new HashTool();
+    // QR生成器在 init() 中或者其自己的类中初始化
+  }
+
+  setDefaultTool() {
+    // 默认显示JSON工具
+    const defaultTool = 'json-formatter';
+    const toolSections = document.querySelectorAll('.tool-section');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    
+    toolSections.forEach(section => {
+      section.classList.toggle('active', section.id === defaultTool);
+    });
+    
+    navButtons.forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tool === defaultTool);
+    });
+  }
+
+  initNavigation() {
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const toolSections = document.querySelectorAll('.tool-section');
+    
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const targetTool = button.dataset.tool;
+        if (!targetTool) return;
+        
+        // 更新按钮状态
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // 更新工具显示并添加过渡动画
+        toolSections.forEach(section => {
+          if (section.id === targetTool) {
+            section.classList.add('active');
+            section.classList.add('animate-in'); // 添加过渡类
+            setTimeout(() => section.classList.remove('animate-in'), 400); // 动效结束后移除
+          } else {
+            section.classList.remove('active');
+            section.classList.remove('animate-in');
+          }
+        });
+        
+        // 关闭移动端侧边栏
+        if (this.navigationManager) {
+          this.navigationManager.closeSidebar();
+        }
+      });
+    });
+  }
+
+  // 初始化侧滑说明抽屉
+  initTutorialDrawers() {
+    const sections = document.querySelectorAll('.tool-section');
+    sections.forEach(section => {
+      const tutorial = section.querySelector('.tool-tutorial');
+      const header = section.querySelector('.tool-header');
+      if (tutorial && header) {
+        // 创建打开教程的按钮
+        const btn = document.createElement('button');
+        btn.className = 'btn-tutorial-open';
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> ' + t('common.tutorial');
+        btn.onclick = () => tutorial.classList.add('drawer-open');
+        
+        // 放置在 header 的描述下方或直接存入 header
+        const p = header.querySelector('.tool-description');
+        if (p) {
+          p.insertAdjacentElement('afterend', btn);
+        } else {
+          header.appendChild(btn);
+        }
+
+        // 把原来的折叠模式改为侧滑抽屉结构
+        tutorial.classList.add('tutorial-drawer-wrapper');
+        
+        // 移除原有的折叠触发按钮
+        const oldToggle = tutorial.querySelector('.tool-tutorial-toggle');
+        if (oldToggle) oldToggle.remove();
+
+        // 增加背景遮罩
+        const overlay = document.createElement('div');
+        overlay.className = 'tutorial-overlay';
+        overlay.onclick = () => tutorial.classList.remove('drawer-open');
+        tutorial.insertBefore(overlay, tutorial.firstChild);
+
+        // 改造内容区
+        const body = tutorial.querySelector('.tool-tutorial-body');
+        if (body) {
+          body.classList.add('tutorial-drawer-panel');
+          body.style.height = 'auto'; // 移除可能内联的高度
+          
+          const closeBtn = document.createElement('button');
+          closeBtn.className = 'tutorial-close-btn';
+          closeBtn.innerHTML = '&times;';
+          closeBtn.title = t('common.close');
+          closeBtn.onclick = () => tutorial.classList.remove('drawer-open');
+          
+          const inner = body.querySelector('.tool-tutorial-inner');
+          if (inner) {
+            inner.insertBefore(closeBtn, inner.firstChild);
+          } else {
+            body.insertBefore(closeBtn, body.firstChild);
+          }
+        }
+      }
+    });
+
+    // 处理全局键盘 ESC 关闭抽屉
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.tutorial-drawer-wrapper.drawer-open').forEach(drawer => {
+          drawer.classList.remove('drawer-open');
+        });
+      }
+    });
+  }
+
+  initJsonFormatter() {
+    const jsonInput = document.getElementById('json-input');
+    const formatBtn = document.getElementById('format-btn');
+    const minifyBtn = document.getElementById('minify-btn');
+    const validateBtn = document.getElementById('validate-btn');
+    const copyJsonBtn = document.getElementById('copy-json-btn');
+    const clearJsonBtn = document.getElementById('clear-json-btn');
+
+    let currentJsonData = null;
+    let debounceTimer = null;
+
+    // 验证必需元素
+    if (!jsonInput || !this.jsonVisualizer) {
+      console.error('JSON格式化器初始化失败：缺少必需元素');
+      return;
+    }
+
+    // 自动格式化
+    jsonInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        const input = jsonInput.value.trim();
+        
+        if (!input) {
+          this.jsonVisualizer.container.innerHTML = `
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" class="empty-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <p>${t('json.emptyState')}</p>
+            </div>
+          `;
+          this.updateJsonStatus(t('json.status.waiting'), 'waiting');
+          this.updateJsonSize(0);
+          if (copyJsonBtn) copyJsonBtn.disabled = true;
+          this.jsonVisualizer.disableSearchFeatures();
+          return;
+        }
+
+        try {
+          const parsed = this.jsonParser.parse(input);
+          currentJsonData = parsed;
+          this.jsonVisualizer.render(parsed);
+          this.updateJsonStatus(t('json.status.autoFormatted'), 'valid');
+          this.updateJsonSize(JSON.stringify(parsed, null, 2).length);
+          if (copyJsonBtn) copyJsonBtn.disabled = false;
+        } catch (error) {
+          this.handleJsonError(input, error);
+          if (copyJsonBtn) copyJsonBtn.disabled = true;
+        }
+      }, 500);
+    });
+
+    // 格式化按钮
+    if (formatBtn) {
+      formatBtn.addEventListener('click', () => {
+        const input = jsonInput.value.trim();
+        if (!input) {
+          this.updateJsonStatus(t('json.pleaseInput'), 'waiting');
+          return;
+        }
+
+        try {
+          const parsed = this.jsonParser.parse(input);
+          currentJsonData = parsed;
+          this.jsonVisualizer.render(parsed);
+          
+          // 检测是否使用了智能解析
+          let smartParseUsed = false;
+          try {
+            JSON.parse(input);
+          } catch {
+            smartParseUsed = true;
+          }
+          
+          const message = smartParseUsed
+            ? t('json.status.smartFormatted')
+            : t('json.status.formatted');
+          this.updateJsonStatus(message, 'valid');
+          this.updateJsonSize(JSON.stringify(parsed, null, 2).length);
+          if (copyJsonBtn) copyJsonBtn.disabled = false;
+          
+        } catch (error) {
+          this.updateJsonStatus(`${t('json.status.error')}: ${error.message}`, 'invalid');
+          this.showJsonError(error.message);
+          if (copyJsonBtn) copyJsonBtn.disabled = true;
+        }
+      });
+    }
+
+    // 压缩按钮
+    if (minifyBtn) {
+      minifyBtn.addEventListener('click', () => {
+        const input = jsonInput.value.trim();
+        if (!input) {
+          this.updateJsonStatus(t('json.pleaseInput'), 'waiting');
+          return;
+        }
+
+        try {
+          const parsed = this.jsonParser.parse(input);
+          const minified = JSON.stringify(parsed);
+          this.showMinifiedJson(minified);
+          this.updateJsonStatus(t('json.status.minified'), 'valid');
+          this.updateJsonSize(minified.length);
+          if (copyJsonBtn) copyJsonBtn.disabled = false;
+          currentJsonData = minified;
+
+          // 显示压缩比例
+          const ratio = ((input.length - minified.length) / input.length * 100).toFixed(1);
+          this.updateJsonStatus(`${t('json.status.minifiedRatio')} (${ratio}%)`, 'valid');
+        } catch (error) {
+          this.updateJsonStatus(`${t('json.status.error')}: ${error.message}`, 'invalid');
+          this.showJsonError(error.message);
+          if (copyJsonBtn) copyJsonBtn.disabled = true;
+        }
+      });
+    }
+
+    // 验证按钮
+    if (validateBtn) {
+      validateBtn.addEventListener('click', () => {
+        const input = jsonInput.value.trim();
+        if (!input) {
+          this.updateJsonStatus(t('json.pleaseInput'), 'waiting');
+          return;
+        }
+
+        try {
+          const parsed = this.jsonParser.parse(input);
+          const analysis = this.analyzeJsonStructure(parsed);
+          
+          // 检测智能解析
+          let smartParseUsed = false;
+          try {
+            JSON.parse(input);
+          } catch {
+            smartParseUsed = true;
+          }
+          
+          this.showValidationResult(true, analysis, smartParseUsed);
+          this.updateJsonStatus(t('json.status.valid'), 'valid');
+          this.updateJsonSize(input.length);
+        } catch (error) {
+          this.showValidationResult(false, error.message);
+          this.updateJsonStatus(`${t('json.status.invalid')}: ${error.message}`, 'invalid');
+        }
+      });
+    }
+
+    // 复制按钮
+    if (copyJsonBtn) {
+      copyJsonBtn.addEventListener('click', () => {
+        let textToCopy = '';
+        if (typeof currentJsonData === 'string') {
+          textToCopy = currentJsonData;
+        } else if (currentJsonData) {
+          textToCopy = JSON.stringify(currentJsonData, null, 2);
+        } else {
+          textToCopy = jsonInput.value;
+        }
+        this.copyToClipboard(textToCopy, copyJsonBtn, true);
+      });
+    }
+
+    // 清空按钮
+    if (clearJsonBtn) {
+      clearJsonBtn.addEventListener('click', () => {
+        jsonInput.value = '';
+        this.jsonVisualizer.container.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" class="empty-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <p>${t('json.emptyState')}</p>
+          </div>
+        `;
+        this.updateJsonStatus(t('json.status.waiting'), 'waiting');
+        this.updateJsonSize(0);
+        if (copyJsonBtn) copyJsonBtn.disabled = true;
+        currentJsonData = null;
+        this.jsonVisualizer.disableSearchFeatures();
+      });
+    }
+  }
+
+  // JSON错误处理
+  handleJsonError(input, error) {
+    if ((input.includes('{') && input.includes('}')) || (input.includes('[') && input.includes(']'))) {
+      if (input.length > 50) {
+        this.updateJsonStatus(`${t('json.status.formatCheck')}: ${error.message}`, 'invalid');
+        this.showJsonError(error.message, true);
+      } else {
+        this.updateJsonStatus(t('json.status.checking'), 'waiting');
+      }
+    } else {
+      this.updateJsonStatus(t('json.status.waitingComplete'), 'waiting');
+    }
+  }
+
+  // 优化JSON错误显示函数
+  showJsonError(message, isAutoCheck = false) {
+    const title = isAutoCheck ? `⚠️ ${t('json.error.autoParseFailed')}` : `❌ ${t('json.error.parseError')}`;
+    const hint = isAutoCheck
+      ? `<div style="font-size: 12px; margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.3); border-radius: 4px; opacity: 0.9;">
+           💡 <strong>${t('json.error.hintLabel')}</strong>${t('json.error.hint')}
+         </div>`
+      : '';
+
+    // 格式化错误信息，添加换行和缩进
+    const formattedMessage = this.formatErrorMessage(message);
+
+    this.jsonVisualizer.container.innerHTML = `
+      <div style="color: #721c24; padding: 20px; background-color: #f8d7da; border-radius: 8px; line-height: 1.6; border-left: 4px solid #dc3545;">
+        <div style="font-weight: bold; margin-bottom: 12px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+          ${title}
+        </div>
+        <div style="font-size: 14px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; background: rgba(255,255,255,0.2); padding: 12px; border-radius: 4px; white-space: pre-line; word-break: break-word;">
+          ${this.escapeHtml(formattedMessage)}
+        </div>
+        ${hint}
+        <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 12px; white-space: pre-line;">
+          ${t('json.error.checkList')}
+        </div>
+      </div>
+    `;
+  }
+
+  // 新增：格式化错误信息函数
+  formatErrorMessage(message) {
+    let formatted = message;
+
+    if (window.CURRENT_LANG === 'zh') {
+      // 处理位置信息
+      formatted = formatted.replace(/at position (\d+)/g, '在位置 $1');
+      formatted = formatted.replace(/\(line (\d+) column (\d+)\)/g, '（第 $1 行，第 $2 列）');
+
+      // 处理常见错误类型
+      const errorMappings = {
+        'Unexpected token': '意外的字符',
+        'Expected property name': '期望属性名',
+        'Expected double-quoted property name': '属性名需要用双引号包围',
+        'Unexpected end of JSON input': 'JSON 输入意外结束',
+        "Expected ',' or '}'": "期望逗号 ',' 或右大括号 '}'",
+        "Expected ',' or ']'": "期望逗号 ',' 或右方括号 ']'",
+        'Unexpected string': '意外的字符串',
+        'Unexpected number': '意外的数字',
+        'Invalid or unexpected token': '无效或意外的字符'
+      };
+
+      for (const [english, chinese] of Object.entries(errorMappings)) {
+        formatted = formatted.replace(new RegExp(english, 'gi'), chinese);
+      }
+
+      // 添加换行，使长错误信息更易读
+      if (formatted.length > 60) {
+        formatted = formatted.replace(/([。，；])\s*/g, '$1\n');
+        formatted = formatted.replace(/\s+(在位置|（第)/g, '\n$1');
+      }
+    }
+
+    return formatted.trim();
+  }
+
+  // 显示压缩后的JSON
+  showMinifiedJson(minified) {
+    this.jsonVisualizer.container.innerHTML = `
+      <pre style="margin: 0; white-space: pre-wrap; word-break: break-all; padding: 15px; background-color: var(--bg-tertiary); border-radius: 4px; font-family: 'Fira Code', 'Consolas', monospace;">${this.escapeHtml(minified)}</pre>
+    `;
+  }
+
+  // 同时优化验证结果显示
+  showValidationResult(isValid, content, smartParseUsed = false) {
+    if (isValid) {
+      const smartParseHint = smartParseUsed
+        ? `<div style="font-size: 14px; opacity: 0.9; margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.3); border-radius: 4px;">
+             🔧 <strong>${t('json.validation.smartFix')}</strong>
+           </div>`
+        : '';
+
+      this.jsonVisualizer.container.innerHTML = `
+        <div style="color: #155724; padding: 20px; background-color: #d4edda; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #28a745;">
+          <div style="font-weight: bold; margin-bottom: 8px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
+            ✅ ${t('json.error.title.valid')}
+          </div>
+          ${smartParseHint}
+        </div>
+        <div style="background-color: var(--bg-tertiary); padding: 20px; border-radius: 8px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; white-space: pre-line; color: var(--text-primary); line-height: 1.8; border-left: 4px solid var(--accent-primary);">
+          <strong style="color: var(--accent-primary);">📊 ${t('json.validation.structure')}</strong>
+
+${content}
+        </div>
+      `;
+    } else {
+      // 错误情况下也使用格式化的错误信息
+      const formattedError = this.formatErrorMessage(content);
+
+      this.jsonVisualizer.container.innerHTML = `
+        <div style="color: var(--text-danger, #721c24); padding: 20px; background-color: var(--bg-danger, #f8d7da); border-radius: 8px; line-height: 1.6; border-left: 4px solid #dc3545;">
+          <div style="font-weight: bold; margin-bottom: 12px; font-size: 16px;">❌ ${t('json.error.title.invalid')}</div>
+          <div style="font-size: 14px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; background: rgba(255,255,255,0.2); padding: 12px; border-radius: 4px; white-space: pre-line; word-break: break-word;">
+            ${this.escapeHtml(formattedError)}
+          </div>
+          <div style="margin-top: 12px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; font-size: 12px; white-space: pre-line;">
+            ${t('json.error.checkListShort')}
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // 初始化链接提取器
+  initLinkExtractor() {
+    const richTextInput = document.getElementById('rich-text-input');
+    const plainTextOutput = document.getElementById('plain-text-output');
+    const convertBtn = document.getElementById('convert-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const copyBtn = document.getElementById('copy-btn');
+
+    if (!richTextInput || !plainTextOutput) {
+      console.error('链接提取器初始化失败：缺少必需元素');
+      return;
+    }
+
+    // 转换按钮
+    if (convertBtn) {
+      convertBtn.addEventListener('click', () => {
+        const result = this.convertRichTextToPlainWithLinks(richTextInput);
+        plainTextOutput.innerHTML = result.replace(/\n/g, '<br>');
+        if (copyBtn) copyBtn.disabled = !result.trim();
+      });
+    }
+
+    // 清空按钮
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        richTextInput.innerHTML = '';
+        plainTextOutput.innerHTML = '';
+        if (copyBtn) copyBtn.disabled = true;
+      });
+    }
+
+    // 复制按钮
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const text = plainTextOutput.textContent || plainTextOutput.innerText;
+        this.copyToClipboard(text, copyBtn, true);
+      });
+    }
+
+    // 粘贴事件处理
+    richTextInput.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const clipboardData = e.clipboardData || window.clipboardData;
+      const htmlData = clipboardData.getData('text/html');
+      const textData = clipboardData.getData('text/plain');
+      
+      if (htmlData) {
+        richTextInput.innerHTML = htmlData;
+      } else {
+        richTextInput.textContent = textData;
+      }
+      
+      // 自动转换
+      setTimeout(() => {
+        const result = this.convertRichTextToPlainWithLinks(richTextInput);
+        plainTextOutput.innerHTML = result.replace(/\n/g, '<br>');
+        if (copyBtn) copyBtn.disabled = !result.trim();
+      }, 100);
+    });
+  }
+
+  // 链接提取转换功能
+  convertRichTextToPlainWithLinks(element) {
+    const cleanedHTML = this.cleanPastedHTML(element.innerHTML);
+    let processedText = cleanedHTML;
+    
+    // 处理链接
+    const linkRegex = /<a[^>]*href=["']([^"']*)["'][^>]*>([^<]*)<\/a>/gi;
+    processedText = processedText.replace(linkRegex, (match, url, text) => {
+      const cleanUrl = url.trim();
+      const cleanText = text.trim();
+      return cleanText ? `${cleanText} (${cleanUrl})` : cleanUrl;
+    });
+    
+    return this.processFormattedText(processedText);
+  }
+
+  processFormattedText(text) {
+    return text
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<b>(.*?)<\/b>/gi, '**$1**')
+      .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+  }
+
+  cleanPastedHTML(html) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    return this.processNode(tempDiv);
+  }
+
+  processNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      return node.textContent;
+    }
+    
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return '';
+    }
+    
+    if (node.nodeName === 'A') {
+      const href = node.getAttribute('href') || '';
+      const text = node.textContent || '';
+      return `<a href="${href}">${text}</a>`;
+    }
+    
+    if (['B', 'STRONG'].includes(node.nodeName)) {
+      let nodeText = '';
+      for (const child of node.childNodes) {
+        nodeText += this.processNode(child);
+      }
+      return `<b>${nodeText}</b>`;
+    }
+    
+    if (node.nodeName === 'BR') {
+      return '<br>';
+    }
+    
+    let nodeText = '';
+    for (const child of node.childNodes) {
+      nodeText += this.processNode(child);
+    }
+    
+    const blockElements = ['DIV', 'P', 'LI', 'UL', 'OL', 'BLOCKQUOTE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+    if (blockElements.includes(node.nodeName) && nodeText.trim().length > 0) {
+      if (!nodeText.startsWith('<br>')) {
+        nodeText = '<br>' + nodeText;
+      }
+      if (!nodeText.endsWith('<br>')) {
+        nodeText = nodeText + '<br>';
+      }
+    }
+    
+    return nodeText;
+  }
+
+  // 分析 JSON 结构
+  analyzeJsonStructure(obj, depth = 0) {
+    const indent = '  '.repeat(depth);
+    let info = '';
+    
+    if (Array.isArray(obj)) {
+      info += `${indent}${t('json.structure.array')} (${obj.length} ${t('json.structure.items')})\n`;
+      if (obj.length > 0) {
+        const firstItem = obj[0];
+        info += `${indent}  ${t('json.structure.firstType')}: ${this.getDataType(firstItem)}\n`;
+        if (obj.length > 1) {
+          const types = [...new Set(obj.map(item => this.getDataType(item)))];
+          if (types.length > 1) {
+            info += `${indent}  ${t('json.structure.includesTypes')}: ${types.join(', ')}\n`;
+          }
+        }
+      }
+    } else if (typeof obj === 'object' && obj !== null) {
+      const keys = Object.keys(obj);
+      info += `${indent}${t('json.structure.object')} (${keys.length} ${t('json.structure.properties')})\n`;
+      if (keys.length > 0) {
+        info += `${indent}  ${t('json.structure.attributes')}: ${keys.slice(0, 5).join(', ')}${keys.length > 5 ? '...' : ''}\n`;
+        
+        if (depth < 2) {
+          for (const key of keys.slice(0, 3)) {
+            const value = obj[key];
+            if (typeof value === 'object' && value !== null) {
+              info += `${indent}  ${key}:\n`;
+              info += this.analyzeJsonStructure(value, depth + 1);
+            } else {
+              info += `${indent}  ${key}: ${this.getDataType(value)}\n`;
+            }
+          }
+        }
+      }
+    } else {
+      info += `${indent}${this.getDataType(obj)}: ${obj}\n`;
+    }
+    
+    return info;
+  }
+
+  getDataType(value) {
+    if (value === null) return 'null';
+    if (Array.isArray(value)) return 'array';
+    return typeof value;
+  }
+
+  // 更新 JSON 状态
+  updateJsonStatus(message, type) {
+    const statusElement = document.getElementById('json-status');
+    if (statusElement) {
+      statusElement.textContent = message;
+      statusElement.className = `status-${type}`;
+    }
+  }
+
+  // 更新 JSON 大小
+  updateJsonSize(size) {
+    const sizeElement = document.getElementById('json-size');
+    if (sizeElement) {
+      if (size < 1024) {
+        sizeElement.textContent = size + t('json.size.chars');
+      } else if (size < 1024 * 1024) {
+        sizeElement.textContent = `${(size / 1024).toFixed(1)} KB`;
+      } else {
+        sizeElement.textContent = `${(size / (1024 * 1024)).toFixed(1)} MB`;
+      }
+    }
+  }
+
+  // HTML 转义
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // 复制到剪贴板
+  async copyToClipboard(text, button, isPlainText = false) {
+    try {
+      let textToCopy = text;
+      if (!isPlainText) {
+        textToCopy = text.replace(/<br>/g, '\n').replace(/<\/?b>/g, '');
+      }
+      
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(textToCopy);
+      } else {
+        const tempTextarea = document.createElement('textarea');
+        tempTextarea.value = textToCopy;
+        tempTextarea.style.position = 'absolute';
+        tempTextarea.style.left = '-9999px';
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextarea);
+      }
+      
+      // 显示成功反馈
+      const originalText = button.textContent;
+      button.textContent = t('common.copied');
+      button.style.backgroundColor = '#28a745';
+      
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = '';
+      }, 2000);
+    } catch (error) {
+      console.error('复制失败:', error);
+      alert(t('common.copyFailedAlt'));
+    }
+  }
+}
+
+// 应用初始化
+document.addEventListener('DOMContentLoaded', () => {
+  new TextToolsApp();
+});

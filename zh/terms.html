@@ -6,12 +6,15 @@
   <title>服务条款 - 文本处理工具集 | RealPine</title>
   <meta name="description" content="文本处理工具集的服务条款。了解使用本网站工具和服务的相关条款和条件。">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://realpine.top/terms.html">
+  <link rel="canonical" href="https://realpine.top/zh/terms.html">
+  <link rel="alternate" hreflang="en" href="https://realpine.top/en/terms.html">
+  <link rel="alternate" hreflang="zh" href="https://realpine.top/zh/terms.html">
+  <link rel="alternate" hreflang="x-default" href="https://realpine.top/en/terms.html">
 
   <!-- Open Graph -->
   <meta property="og:title" content="服务条款 - 文本处理工具集">
   <meta property="og:description" content="文本处理工具集的服务条款和使用条件。">
-  <meta property="og:url" content="https://realpine.top/terms.html">
+  <meta property="og:url" content="https://realpine.top/zh/terms.html">
   <meta property="og:type" content="website">
 
   <!-- Google tag (gtag.js) -->
@@ -33,10 +36,10 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3101069602643525"
        crossorigin="anonymous"></script>
 
-  <link rel="icon" href="images/favicon.png" type="image/png">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/pages.css">
-  <link rel="stylesheet" href="css/components.css">
+  <link rel="icon" href="../static/images/favicon.png" type="image/png">
+  <link rel="stylesheet" href="../static/css/base.css">
+  <link rel="stylesheet" href="../static/css/pages.css">
+  <link rel="stylesheet" href="../static/css/components.css">
   <script>
     (function(){
       try {
@@ -92,9 +95,9 @@
           <a href="privacy.html">隐私政策</a>
           <a href="terms.html" class="active">服务条款</a>
           <div class="lang-switcher">
-            <a href="terms.html" class="lang-btn active" data-lang="zh">中文</a>
+            <a href="../en/terms.html" class="lang-btn" data-lang="en">EN</a>
             <span class="lang-divider">|</span>
-            <a href="en/terms.html" class="lang-btn" data-lang="en">EN</a>
+            <a href="terms.html" class="lang-btn active" data-lang="zh">中文</a>
           </div>
         </nav>
       </div>
@@ -243,15 +246,10 @@
   </div>
 
   <!-- Theme Script -->
-  <script src="js/theme.js"></script>
-  <script src="js/cookie-consent.js"></script>
+  <script src="../static/js/i18n.js"></script>
+  <script src="../static/js/theme.js"></script>
+  <script src="../static/js/cookie-consent.js"></script>
   <script>
-    document.addEventListener('click', function(e) {
-      var btn = e.target.closest('.lang-btn');
-      if (btn && btn.dataset.lang) {
-        try { localStorage.setItem('preferred_lang', btn.dataset.lang); } catch(e) {}
-      }
-    });
     document.addEventListener('DOMContentLoaded', () => {
       new ThemeManager();
       new CookieConsent();

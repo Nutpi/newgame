@@ -1,0 +1,9 @@
+# Default route: redirect root to English version
+/  /en/  302
+
+# Old page paths redirect to English version (301 for SEO)
+/about.html    /en/about.html    301
+/contact.html  /en/contact.html  301
+/privacy.html  /en/privacy.html  301
+/terms.html    /en/terms.html    301
+/index.html    /en/              301
